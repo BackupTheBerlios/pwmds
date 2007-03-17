@@ -1,0 +1,14 @@
+bin\Debug\MDS.exe
+bin\Debug\MDS.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\MDS.Properties.Resources.resources
+obj\Debug\MDS.csproj.GenerateResource.Cache
+obj\Debug\MDS.exe
+obj\Debug\MDS.pdb
+bin\Release\MDS.exe
+bin\Release\MDS.pdb
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\MDS.Properties.Resources.resources
+obj\Release\MDS.csproj.GenerateResource.Cache
+obj\Release\MDS.exe
+obj\Release\MDS.pdb
