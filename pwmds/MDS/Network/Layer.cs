@@ -10,13 +10,14 @@ namespace MDS.Network
         private List<Neuron> neuronList;
         private Function fun;
 
-        public Layer(int neurons)
+        public Layer(int layerNum, int neurons)
         {
-            neuronList = new List<Neuron>();
+            this.layerNumber = layerNum;
+            this.neuronList = new List<Neuron>();
             this.fun = new Function();
             for (int i = 0; i < neurons; i++)
             {
-                Neuron n = new Neuron(this);
+                Neuron n = new Neuron(i,this.layerNumber,this);
                 this.neuronList.Add(n);
             }
         }
@@ -50,11 +51,12 @@ namespace MDS.Network
 
         public void printOutput()
         {
-            Console.Out.Write("Warstwa: ");
+            Console.Out.Write("Output: ");
 
             for (int i = 0; i < this.neuronList.Count; i++)
             {
-                Console.Out.Write(this.neuronList[i].getOutput() + "\t");
+                this.neuronList[i].printOutput();
+                Console.Out.Write("\t");
 
             }
             Console.Out.WriteLine();
@@ -62,7 +64,7 @@ namespace MDS.Network
         }
         public void printWeights()
         {
-            Console.Out.WriteLine("Wagi warstwy");
+            //Console.Out.WriteLine("Wagi warstwy");
             for (int i = 0; i < this.neuronList.Count; i++)
             {
                 this.neuronList[i].printHashtable();

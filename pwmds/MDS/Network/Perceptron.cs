@@ -23,7 +23,7 @@ namespace MDS.Network
             Random r = new Random();
             for (int i = 0; i < layers; i++)
             {
-                Layer l = new Layer(neurons[i]);
+                Layer l = new Layer(i,neurons[i]);
                 layerList.Add(l);
             }
             for (int i = 0; i < layers-1; i++)
@@ -32,9 +32,10 @@ namespace MDS.Network
                 {
                     List<Neuron> l = this.layerList[i].getNeuronList();
                     Neuron n = this.layerList[i+1].getNeuronIndex(j);
+                   
                     for (int k = 0; k < l.Count; k++)
                     {
-                        n.addToHashtable(l[k],r.NextDouble() );
+                        n.addToHashtable(l[k],1);//r.NextDouble() );
                     }
                 }
             }
@@ -68,7 +69,7 @@ namespace MDS.Network
         }
         public void printWeights()
         {
-            for (int i = 0; i < this.layerList.Count; i++)
+            for (int i = 1; i < this.layerList.Count; i++)
             {
                 this.layerList[i].printWeights();
             }

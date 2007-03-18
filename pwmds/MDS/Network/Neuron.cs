@@ -13,8 +13,10 @@ namespace MDS.Network
         private double output;
         //private List<Neuron> neuronOutput; moze sie przyda lista neuronow w nastepnej warstwie
 
-        public Neuron(Layer lay)
+        public Neuron(int neuronNum, int layerNum, Layer lay)
         {
+            this.neuronNumber = neuronNum;
+            this.layerNumber = layerNum;
             this.layer = lay;
             this.neuronInput = new Hashtable();
             //this.neuronOutput = new List<Neuron>();
@@ -34,6 +36,14 @@ namespace MDS.Network
             
             this.output = this.layer.getFunction().calculate(sum);
 
+        }
+        public int getNeuronNumber()
+        {
+            return this.neuronNumber;
+        }
+        public int getLayerNumber()
+        {
+            return this.layerNumber;
         }
         public double getOutput()
         {
@@ -55,12 +65,23 @@ namespace MDS.Network
         public void printHashtable()
         {
             IDictionaryEnumerator e = neuronInput.GetEnumerator();
-            Console.Out.WriteLine("Wagi:");
+            Console.Out.Write("Wagi:");
             while (e.MoveNext())
             {
-                Console.Out.Write(e.Value + "\t");
+                Console.Out.Write("od(" + ((Neuron)e.Key).getLayerNumber() + "," + ((Neuron)e.Key).getNeuronNumber() + ")");
+                Console.Out.Write("do("+this.layerNumber+","+this.neuronNumber+"):"+e.Value + ";\t");
             }
             Console.Out.WriteLine();
+        }
+        public void printOutput()
+        {
+            //IDictionaryEnumerator e = neuronInput.GetEnumerator();
+            //Console.Out.WriteLine("Wagi:");
+            //while (e.MoveNext())
+            {
+                Console.Out.Write("(" + this.layerNumber + "," + this.neuronNumber + "):" + this.output + ";\t");
+            }
+            //Console.Out.WriteLine();
         }
 
     }
