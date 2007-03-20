@@ -47,5 +47,19 @@ namespace MDS.Network
             return 0;
         }
 
+        public static double NormSqrt(double[] x, double[] y)
+        {
+            double res = 0;
+            int size = x.Length;
+            if( y.Length < size)
+                size = y.Length;
+            for (int i = 0; i < size; ++i)
+                res += Math.Pow(x[i] - y[i], 2);
+
+            return Math.Sqrt(res);
+        }
+
+
+
     }
 }

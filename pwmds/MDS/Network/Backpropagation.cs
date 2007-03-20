@@ -25,13 +25,17 @@ namespace MDS.Network
 
         public void Learn()
         {
+            for (int i = 0; i < param.Input.Count; ++i)
+            {
+                learnOneSample(i);
+            }
         }
 
-        private void learnOne( int vectNr )
+        private void learnOneSample(int vectNr)
         {
             int iter = 10;
-            //double d;
-            while(iter-- != 0) //b³¹d
+            double globalError = param.Epsilon;
+            while(globalError >= param.Epsilon ) //b³¹d
             {
                 perceptron.calculateOutput(param.Input[vectNr]);
                 //warstwa ostatnia
@@ -46,13 +50,20 @@ namespace MDS.Network
                 for (int k = 1; k < perceptron.Size; k++) //warstwy
                     for (int j = 0; j < perceptron.getLayer(k).Size; j++)
                         for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
-                            this.modifyT(k, j, i);                
+                            this.modifyT(k, j, i);
+                globalError = calculateGlobalError(vectNr);
             }
  
         }
         //layerNr - nr warstwy neuronu koncowego, neuronNrJ - neuron koncowy, neuronNrI- neuron poczatkowy
         private void modifyT(int layerNr, int neuronNrJ, int neuronNrI)
         {
+            Neuron prevNeuron = perceptron.getLayer(layerNr - 1).getNeuronIndex(neuronNrI);
+            double actT = (double)perceptron.getLayer(layerNr).getNeuronIndex(neuronNrJ).getInputHashtable()[prevNeuron];
+            double newT;
+
+            newT = actT + param.Tau * deltaT[layerNr, neuronNrI, neuronNrJ];
+            perceptron.getLayer(layerNr).getNeuronIndex(neuronNrJ).getInputHashtable()[prevNeuron] = newT;
 
         }
 
@@ -81,7 +92,6 @@ namespace MDS.Network
                     this.deltaT[layerNr, i, j] = param.Alpha * this.deltaT[layerNr, i, j]
                         + (1 - param.Alpha) * dj * fEi;
                 }
-
             }
 
         }
@@ -114,10 +124,11 @@ namespace MDS.Network
                 double d, dU,T;
 
                 dU = 0;
-                for (int j = 0; j < nextlayer.Size; j++)
+                for (int j = 0; j < nextlayer.Size; ++j)
                 {
                     neuron1 = nextlayer.getNeuronIndex(j);
-                    T = (double) neuron1.getInputHashtable()[neuron1];
+                    //T = (double) neuron1.getInputHashtable()[neuron1];
+                    T = (double)neuron1.getInputHashtable()[neuron];
                     dU += neuron1.D * T;
                 }
                 d = dU * layer.getFunction().derivative(neuron.InputSum);
@@ -125,6 +136,16 @@ namespace MDS.Network
             }
 
         }
+
+        private double calculateGlobalError( int vectNr)
+        {
+            Layer lastLayer = perceptron.getLayer(layers - 1);
+            double[] output = new double[lastLayer.Size];
+            for (int i = 0; i < lastLayer.Size; ++i)
+                output[i] = lastLayer.getNeuronIndex(i).Output;
+            return Function.NormSqrt(param.Input[vectNr], output);
+        }
+
 
         public Data.LearningParam Param
         {
