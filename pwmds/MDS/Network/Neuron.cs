@@ -7,16 +7,19 @@ namespace MDS.Network
 {
     class Neuron
     {
-        private int neuronNumber, layerNumber;
+        private int neuronNumber;
         private Hashtable neuronInput;
         private Layer layer;
         private double output;
+        private double inputSum;
         //private List<Neuron> neuronOutput; moze sie przyda lista neuronow w nastepnej warstwie
+        
+        //b³¹d lokalny dla danego neuronu
+        private double localError;
 
-        public Neuron(int neuronNum, int layerNum, Layer lay)
+        public Neuron(int neuronNum, Layer lay)
         {
-            this.neuronNumber = neuronNum;
-            this.layerNumber = layerNum;
+            this.neuronNumber = neuronNum;            
             this.layer = lay;
             this.neuronInput = new Hashtable();
             //this.neuronOutput = new List<Neuron>();
@@ -31,9 +34,9 @@ namespace MDS.Network
             while (e.MoveNext())
             {
                 Neuron n = (Neuron)e.Key;
-                sum += n.getOutput() * (double)e.Value;
+                sum += n.Output * (double)e.Value;
             }
-            
+            inputSum = sum;
             this.output = this.layer.getFunction().calculate(sum);
 
         }
@@ -43,20 +46,36 @@ namespace MDS.Network
         }
         public int getLayerNumber()
         {
-            return this.layerNumber;
+            return this.layer.Number;
         }
-        public double getOutput()
-        {
-            return this.output;
 
-        }
-        public void setOutput(double x)
+        public double Output
         {
-            this.output = x;
+            get { return this.output; }
+            set { output = value; }
         }
+
+
         public Hashtable getInputHashtable()
         {
             return this.neuronInput;
+        }
+        public void ModifyT(int neuronNr,double deltaT)
+        {
+            //neuronNr - numer neuronu poprzedniego
+            IEnumerator e = this.neuronInput.Keys.GetEnumerator();
+            while (neuronNr > 0)
+            {
+                e.MoveNext();
+                neuronNr--;
+            }
+            Neuron neuronI = (Neuron)e.Current;
+            this.neuronInput[neuronI] = ((double)this.neuronInput[neuronI]) + deltaT; 
+        }
+        public double D
+        {
+            get { return localError; }
+            set { localError = value; }
         }
         public void addToHashtable (Neuron n, double x)
         {
@@ -66,23 +85,31 @@ namespace MDS.Network
         {
             IDictionaryEnumerator e = neuronInput.GetEnumerator();
             Console.Out.Write("Wagi:");
+            int layerNumber = this.layer.Number;
             while (e.MoveNext())
             {
                 Console.Out.Write("od(" + ((Neuron)e.Key).getLayerNumber() + "," + ((Neuron)e.Key).getNeuronNumber() + ")");
-                Console.Out.Write("do("+this.layerNumber+","+this.neuronNumber+"):"+e.Value + ";\t");
+                Console.Out.Write("do("+layerNumber+","+this.neuronNumber+"):"+e.Value + ";\t");
             }
             Console.Out.WriteLine();
         }
         public void printOutput()
         {
+            int layerNumber = this.layer.Number;
             //IDictionaryEnumerator e = neuronInput.GetEnumerator();
             //Console.Out.WriteLine("Wagi:");
             //while (e.MoveNext())
             {
-                Console.Out.Write("(" + this.layerNumber + "," + this.neuronNumber + "):" + this.output + ";\t");
+
+                Console.Out.Write("(" + layerNumber + "," + this.neuronNumber + "):" + this.output + ";\t");
             }
             //Console.Out.WriteLine();
         }
 
+        public double InputSum
+        {
+            get { return inputSum; }
+        }
+       
     }
 }

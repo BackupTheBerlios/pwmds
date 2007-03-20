@@ -17,10 +17,16 @@ namespace MDS.Network
             this.fun = new Function();
             for (int i = 0; i < neurons; i++)
             {
-                Neuron n = new Neuron(i,this.layerNumber,this);
+                Neuron n = new Neuron(i,this);
                 this.neuronList.Add(n);
             }
         }
+        public int Number
+        {
+            get { return layerNumber; }
+           
+        }
+
         public void setFunId(int id)
         {
             this.fun.setId(id);
@@ -69,6 +75,10 @@ namespace MDS.Network
             {
                 this.neuronList[i].printHashtable();
             }
+        }
+        public int Size
+        {
+            get { return this.neuronList.Count; }
         }
     }
 

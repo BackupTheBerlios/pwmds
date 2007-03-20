@@ -18,7 +18,7 @@ namespace MDS
             
             int[] tab = { 4, 10, 3, 4, 5};
                 
-            float[] x ={ 1, 4, -6, 2 };
+            double[] x ={ 1, 4, -6, 2 };
 
             try
             {

@@ -37,6 +37,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\LearningParam.cs" />
+    <Compile Include="Data\NetworkParam.cs" />
     <Compile Include="GUI\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -44,6 +46,7 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="MDScaling\MainMDScaling.cs" />
+    <Compile Include="Network\Backpropagation.cs" />
     <Compile Include="Network\Function.cs" />
     <Compile Include="Network\Layer.cs" />
     <Compile Include="Network\Neuron.cs" />
@@ -76,7 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classifier\" />
-    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

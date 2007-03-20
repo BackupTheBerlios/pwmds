@@ -8,6 +8,7 @@ namespace MDS.Network
     {
         private int inputSize, outputSize;
         private List<Layer> layerList;
+
         public Perceptron(int[] neurons)  //liczba warstw i neuronow w kazdej warstwie
         {
             
@@ -47,7 +48,7 @@ namespace MDS.Network
             l.setFunId(functionId);
         }
             
-        public float[] calculateOutput(float[] input)
+        public float[] calculateOutput(double[] input)
         {
             if (input == null) throw new Exception("Null pointer exception in calculateOutput");
             if (input.Length != this.inputSize) throw new Exception("Wrong input size in calculateOutput");
@@ -56,7 +57,7 @@ namespace MDS.Network
             List<Neuron> l = this.layerList[0].getNeuronList();
             for (int i = 0; i < this.inputSize; i++)
             {
-                l[i].setOutput(input[i]);
+                l[i].Output = input[i];
             }
             this.layerList[0].printOutput();
             for (int i = 1; i < this.layerList.Count; i++)
@@ -73,6 +74,32 @@ namespace MDS.Network
             {
                 this.layerList[i].printWeights();
             }
+        }
+
+        public int Size
+        {
+            get { return layerList.Count; }
+        }
+        public int MaxLayerSize
+        {
+            get
+            {
+                int n = 0;
+                for (int i = 0; i < this.Size; i++)
+                {
+                    Layer layer = this.layerList[i];
+                    int j = layer.Size;
+                    if (j > n)
+                        n = j;
+                }
+                return n;
+
+            }
+        }
+
+        public Layer getLayer( int nr )
+        {
+            return layerList[nr];
         }
     }
 }
