@@ -42,6 +42,14 @@ namespace MDS.Network
             }
         }
 
+        public Perceptron(Data.NetworkParam param)
+        {
+
+
+        }
+
+
+
         public void setFunctionForLayer(int functionId, int layerNumber)
         {
             Layer l = this.layerList[layerNumber];
