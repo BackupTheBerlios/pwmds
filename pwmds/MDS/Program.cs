@@ -12,10 +12,10 @@ namespace MDS
         [STAThread]
         static void Main()
         {
-           /* Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-            */
+            Application.Run(new MDS.GUI.frmMain());
+            
             int[] tab = { 4, 10, 3, 4, 5};
                 
             float[] x ={ 1, 4, -6, 2 };
