@@ -36,7 +36,7 @@ namespace MDS.Network
                    
                     for (int k = 0; k < l.Count; k++)
                     {
-                        n.addToHashtable(l[k],1);//r.NextDouble() );
+                        n.addToHashtable(l[k],0.1);//r.NextDouble() );
                     }
                 }
             }
@@ -67,14 +67,18 @@ namespace MDS.Network
             {
                 l[i].Output = input[i];
             }
-            this.layerList[0].printOutput();
+            //this.layerList[0].printOutput();
             for (int i = 1; i < this.layerList.Count; i++)
             {
                 this.layerList[i].calculateOutput();
-                this.layerList[i].printOutput();
+                //this.layerList[i].printOutput();
             }
-            
+           
             return null;
+        }
+        public void PrintOutput()
+        {
+            this.layerList[this.layerList.Count-1].printOutput();
         }
         public void printWeights()
         {

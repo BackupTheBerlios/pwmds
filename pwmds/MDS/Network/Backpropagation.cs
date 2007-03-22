@@ -25,17 +25,48 @@ namespace MDS.Network
 
         public void Learn()
         {
-            for (int i = 0; i < param.Input.Count; ++i)
+            //for (int i = 0; i < param.Input.Count; ++i)
+            int i = 2;
             {
                 learnOneSample(i);
+                PrintResultsOfLearning(i);
             }
         }
+        public void PrintResultsOfLearning(int i)
+        {  
+            Console.Out.Write("Wzorzec:: ");
+            for (int j = 0; j < param.Output[i].Length; ++j)
+            {
+                Console.Out.Write(param.Output[i][j] + " ");
+            }
+            Console.Out.WriteLine();
+            Console.Out.Write("Output po nauce::: ");
+            perceptron.calculateOutput(param.Input[i]);
+            perceptron.PrintOutput();
+            Console.Out.WriteLine();
+        }
 
+        public void PrintLocalError()
+        {
+            Console.Out.WriteLine("");
+            Console.Out.WriteLine("PRINT LOCAL ERROR:");
+            for (int k = 1; k < perceptron.Size; k++) //warstwy
+                for (int j = 0; j < perceptron.getLayer(k).Size; j++)
+                {
+                    for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
+                        Console.Out.Write("\tdT[:"+k+",od"+i+",do"+j+"]: "+ deltaT[k, i, j]);
+                    Console.Out.WriteLine("");
+                    Console.Out.WriteLine("Layer: " + k + " neuron: " + j + " d: " 
+                        +perceptron.getLayer(k).getNeuronIndex(j).D);
+
+                }
+        }
         private void learnOneSample(int vectNr)
         {
-            int iter = 10;
+            int iter = 30;
             double globalError = param.Epsilon;
-            while(globalError >= param.Epsilon ) //b³¹d
+            //while(globalError >= param.Epsilon ) //b³¹d
+            while (iter-- != 0) 
             {
                 perceptron.calculateOutput(param.Input[vectNr]);
                 //warstwa ostatnia
@@ -50,8 +81,11 @@ namespace MDS.Network
                 for (int k = 1; k < perceptron.Size; k++) //warstwy
                     for (int j = 0; j < perceptron.getLayer(k).Size; j++)
                         for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
-                            this.modifyT(k, j, i);
+                        {
+                            this.modifyT(k, j, i);                           
+                        }
                 globalError = calculateGlobalError(vectNr);
+                PrintLocalError();
             }
  
         }
@@ -62,7 +96,7 @@ namespace MDS.Network
             double actT = (double)perceptron.getLayer(layerNr).getNeuronIndex(neuronNrJ).getInputHashtable()[prevNeuron];
             double newT;
 
-            newT = actT + param.Tau * deltaT[layerNr, neuronNrI, neuronNrJ];
+            newT = actT - param.Tau * deltaT[layerNr, neuronNrI, neuronNrJ];
             perceptron.getLayer(layerNr).getNeuronIndex(neuronNrJ).getInputHashtable()[prevNeuron] = newT;
 
         }
