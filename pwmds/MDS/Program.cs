@@ -59,8 +59,13 @@ namespace MDS
 
             Data.LearningParam param = createTestParam2();
             Network.Backpropagation backp = new MDS.Network.Backpropagation(p, param);
-            backp.Learn();
-            //p.printWeights();
+            backp.LearnDemo();
+            p.printWeights();
+
+            //p.calculateOutput(param.Input[0]);
+            //p.PrintOutput();
+            //p.calculateOutput(param.Input[1]);
+            //p.PrintOutput();
         }
         static Data.LearningParam createTestParam2()
         {

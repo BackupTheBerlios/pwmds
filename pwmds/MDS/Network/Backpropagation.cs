@@ -22,19 +22,46 @@ namespace MDS.Network
             deltaT = new double[layers, n, n];
 
         }
+        public void LearnDemo()
+        {
+            //learnOneSample(0);
+            int vectNr = 0;
+            perceptron.calculateOutput(param.Input[vectNr]);
+            //warstwa ostatnia
+            this.calculateLastLayerErrors(vectNr);
+            //pozostale warstwy
+            for (int k = perceptron.Size - 2; k >= 0; k--)
+                this.calculateHiddenLayerErorrs(vectNr, k);
 
+           
+
+            for (int k = perceptron.Size - 1; k >= 0; k--)
+                this.calculateDeltaT(k);
+
+            for (int k = 1; k < perceptron.Size; k++) //warstwy
+                for (int j = 0; j < perceptron.getLayer(k).Size; j++)
+                    for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
+                    {
+                        this.modifyT(k, j, i);
+                    }
+            PrintLocalError();
+            Console.Out.Write("LEARN DEMO:");
+            PrintResultsOfLearning(0);   
+            
+        }
         public void Learn()
         {
-            for (int i = 0; i < 5; ++i)
-            //int i = 2;
+            for (int i = 0; i < 5; ++i)            
             {
                 for (int j = 0; j < param.Input.Count; ++j)
                 {
                     learnOneSample(j);
-                    Console.Out.Write(":: j = "+j);
+                    Console.Out.Write("po uczeniu nr: "+i+" :: wzorzec nr: "+j);
                     PrintResultsOfLearning(j);
                 }
             }
+            //sprawdzenie co sie nauczyla:
+            Console.Out.WriteLine("Po nauce wszystkich wzorcow:   ");
             for (int i = 0; i < param.Input.Count; ++i)           
             {                
                 perceptron.calculateOutput(param.Input[i]);
@@ -50,6 +77,7 @@ namespace MDS.Network
                 Console.Out.Write(param.Output[i][j] + " ");
             }
             Console.Out.WriteLine();
+
             Console.Out.Write("PO NAUCE:  ");
             perceptron.calculateOutput(param.Input[i]);
             perceptron.PrintOutput();
