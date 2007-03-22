@@ -14,8 +14,7 @@ namespace MDS
         {
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new MDS.GUI.frmMain());
-            
+            //Application.Run(new MDS.GUI.frmMain());    
 
 
             try
@@ -50,12 +49,13 @@ namespace MDS
         }
         static void Demo2()
         {
-            int[] tab = { 2, 2, 2};
+            int[] tab = { 2, 2, 2, 2};
             Network.Perceptron p = new Network.Perceptron(tab);
             p.printWeights();
             p.setFunctionForLayer(3, 0);
             p.setFunctionForLayer(3, 1);
-            p.setFunctionForLayer(3, 2);           
+            p.setFunctionForLayer(3, 2);
+            p.setFunctionForLayer(3, 3);   
 
             Data.LearningParam param = createTestParam2();
             Network.Backpropagation backp = new MDS.Network.Backpropagation(p, param);
@@ -70,18 +70,18 @@ namespace MDS
             param.Tau = 5;
             param.Input = new List<double[]>();
             param.Output = new List<double[]>();
-            double[] i =  { 0.6, 0 };
-            double[] o = { 0, 0.6 };
+            double[] i =  { 0.8, 0 };
+            double[] o = { 0.1, 0.6 };
             param.Input.Add(i);
             param.Output.Add(o);
-            double[] i1 =  { 0.2, 0.5 };
-            double[] o1 = { 0.2, 0.5 };
+            double[] i1 =  { 0, 0.9 };
+            double[] o1 = { 0.7, 0.2 };
             param.Input.Add(i1);
             param.Output.Add(o1);
-            double[] i2 =  { 0.1, 0.1 };
-            double[] o2 = { 0.2, 0.8 };
-            param.Input.Add(i2);
-            param.Output.Add(o2);
+            //double[] i2 =  { 0.1, 0.1 };
+            //double[] o2 = { 0.2, 0.8 };
+            //param.Input.Add(i2);
+            //param.Output.Add(o2);
             return param;
         }
         static Data.LearningParam createTestParam()

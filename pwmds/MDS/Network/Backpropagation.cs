@@ -25,22 +25,32 @@ namespace MDS.Network
 
         public void Learn()
         {
-            //for (int i = 0; i < param.Input.Count; ++i)
-            int i = 2;
+            for (int i = 0; i < 5; ++i)
+            //int i = 2;
             {
-                learnOneSample(i);
-                PrintResultsOfLearning(i);
+                for (int j = 0; j < param.Input.Count; ++j)
+                {
+                    learnOneSample(j);
+                    Console.Out.Write(":: j = "+j);
+                    PrintResultsOfLearning(j);
+                }
+            }
+            for (int i = 0; i < param.Input.Count; ++i)           
+            {                
+                perceptron.calculateOutput(param.Input[i]);
+                perceptron.PrintOutput();
             }
         }
         public void PrintResultsOfLearning(int i)
-        {  
-            Console.Out.Write("Wzorzec:: ");
+        {
+            Console.Out.WriteLine();
+            Console.Out.Write("WZORZEC:   ");
             for (int j = 0; j < param.Output[i].Length; ++j)
             {
                 Console.Out.Write(param.Output[i][j] + " ");
             }
             Console.Out.WriteLine();
-            Console.Out.Write("Output po nauce::: ");
+            Console.Out.Write("PO NAUCE:  ");
             perceptron.calculateOutput(param.Input[i]);
             perceptron.PrintOutput();
             Console.Out.WriteLine();
@@ -85,7 +95,7 @@ namespace MDS.Network
                             this.modifyT(k, j, i);                           
                         }
                 globalError = calculateGlobalError(vectNr);
-                PrintLocalError();
+                //PrintLocalError();
             }
  
         }
