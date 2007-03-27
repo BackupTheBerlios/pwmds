@@ -12,21 +12,23 @@ namespace MDS.GUI
 {
     public partial class frmMain : Form
     {
-        private Object mainClass; // g³owna klasa programu z metoda main, ktora wywoluje formularz glowny GUI
+        private Object engine; // g³owna klasa programu z metoda main, ktora wywoluje formularz glowny GUI
         private String[,] loadedData; // tablica wczytanych danych z pliku bazy danych
         private Thread loader; // watek wczytujacy dane bedace skalowane do tablicy
         private String filePath = null;
 
-        public frmMain(Object mainClass)
+        public frmMain(Object engine)
         {
             InitializeComponent();
-            this.mainClass = mainClass;
+            this.engine = engine;
             this.loadedData = new String[8000,620];
         }
       
         private void frmMain_Load(object sender, EventArgs e)
         {
-            
+            // TESTY
+            //Tests.Engine eng = engine as Tests.Engine;
+            //eng.Test();
         }
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -86,8 +88,8 @@ namespace MDS.GUI
                                }
                             line = reader.ReadLine();
                             i++;
-                        }
-                        MessageBox.Show("Wczytano " + i + " rekordów. ", "Dane wczytano", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }              
+                        MessageBox.Show(null, "Wczytano " + i + " rekordów. ", "Dane wczytano", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         reader.Close();
                     }
                 }
