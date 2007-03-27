@@ -7,13 +7,12 @@ namespace MDS.Tests
 {
     static class main
     {
+        static Engine engine; 
         [STAThread]
         static void Main()
         {
 /////////////////////////// GUI TESTY ///////////////////////////////////////////////////
-            GUI.frmMain frmMain = new MDS.GUI.frmMain(null);
-            
-            Application.Run(frmMain);
+            engine = new Engine();
 ////////////////////////////END GUI TESTY ///////////////////////////////////////////////
         }
 
