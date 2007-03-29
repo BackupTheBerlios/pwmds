@@ -31,7 +31,7 @@ namespace MDS.GUI
             this._groupBox1 = new System.Windows.Forms.GroupBox();
             this._radioClassifier = new System.Windows.Forms.RadioButton();
             this._radioMDS = new System.Windows.Forms.RadioButton();
-            this._buttonCreate = new System.Windows.Forms.Button();
+            this._buttonCreateNetwork = new System.Windows.Forms.Button();
             this._tableLayer = new System.Windows.Forms.TableLayoutPanel();
             this._buttonAddLayer = new System.Windows.Forms.Button();
             this._label1 = new System.Windows.Forms.Label();
@@ -71,14 +71,15 @@ namespace MDS.GUI
             this._radioMDS.Text = "Sklaowanie wielowymiarowe";
             this._radioMDS.UseVisualStyleBackColor = true;
             // 
-            // _buttonCreate
+            // _buttonCreateNetwork
             // 
-            this._buttonCreate.Location = new System.Drawing.Point(484, 423);
-            this._buttonCreate.Name = "_buttonCreate";
-            this._buttonCreate.Size = new System.Drawing.Size(109, 38);
-            this._buttonCreate.TabIndex = 1;
-            this._buttonCreate.Text = "Utwórz";
-            this._buttonCreate.UseVisualStyleBackColor = true;
+            this._buttonCreateNetwork.Location = new System.Drawing.Point(484, 423);
+            this._buttonCreateNetwork.Name = "_buttonCreateNetwork";
+            this._buttonCreateNetwork.Size = new System.Drawing.Size(109, 38);
+            this._buttonCreateNetwork.TabIndex = 1;
+            this._buttonCreateNetwork.Text = "Utwórz";
+            this._buttonCreateNetwork.UseVisualStyleBackColor = true;
+            //this._buttonCreateNetwork.Click += new System.EventHandler(this._buttonCreateNetwork_Click);
             // 
             // _tableLayer
             // 
@@ -119,7 +120,7 @@ namespace MDS.GUI
             this.Controls.Add(this._label1);
             this.Controls.Add(this._buttonAddLayer);
             this.Controls.Add(this._tableLayer);
-            this.Controls.Add(this._buttonCreate);
+            this.Controls.Add(this._buttonCreateNetwork);
             this.Controls.Add(this._groupBox1);
             this.Name = "CreateNetwork";
             this.Text = "CreateNetwork";
@@ -135,7 +136,7 @@ namespace MDS.GUI
         private System.Windows.Forms.GroupBox _groupBox1;
         private System.Windows.Forms.RadioButton _radioClassifier;
         private System.Windows.Forms.RadioButton _radioMDS;
-        private System.Windows.Forms.Button _buttonCreate;
+        private System.Windows.Forms.Button _buttonCreateNetwork;
         private System.Windows.Forms.TableLayoutPanel _tableLayer;
         private System.Windows.Forms.Button _buttonAddLayer;
         private System.Windows.Forms.Label _label1;

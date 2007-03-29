@@ -17,7 +17,14 @@ namespace MDS.GUI
 
         private void initializeLayersTable()
         {
-            this._tableLayer;
+//            this._tableLayer;
         }
+
+/*        private void _buttonCreateNetwork_Click(object sender, EventArgs e)
+        {
+            Data.NetworkParam param = new Data.NetworkParam();
+            Network.Perceptron newNet = new Network.Perceptron(param);
+
+        }*/
     }
 }
