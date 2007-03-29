@@ -107,5 +107,20 @@ namespace MDS.GUI
             MessageBox.Show(ex.ToString(), "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        private void _mNewNetwork_Click(object sender, EventArgs e)
+        {
+            CreateNetwork createDialog = new CreateNetwork();
+            createDialog.ShowDialog();
+            if (createDialog.DialogResult == DialogResult.OK)
+            {
+                Data.NetworkParam param = new Data.NetworkParam();
+                //get netowrikParam
+                //createNetowork
+                //add Network to list
+                
+            }
+            createDialog.Dispose();
+        }
+
     }
 }

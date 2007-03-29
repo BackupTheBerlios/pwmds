@@ -73,13 +73,13 @@ namespace MDS.GUI
             // 
             // _buttonCreateNetwork
             // 
+            this._buttonCreateNetwork.DialogResult = System.Windows.Forms.DialogResult.OK;
             this._buttonCreateNetwork.Location = new System.Drawing.Point(484, 423);
             this._buttonCreateNetwork.Name = "_buttonCreateNetwork";
             this._buttonCreateNetwork.Size = new System.Drawing.Size(109, 38);
             this._buttonCreateNetwork.TabIndex = 1;
             this._buttonCreateNetwork.Text = "Utwórz";
             this._buttonCreateNetwork.UseVisualStyleBackColor = true;
-            //this._buttonCreateNetwork.Click += new System.EventHandler(this._buttonCreateNetwork_Click);
             // 
             // _tableLayer
             // 

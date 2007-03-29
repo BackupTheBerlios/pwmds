@@ -29,12 +29,12 @@ namespace MDS.GUI
         private void InitializeComponent()
         {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this._mNewNetwork = new System.Windows.Forms.ToolStripMenuItem();
             this._mData = new System.Windows.Forms.ToolStripMenuItem();
             this._mReadData = new System.Windows.Forms.ToolStripMenuItem();
             this._mProcessData = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -51,6 +51,34 @@ namespace MDS.GUI
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip";
             // 
+            // _mNewNetwork
+            // 
+            this._mNewNetwork.Name = "_mNewNetwork";
+            this._mNewNetwork.Size = new System.Drawing.Size(67, 20);
+            this._mNewNetwork.Text = "Nowa sieæ";
+            this._mNewNetwork.Click += new System.EventHandler(this._mNewNetwork_Click);
+            // 
+            // _mData
+            // 
+            this._mData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._mReadData,
+            this._mProcessData});
+            this._mData.Name = "_mData";
+            this._mData.Size = new System.Drawing.Size(44, 20);
+            this._mData.Text = "Dane";
+            // 
+            // _mReadData
+            // 
+            this._mReadData.Name = "_mReadData";
+            this._mReadData.Size = new System.Drawing.Size(180, 22);
+            this._mReadData.Text = "Wczytaj dane";
+            // 
+            // _mProcessData
+            // 
+            this._mProcessData.Name = "_mProcessData";
+            this._mProcessData.Size = new System.Drawing.Size(180, 22);
+            this._mProcessData.Text = "Przetwarzanie danych";
+            // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -66,33 +94,6 @@ namespace MDS.GUI
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(58, 17);
             this.toolStripStatusLabel1.Text = "Bezczynny";
-            // 
-            // _mNewNetwork
-            // 
-            this._mNewNetwork.Name = "_mNewNetwork";
-            this._mNewNetwork.Size = new System.Drawing.Size(67, 20);
-            this._mNewNetwork.Text = "Nowa sieæ";
-            // 
-            // _mData
-            // 
-            this._mData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._mReadData,
-            this._mProcessData});
-            this._mData.Name = "_mData";
-            this._mData.Size = new System.Drawing.Size(44, 20);
-            this._mData.Text = "Dane";
-            // 
-            // _mReadData
-            // 
-            this._mReadData.Name = "_mReadData";
-            this._mReadData.Size = new System.Drawing.Size(152, 22);
-            this._mReadData.Text = "Wczytaj dane";
-            // 
-            // _mProcessData
-            // 
-            this._mProcessData.Name = "_mProcessData";
-            this._mProcessData.Size = new System.Drawing.Size(180, 22);
-            this._mProcessData.Text = "Przetwarzanie danych";
             // 
             // tabControl1
             // 

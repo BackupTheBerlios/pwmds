@@ -6,8 +6,11 @@ namespace MDS.Data
 {
     class NetworkParam
     {
+        public static int CLASSIFIER = 3531, MDS = 3532;
         private int layerNumber;
         private int[] neurons;
+        /**if the network is a classifier or mds*/
+        private int type;
         //funkcje dla warstw
         private Network.Function[] functions;
 
@@ -26,6 +29,11 @@ namespace MDS.Data
         public int LayerNumber
         {
             get { return layerNumber; }
+        }
+        public int Type
+        {
+            get { return type; }
+            set { type = value; }
         }
     }
 }
