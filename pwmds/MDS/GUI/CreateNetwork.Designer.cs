@@ -32,9 +32,9 @@ namespace MDS.GUI
             this._radioClassifier = new System.Windows.Forms.RadioButton();
             this._radioMDS = new System.Windows.Forms.RadioButton();
             this._buttonCreateNetwork = new System.Windows.Forms.Button();
-            this._tableLayer = new System.Windows.Forms.TableLayoutPanel();
             this._buttonAddLayer = new System.Windows.Forms.Button();
             this._label1 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this._groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,10 +54,10 @@ namespace MDS.GUI
             this._radioClassifier.AutoSize = true;
             this._radioClassifier.Location = new System.Drawing.Point(228, 30);
             this._radioClassifier.Name = "_radioClassifier";
-            this._radioClassifier.Size = new System.Drawing.Size(76, 17);
+            this._radioClassifier.Size = new System.Drawing.Size(110, 17);
             this._radioClassifier.TabIndex = 1;
             this._radioClassifier.TabStop = true;
-            this._radioClassifier.Text = "Klasfikacja";
+            this._radioClassifier.Text = "Sieæ klasyfikuj¹ca";
             this._radioClassifier.UseVisualStyleBackColor = true;
             // 
             // _radioMDS
@@ -65,10 +65,10 @@ namespace MDS.GUI
             this._radioMDS.AutoSize = true;
             this._radioMDS.Location = new System.Drawing.Point(15, 30);
             this._radioMDS.Name = "_radioMDS";
-            this._radioMDS.Size = new System.Drawing.Size(159, 17);
+            this._radioMDS.Size = new System.Drawing.Size(94, 17);
             this._radioMDS.TabIndex = 0;
             this._radioMDS.TabStop = true;
-            this._radioMDS.Text = "Sklaowanie wielowymiarowe";
+            this._radioMDS.Text = "Sieæ skaluj¹ca";
             this._radioMDS.UseVisualStyleBackColor = true;
             // 
             // _buttonCreateNetwork
@@ -81,21 +81,9 @@ namespace MDS.GUI
             this._buttonCreateNetwork.Text = "Utwórz";
             this._buttonCreateNetwork.UseVisualStyleBackColor = true;
             // 
-            // _tableLayer
-            // 
-            this._tableLayer.ColumnCount = 2;
-            this._tableLayer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._tableLayer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 434F));
-            this._tableLayer.Location = new System.Drawing.Point(13, 158);
-            this._tableLayer.Name = "_tableLayer";
-            this._tableLayer.RowCount = 1;
-            this._tableLayer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._tableLayer.Size = new System.Drawing.Size(580, 57);
-            this._tableLayer.TabIndex = 2;
-            // 
             // _buttonAddLayer
             // 
-            this._buttonAddLayer.Location = new System.Drawing.Point(484, 230);
+            this._buttonAddLayer.Location = new System.Drawing.Point(484, 336);
             this._buttonAddLayer.Name = "_buttonAddLayer";
             this._buttonAddLayer.Size = new System.Drawing.Size(109, 37);
             this._buttonAddLayer.TabIndex = 3;
@@ -112,14 +100,22 @@ namespace MDS.GUI
             this._label1.TabIndex = 4;
             this._label1.Text = "Warstwy";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(17, 151);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(576, 166);
+            this.groupBox1.TabIndex = 5;
+            this.groupBox1.TabStop = false;
+            // 
             // CreateNetwork
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(605, 483);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this._label1);
             this.Controls.Add(this._buttonAddLayer);
-            this.Controls.Add(this._tableLayer);
             this.Controls.Add(this._buttonCreateNetwork);
             this.Controls.Add(this._groupBox1);
             this.Name = "CreateNetwork";
@@ -137,8 +133,8 @@ namespace MDS.GUI
         private System.Windows.Forms.RadioButton _radioClassifier;
         private System.Windows.Forms.RadioButton _radioMDS;
         private System.Windows.Forms.Button _buttonCreateNetwork;
-        private System.Windows.Forms.TableLayoutPanel _tableLayer;
         private System.Windows.Forms.Button _buttonAddLayer;
         private System.Windows.Forms.Label _label1;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

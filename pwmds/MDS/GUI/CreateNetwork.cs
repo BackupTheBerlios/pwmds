@@ -17,7 +17,7 @@ namespace MDS.GUI
 
         private void initializeLayersTable()
         {
-//            this._tableLayer;
+            this._tableLayer;
         }
 
         /*private void _buttonCreateNetwork_Click(object sender, EventArgs e)
