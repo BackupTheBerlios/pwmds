@@ -12,7 +12,7 @@ namespace MDS
 {
     class MainANN
     {
-        private Hashtable inputData;
+        private Hashtable inputData; // Hastablica zawierajaca Listy wczytanych danych, jako key otrzymuje nazwe pliku z ktorego dane byly wczytywane
         private GUI.frmMain frmMain;
 
         public MainANN(GUI.frmMain frmMain)

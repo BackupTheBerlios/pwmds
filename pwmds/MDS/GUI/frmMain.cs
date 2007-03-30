@@ -38,44 +38,48 @@ namespace MDS.GUI
 
             try
             {
-            // pobiera nazwe pliku z danymi     
+                // pobiera nazwe pliku z danymi     
                 openFileDialog.Filter = "data files (*.data)|*.data|All files (*.*)|*.*";
                 openFileDialog.Title = "Wybierz plik z danymi do przeskalowania.";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                     filePath = openFileDialog.FileName;
 
-            // wywolanie fun. wczytujacej dane z pliku 
-                this.statusStrip1.Text = "Wczytuje dane...";
+                // wywolanie fun. wczytujacej dane z pliku 
+                this.statusStrip1.Items[0].Text = "Wczytuje dane...";
+                this.statusStrip1.Refresh();
                 Cursor.Current = Cursors.WaitCursor;
                 this.mainANN.loadInputData(filePath);
-                this.statusStrip1.Text = "Bezczynny";
                 Cursor.Current = Cursors.Default;
+                this.statusStrip1.Items[0].Text = "Bezczynny";
+                this.statusStrip1.Refresh();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show("Istniej¹ ju¿ dane wczytane z wybranego pliku.\n W celu wczytania tego samego pliku, nale¿y zmieniæ nazwê wczeœniej wczytanych danych. ", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Cursor.Current = Cursors.Default;
+                this.statusStrip1.Items[0].Text = "Bezczynny";
             }
             catch (Exception ex)
             {
-                this.errorHandler(ex);
+                MessageBox.Show(ex.ToString(), "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Cursor.Current = Cursors.Default;
+                this.statusStrip1.Items[0].Text = "Bezczynny";
             }
         }
         
-        // funkcja obslugi bledu
-        private void errorHandler(Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
         private void _mNewNetwork_Click(object sender, EventArgs e)
         {
-            CreateNetwork createDialog = new CreateNetwork();
-            createDialog.ShowDialog();
-            if (createDialog.DialogResult == DialogResult.OK)
-            {
-                Data.NetworkParam param = new Data.NetworkParam();
-                //get netowrikParam
-                //createNetowork
-                //add Network to list
+            ////CreateNetwork createDialog = new CreateNetwork();
+            ////createDialog.ShowDialog();
+            //if (createDialog.DialogResult == DialogResult.OK)
+            //{
+            //    Data.NetworkParam param = new Data.NetworkParam();
+            //    //get netowrikParam
+            //    //createNetowork
+            //    //add Network to list
                 
-            }
-            createDialog.Dispose();
+            //}
+            //createDialog.Dispose();
         }
 
     }
