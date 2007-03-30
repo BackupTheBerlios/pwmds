@@ -35,6 +35,7 @@ namespace MDS.GUI
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             String filePath = null;
+            int i;
 
             try
             {
@@ -48,7 +49,9 @@ namespace MDS.GUI
                 this.statusStrip1.Items[0].Text = "Wczytuje dane...";
                 this.statusStrip1.Refresh();
                 Cursor.Current = Cursors.WaitCursor;
-                this.mainANN.loadInputData(filePath);
+                i = this.mainANN.loadInputData(filePath);
+                if (i>0)
+                    MessageBox.Show(null, "Wczytano " + i + " rekordów. ", "Dane wczytano", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Cursor.Current = Cursors.Default;
                 this.statusStrip1.Items[0].Text = "Bezczynny";
                 this.statusStrip1.Refresh();

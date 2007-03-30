@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="Tests\MainANN.cs" />
     <Compile Include="Tests\main.cs" />
+    <Compile Include="Tests\testLoadData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classifier\" />
