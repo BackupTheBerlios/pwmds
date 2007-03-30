@@ -33,11 +33,11 @@ namespace MDS.GUI
             this._mData = new System.Windows.Forms.ToolStripMenuItem();
             this._mReadData = new System.Windows.Forms.ToolStripMenuItem();
             this._mProcessData = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip.SuspendLayout();
-            this.statusStrip.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -70,24 +70,24 @@ namespace MDS.GUI
             // _mReadData
             // 
             this._mReadData.Name = "_mReadData";
-            this._mReadData.Size = new System.Drawing.Size(180, 22);
+            this._mReadData.Size = new System.Drawing.Size(191, 22);
             this._mReadData.Text = "Wczytaj dane";
             // 
             // _mProcessData
             // 
             this._mProcessData.Name = "_mProcessData";
-            this._mProcessData.Size = new System.Drawing.Size(180, 22);
+            this._mProcessData.Size = new System.Drawing.Size(191, 22);
             this._mProcessData.Text = "Przetwarzanie danych";
             // 
-            // statusStrip
+            // statusStrip1
             // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip.Location = new System.Drawing.Point(0, 411);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(642, 22);
-            this.statusStrip.TabIndex = 2;
-            this.statusStrip.Text = "Bezczynny";
+            this.statusStrip1.Location = new System.Drawing.Point(0, 411);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(642, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "Bezczynny";
             // 
             // toolStripStatusLabel1
             // 
@@ -110,7 +110,7 @@ namespace MDS.GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(642, 433);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.statusStrip);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
@@ -122,8 +122,8 @@ namespace MDS.GUI
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,7 +132,7 @@ namespace MDS.GUI
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem _mNewNetwork;
         private System.Windows.Forms.ToolStripMenuItem _mData;

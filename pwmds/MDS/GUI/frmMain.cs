@@ -12,23 +12,17 @@ namespace MDS.GUI
 {
     public partial class frmMain : Form
     {
-        private Object engine; // g³owna klasa programu z metoda main, ktora wywoluje formularz glowny GUI
-        private String[,] loadedData; // tablica wczytanych danych z pliku bazy danych
-        private Thread loader; // watek wczytujacy dane bedace skalowane do tablicy
-        private String filePath = null;
+        private MainANN mainANN; // glowna klasa "Engine" aplikacji.
 
-        public frmMain(Object engine)
+        public frmMain()
         {
             InitializeComponent();
-            this.engine = engine;
-            this.loadedData = new String[8000,620];
+            mainANN = new MainANN(this);
         }
       
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // TESTY
-            //Tests.Engine eng = engine as Tests.Engine;
-            //eng.Test();
+            
         }
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -40,6 +34,7 @@ namespace MDS.GUI
         private void wczytajDaneToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            String filePath = null;
 
             try
             {
@@ -49,56 +44,17 @@ namespace MDS.GUI
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                     filePath = openFileDialog.FileName;
 
-            // wywolanie fun. wczytujacej dane z pliku (funkcja wczytujaca plik do tablicy, uruchamiana jest w nowym watku)
-                loader = new Thread(new ThreadStart(this.readToArray));
-                loader.Priority = ThreadPriority.Highest;
-                loader.Start();
+            // wywolanie fun. wczytujacej dane z pliku 
+                this.statusStrip1.Text = "Wczytuje dane...";
+                Cursor.Current = Cursors.WaitCursor;
+                this.mainANN.loadInputData(filePath);
+                this.statusStrip1.Text = "Bezczynny";
+                Cursor.Current = Cursors.Default;
             }
             catch (Exception ex)
             {
                 this.errorHandler(ex);
             }
-        }
-
-        // wczytuje dane z pliku
-        private void readToArray()
-        {
-            StreamReader reader;
-            String line;
-            String[] splitedLine;
-            int i = 0;
-            int j = 0;
-
-            try
-            {
-                // blokuje dostep do tablicy na czas dzialania watku
-                lock (this.loadedData)  
-                {
-                    if (filePath != null)
-                    {
-                        reader = File.OpenText(filePath);
-                        line = reader.ReadLine();
-                        // wczytuje kolejno wiersze pliku i rozbija je do tablicy ktora zapisywana jest do tablicy
-                        while (line != null)
-                        {
-                            splitedLine = line.Split(',');
-                               for (j = 0; j < splitedLine.Length; j++)
-                               {
-                                loadedData[i, j] = splitedLine[j];    // uwaga ostatnia kolumna loadedData zawiera bia³y znak(lub null), nale¿y j¹ ignorowaæ
-                               }
-                            line = reader.ReadLine();
-                            i++;
-                        }              
-                        MessageBox.Show(null, "Wczytano " + i + " rekordów. ", "Dane wczytano", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        reader.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.errorHandler(ex);                
-            }
-
         }
         
         // funkcja obslugi bledu
