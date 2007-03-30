@@ -45,6 +45,7 @@
     <Compile Include="GUI\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainANN.cs" />
     <Compile Include="MDScaling\MainMDScaling.cs" />
     <Compile Include="Network\Backpropagation.cs" />
     <Compile Include="Network\Function.cs" />
@@ -77,7 +78,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Tests\Engine.cs" />
+    <Compile Include="Tests\MainANN.cs" />
     <Compile Include="Tests\main.cs" />
   </ItemGroup>
   <ItemGroup>
