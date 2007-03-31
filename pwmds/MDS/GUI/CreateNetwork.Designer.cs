@@ -35,7 +35,10 @@ namespace MDS.GUI
             this._buttonAddLayer = new System.Windows.Forms.Button();
             this._label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this._layerNrLabel = new System.Windows.Forms.Label();
+            this._neuronNrLabel = new System.Windows.Forms.Label();
             this._groupBox1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // _groupBox1
@@ -102,11 +105,31 @@ namespace MDS.GUI
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(17, 151);
+            this.groupBox1.Controls.Add(this._neuronNrLabel);
+            this.groupBox1.Controls.Add(this._layerNrLabel);
+            this.groupBox1.Location = new System.Drawing.Point(13, 138);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(576, 166);
+            this.groupBox1.Size = new System.Drawing.Size(569, 47);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
+            // 
+            // _layerNrLabel
+            // 
+            this._layerNrLabel.AutoSize = true;
+            this._layerNrLabel.Location = new System.Drawing.Point(15, 20);
+            this._layerNrLabel.Name = "_layerNrLabel";
+            this._layerNrLabel.Size = new System.Drawing.Size(79, 13);
+            this._layerNrLabel.TabIndex = 0;
+            this._layerNrLabel.Text = "Numer warstwy";
+            // 
+            // _neuronNrLabel
+            // 
+            this._neuronNrLabel.AutoSize = true;
+            this._neuronNrLabel.Location = new System.Drawing.Point(135, 20);
+            this._neuronNrLabel.Name = "_neuronNrLabel";
+            this._neuronNrLabel.Size = new System.Drawing.Size(88, 13);
+            this._neuronNrLabel.TabIndex = 1;
+            this._neuronNrLabel.Text = "Liczba neuronów";
             // 
             // CreateNetwork
             // 
@@ -122,6 +145,8 @@ namespace MDS.GUI
             this.Text = "CreateNetwork";
             this._groupBox1.ResumeLayout(false);
             this._groupBox1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -136,5 +161,7 @@ namespace MDS.GUI
         private System.Windows.Forms.Button _buttonAddLayer;
         private System.Windows.Forms.Label _label1;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label _neuronNrLabel;
+        private System.Windows.Forms.Label _layerNrLabel;
     }
 }

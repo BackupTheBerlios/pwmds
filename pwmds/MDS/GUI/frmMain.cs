@@ -72,17 +72,17 @@ namespace MDS.GUI
         
         private void _mNewNetwork_Click(object sender, EventArgs e)
         {
-            ////CreateNetwork createDialog = new CreateNetwork();
-            ////createDialog.ShowDialog();
-            //if (createDialog.DialogResult == DialogResult.OK)
-            //{
-            //    Data.NetworkParam param = new Data.NetworkParam();
+            CreateNetwork createDialog = new CreateNetwork();
+            createDialog.ShowDialog();
+            if (createDialog.DialogResult == DialogResult.OK)
+            {
+                Data.NetworkParam param = new Data.NetworkParam();
             //    //get netowrikParam
             //    //createNetowork
             //    //add Network to list
                 
-            //}
-            //createDialog.Dispose();
+            }
+            createDialog.Dispose();
         }
 
     }
