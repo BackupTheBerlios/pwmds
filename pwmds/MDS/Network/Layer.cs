@@ -21,7 +21,6 @@ namespace MDS.Network
                 Neuron n = new Neuron(i,this);
                 this.neuronList.Add(n);
             }
-            size = neurons;
         }
         public int Number
         {
