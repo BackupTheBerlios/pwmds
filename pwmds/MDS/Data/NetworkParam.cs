@@ -13,6 +13,9 @@ namespace MDS.Data
         private int type;
         //funkcje dla warstw
         private List<Network.Function> functions;
+        
+        /**The number of layer where is the solution */
+        private int outLayerNr;
 
 
         public List<Network.Function> Functions
