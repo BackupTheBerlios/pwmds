@@ -9,6 +9,7 @@ namespace MDS.Network
         private int layerNumber;
         private List<Neuron> neuronList;
         private Function fun;
+    
 
         public Layer(int layerNum, int neurons)
         {
@@ -20,6 +21,7 @@ namespace MDS.Network
                 Neuron n = new Neuron(i,this);
                 this.neuronList.Add(n);
             }
+            size = neurons;
         }
         public int Number
         {
@@ -85,6 +87,19 @@ namespace MDS.Network
         public int Size
         {
             get { return this.neuronList.Count; }
+            set { 
+                if( value > Size )
+                {
+                        for( int i = Size; i < value; ++i )
+                            this.neuronList.Add( new Neuron( i, this ));
+                }
+                else if( value < Size )
+                {
+                    for (int i = Size - 1; i >= value; --i)
+                        this.neuronList.Remove(this.neuronList[i]);
+                }
+
+           }
         }
     }
 
