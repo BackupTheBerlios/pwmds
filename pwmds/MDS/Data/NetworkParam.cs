@@ -8,20 +8,20 @@ namespace MDS.Data
     {
         public static int CLASSIFIER = 3531, MDS = 3532;
         private int layerNumber;
-        private int[] neurons;
+        private List<int> neurons;
         /**if the network is a classifier or mds*/
         private int type;
         //funkcje dla warstw
-        private Network.Function[] functions;
+        private List<Network.Function> functions;
 
 
-        public Network.Function[] Functions
+        public List<Network.Function> Functions
         {
             get { return functions; }
             set { functions = value; }
         }
 
-        public int[] Neurons
+        public List<int> Neurons
         {
             get { return neurons; }
             set { neurons = value; }
