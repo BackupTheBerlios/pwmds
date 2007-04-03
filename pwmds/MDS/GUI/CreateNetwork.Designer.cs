@@ -36,7 +36,7 @@ namespace MDS.GUI
             this._label1 = new System.Windows.Forms.Label();
             this._tableLayers = new System.Windows.Forms.TableLayoutPanel();
             this._cancelButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this._labelOutLayer = new System.Windows.Forms.Label();
             this._tboxSolutionLayerNr = new System.Windows.Forms.TextBox();
             this._groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -87,7 +87,7 @@ namespace MDS.GUI
             // 
             // _buttonAddLayer
             // 
-            this._buttonAddLayer.Location = new System.Drawing.Point(306, 208);
+            this._buttonAddLayer.Location = new System.Drawing.Point(306, 233);
             this._buttonAddLayer.Name = "_buttonAddLayer";
             this._buttonAddLayer.Size = new System.Drawing.Size(109, 23);
             this._buttonAddLayer.TabIndex = 3;
@@ -107,6 +107,9 @@ namespace MDS.GUI
             // 
             // _tableLayers
             // 
+            this._tableLayers.AutoScroll = true;
+            this._tableLayers.AutoScrollMargin = new System.Drawing.Size(5, 5);
+            this._tableLayers.AutoScrollMinSize = new System.Drawing.Size(10, 10);
             this._tableLayers.BackColor = System.Drawing.Color.White;
             this._tableLayers.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetPartial;
             this._tableLayers.ColumnCount = 3;
@@ -117,8 +120,8 @@ namespace MDS.GUI
             this._tableLayers.Location = new System.Drawing.Point(12, 108);
             this._tableLayers.Name = "_tableLayers";
             this._tableLayers.RowCount = 1;
-            this._tableLayers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 57F));
-            this._tableLayers.Size = new System.Drawing.Size(403, 60);
+            this._tableLayers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
+            this._tableLayers.Size = new System.Drawing.Size(403, 68);
             this._tableLayers.TabIndex = 5;
             // 
             // _cancelButton
@@ -131,22 +134,25 @@ namespace MDS.GUI
             this._cancelButton.Text = "Anuluj";
             this._cancelButton.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // _labelOutLayer
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(12, 279);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(171, 16);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Numer warstwy rozwi¹zania";
+            this._labelOutLayer.AutoSize = true;
+            this._labelOutLayer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._labelOutLayer.Location = new System.Drawing.Point(12, 279);
+            this._labelOutLayer.Name = "_labelOutLayer";
+            this._labelOutLayer.Size = new System.Drawing.Size(171, 16);
+            this._labelOutLayer.TabIndex = 7;
+            this._labelOutLayer.Text = "Numer warstwy rozwi¹zania";
             // 
             // _tboxSolutionLayerNr
             // 
+            this._tboxSolutionLayerNr.Enabled = false;
             this._tboxSolutionLayerNr.Location = new System.Drawing.Point(192, 279);
             this._tboxSolutionLayerNr.Name = "_tboxSolutionLayerNr";
-            this._tboxSolutionLayerNr.Size = new System.Drawing.Size(79, 20);
+            this._tboxSolutionLayerNr.Size = new System.Drawing.Size(42, 20);
             this._tboxSolutionLayerNr.TabIndex = 8;
+            this._tboxSolutionLayerNr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this._tboxSolutionLayerNr.TextChanged += new System.EventHandler(this._tboxSolutionLayerNr_TextChanged);
             // 
             // CreateNetwork
             // 
@@ -154,7 +160,7 @@ namespace MDS.GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(427, 380);
             this.Controls.Add(this._tboxSolutionLayerNr);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this._labelOutLayer);
             this.Controls.Add(this._cancelButton);
             this.Controls.Add(this._tableLayers);
             this.Controls.Add(this._label1);
@@ -180,7 +186,7 @@ namespace MDS.GUI
         private System.Windows.Forms.Label _label1;
         private System.Windows.Forms.TableLayoutPanel _tableLayers;
         private System.Windows.Forms.Button _cancelButton;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label _labelOutLayer;
         private System.Windows.Forms.TextBox _tboxSolutionLayerNr;
     }
 }

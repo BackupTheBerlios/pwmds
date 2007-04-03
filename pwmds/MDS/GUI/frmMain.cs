@@ -77,9 +77,15 @@ namespace MDS.GUI
             if (createDialog.DialogResult == DialogResult.OK)
             {
                 Data.NetworkParam param = new Data.NetworkParam();
+                param.Type = createDialog.NetworkType;
+                param.Neurons = createDialog.NeuronsInLayer;
+                param.LayerNumber = createDialog.LayersNumber;
+                param.Functions = createDialog.Functions;
+
             //    //get netowrikParam
             //    //createNetowork
             //    //add Network to list
+                mainANN.AddNetwork(param);
                 
             }
             createDialog.Dispose();
