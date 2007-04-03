@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MDS.Network
 {
-    class Function
+    public class Function
     {
         public static String[] FUNCTIONS = {"Funkcja identycznoœciowa",
                             "Funkcja tangensowa",

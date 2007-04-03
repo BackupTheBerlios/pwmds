@@ -67,6 +67,8 @@ namespace MDS
         }// end loadInput Data
 
 
+        /** Adds new network to network list.*/
+
         public void AddNetwork( Data.NetworkParam param )
         {
             Perceptron newNetwork = new Perceptron(param);

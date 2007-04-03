@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MDS.Network
 {
-    class Neuron
+    public class Neuron
     {
         private int neuronNumber;
         private Hashtable neuronInput;

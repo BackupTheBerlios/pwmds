@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MDS.Network
 {
-    class Layer
+    public class Layer
     {
         private int layerNumber;
         private List<Neuron> neuronList;
