@@ -25,6 +25,19 @@ namespace MDS.Network
         {
             this.id = ident;
         }
+
+        public void setId(String name)
+        {
+            if (name.CompareTo(FUNCTIONS[0]) == 0)
+                this.id = 0;
+            else if (name.CompareTo(FUNCTIONS[1]) == 0)
+                this.id = 1;
+            else if (name.CompareTo(FUNCTIONS[2]) == 0)
+                this.id = 2;
+            else if (name.CompareTo(FUNCTIONS[3]) == 0)
+                this.id = 3;
+        }
+
         public double calculate (double x)
         {
             switch (this.id)
