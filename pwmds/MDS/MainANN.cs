@@ -6,6 +6,7 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using MDS.Network;
 
 
 namespace MDS
@@ -14,11 +15,13 @@ namespace MDS
     {
         private Hashtable inputData; // Hastablica zawierajaca Listy wczytanych danych, jako key otrzymuje nazwe pliku z ktorego dane byly wczytywane
         private GUI.frmMain frmMain;
+        private List<Network.Perceptron> netList;
 
         public MainANN(GUI.frmMain frmMain)
         {
             this.frmMain = frmMain;
             inputData = new Hashtable();
+            netList = new List<MDS.Network.Perceptron>();
         }
 
         // wczytuje dane do skalowania z pliku do tablicy potem do listy inputData
@@ -62,6 +65,13 @@ namespace MDS
             }
             return i;
         }// end loadInput Data
+
+
+        public void AddNetwork( Data.NetworkParam param )
+        {
+            Perceptron newNetwork = new Perceptron(param);
+            netList.Add( newNetwork);
+        }
 
         public Hashtable InputData
         {

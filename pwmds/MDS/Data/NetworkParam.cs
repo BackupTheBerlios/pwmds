@@ -32,6 +32,7 @@ namespace MDS.Data
         public int LayerNumber
         {
             get { return layerNumber; }
+            set { layerNumber = value; }
         }
         public int Type
         {
