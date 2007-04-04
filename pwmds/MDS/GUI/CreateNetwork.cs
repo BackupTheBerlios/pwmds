@@ -202,8 +202,8 @@ namespace MDS.GUI
 */
         private void _buttonCreateNetwork_Click(object sender, EventArgs e)
         {
-            //Data.NetworkParam param = new Data.NetworkParam();
-            //Network.Perceptron newNet = new Network.Perceptron(param);
+            //sprawdü czy wszystkie pola sπ wype≥nione
+
         }
 
         private void _tboxSolutionLayerNr_TextChanged(object sender, EventArgs e)
@@ -288,6 +288,22 @@ namespace MDS.GUI
         public int LayersNumber
         {
             get { return lastLayerNr; }
+        }
+
+        private void _radioMDS_CheckedChanged(object sender, EventArgs e)
+        {
+            //this.type = Data.NetworkParam.
+            RadioButton radio = (RadioButton)sender;
+            if (radio.Checked == true)
+            {
+                this.type = Data.NetworkParam.MDS;
+                this._tboxSolutionLayerNr.Enabled = true;
+            }
+            else
+            {
+                this.type = Data.NetworkParam.CLASSIFIER;
+                this._tboxSolutionLayerNr.Enabled = false;
+            }
         }
     }
 }
