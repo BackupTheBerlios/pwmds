@@ -10,9 +10,14 @@ namespace MDS.GUI
 {
     public partial class CreateNetwork : Form
     {
-        private List<Network.Layer> layers;
+        private int ROW_HEIGHT = 40;
+        private int NUMBER_COL = 0,
+                    NEURON_COL = 1,
+                    FUNCTION_COL = 2,
+                    DELETE_COL = 3;
+
+
         private int lastLayerNr;
-        private int rowHeight = 40;
         private int outLayerNr;
 
         private List<Network.Function> functions;
@@ -24,10 +29,7 @@ namespace MDS.GUI
             get { return functions; }
         }
         
-        private int NUMBER_COL = 0,
-                    NEURON_COL = 1,
-                    FUNCTION_COL = 2,
-                    DELETE_COL = 3;
+        
 
         public CreateNetwork()
         {
@@ -115,23 +117,23 @@ namespace MDS.GUI
             int width, height;
             width = this._tableLayers.Size.Width;
             height = this._tableLayers.Size.Height;
-            height += rowHeight;
+            height += ROW_HEIGHT;
             
             this._tableLayers.Size = new System.Drawing.Size(width, height);
 
             //przesuñ wszystkie kontrolki poni¿ej o rowHeight
             this._buttonAddLayer.Location = new Point(this._buttonAddLayer.Location.X,
-                                                this._buttonAddLayer.Location.Y + rowHeight);
+                                                this._buttonAddLayer.Location.Y + ROW_HEIGHT);
             this._buttonCreateNetwork.Location = new Point(this._buttonCreateNetwork.Location.X,
-                                                this._buttonCreateNetwork.Location.Y + rowHeight);
+                                                this._buttonCreateNetwork.Location.Y + ROW_HEIGHT);
             this._labelOutLayer.Location = new Point(this._labelOutLayer.Location.X,
-                                                this._labelOutLayer.Location.Y + rowHeight);
+                                                this._labelOutLayer.Location.Y + ROW_HEIGHT);
             this._cancelButton.Location = new Point(this._cancelButton.Location.X,
-                                                this._cancelButton.Location.Y + rowHeight);
+                                                this._cancelButton.Location.Y + ROW_HEIGHT);
             this._tboxSolutionLayerNr.Location = new Point(this._tboxSolutionLayerNr.Location.X,
-                                                this._tboxSolutionLayerNr.Location.Y + rowHeight);
+                                                this._tboxSolutionLayerNr.Location.Y + ROW_HEIGHT);
             this.Size = new Size(this.Size.Width,
-                                    this.Size.Height + rowHeight);
+                                    this.Size.Height + ROW_HEIGHT);
             //dodaj now¹ warstwê
             addNewLayer();
 
@@ -181,25 +183,7 @@ namespace MDS.GUI
             //newLayer.SetFunction(funName);
             //layers.Add(newLayer);
         }
-/*
-        protected class DataLayer
-        {
-            protected int layerNr;
-            protected int neurons;
-            protected String functionName;
 
-            public DataLayer()
-            {
-            }
-
-            public DataLayer( int layerNr )
-            {
-                this.layerNr = layerNr;
-                this.neurons = 1;
-                this.functionName = "";
-            }
-        }
-*/
         private void _buttonCreateNetwork_Click(object sender, EventArgs e)
         {
             //sprawdŸ czy wszystkie pola s¹ wype³nione

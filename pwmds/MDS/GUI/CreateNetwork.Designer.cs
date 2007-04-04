@@ -73,6 +73,7 @@ namespace MDS.GUI
             this._radioMDS.TabStop = true;
             this._radioMDS.Text = "Sieæ skaluj¹ca";
             this._radioMDS.UseVisualStyleBackColor = true;
+            this._radioMDS.CheckedChanged += new System.EventHandler(this._radioMDS_CheckedChanged);
             // 
             // _buttonCreateNetwork
             // 
@@ -120,7 +121,7 @@ namespace MDS.GUI
             this._tableLayers.Location = new System.Drawing.Point(12, 108);
             this._tableLayers.Name = "_tableLayers";
             this._tableLayers.RowCount = 1;
-            this._tableLayers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
+            this._tableLayers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 68F));
             this._tableLayers.Size = new System.Drawing.Size(403, 68);
             this._tableLayers.TabIndex = 5;
             // 
