@@ -85,7 +85,14 @@ namespace MDS.GUI
             //    //get netowrikParam
             //    //createNetowork
             //    //add Network to list
-                mainANN.AddNetwork(param);
+                try
+                {
+                    mainANN.AddNetwork(param);
+                }
+                catch (ArgumentNullException ex)
+                {
+                    MessageBox.Show("Creating new network failed.");
+                }
                 
             }
             createDialog.Dispose();

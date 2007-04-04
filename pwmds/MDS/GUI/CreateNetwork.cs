@@ -187,6 +187,9 @@ namespace MDS.GUI
         private void _buttonCreateNetwork_Click(object sender, EventArgs e)
         {
             //sprawdü czy wszystkie pola sπ wype≥nione
+            if (neuronsInLayer.Count == 0)
+                MessageBox.Show("No layers");
+
 
         }
 

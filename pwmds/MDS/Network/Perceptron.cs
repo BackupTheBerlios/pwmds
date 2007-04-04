@@ -8,6 +8,7 @@ namespace MDS.Network
     {
         private int inputSize, outputSize;
         private List<Layer> layerList;
+        private int outLayerNr;
 
         public Perceptron(int[] neurons)  //liczba warstw i neuronow w kazdej warstwie
         {
@@ -45,6 +46,22 @@ namespace MDS.Network
         public Perceptron(Data.NetworkParam param)
         {
 
+            if (param == null)
+                throw new ArgumentNullException();
+
+            layerList = new List<Layer>(param.LayerNumber);
+            if(param.Neurons == null || param.Neurons.Count == 0)
+                throw new ArgumentNullException();
+            int layers = param.Neurons.Count;
+            this.inputSize = param.Neurons[0];
+            this.outputSize = param.Neurons[layers - 1];
+            
+            for (int i = 0; i < layers; i++)
+            {
+                Layer l = new Layer(i, param.Neurons[i]);
+                l.SetFunction(param.Functions[i]);
+                layerList.Add(l);
+            }
 
         }
 

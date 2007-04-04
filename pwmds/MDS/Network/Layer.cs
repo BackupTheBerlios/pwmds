@@ -37,6 +37,11 @@ namespace MDS.Network
         {
             fun.setId(name);
         }
+        
+        public void SetFunction(Function fun)
+        {
+            this.fun = fun;
+        }
 
         public Function getFunction()
         {
