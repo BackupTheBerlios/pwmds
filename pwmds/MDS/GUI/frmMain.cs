@@ -17,7 +17,7 @@ namespace MDS.GUI
         public frmMain()
         {
             InitializeComponent();
-            mainANN = new MainANN(this);
+            mainANN = new MainANN();
         }
       
         private void frmMain_Load(object sender, EventArgs e)
@@ -87,7 +87,10 @@ namespace MDS.GUI
             //    //add Network to list
                 try
                 {
-                    mainANN.AddNetwork(param);
+                    int nr = mainANN.AddNetwork(param);
+                    NetPage page = new NetPage( nr, mainANN.DataNames, mainANN.GetNetwork(nr) );
+                    this._tabControl.TabPages.Add(page);
+
                 }
                 catch (ArgumentNullException ex)
                 {

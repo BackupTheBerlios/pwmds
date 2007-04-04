@@ -67,16 +67,22 @@ namespace MDS
 
         /** Adds new network to network list.*/
 
-        public void AddNetwork( Data.NetworkParam param )
+        public int AddNetwork( Data.NetworkParam param )
         {
             Perceptron newNetwork = new Perceptron(param);
             netList.Add( newNetwork);
+            return netList.Count - 1;
         }
 
         public Hashtable InputData
         {
             get { return inputData; }
             set { inputData = value; }
+        }
+
+        public Perceptron GetNetwork(int netNr)
+        {
+            return this.netList[netNr];
         }
 
 

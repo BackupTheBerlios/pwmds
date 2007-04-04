@@ -35,7 +35,7 @@ namespace MDS.GUI
             this._mProcessData = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this._tabControl = new System.Windows.Forms.TabControl();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -70,14 +70,14 @@ namespace MDS.GUI
             // _mReadData
             // 
             this._mReadData.Name = "_mReadData";
-            this._mReadData.Size = new System.Drawing.Size(191, 22);
+            this._mReadData.Size = new System.Drawing.Size(180, 22);
             this._mReadData.Text = "Wczytaj dane";
             this._mReadData.Click += new System.EventHandler(this.wczytajDaneToolStripMenuItem_Click);
             // 
             // _mProcessData
             // 
             this._mProcessData.Name = "_mProcessData";
-            this._mProcessData.Size = new System.Drawing.Size(191, 22);
+            this._mProcessData.Size = new System.Drawing.Size(180, 22);
             this._mProcessData.Text = "Przetwarzanie danych";
             // 
             // statusStrip1
@@ -96,21 +96,21 @@ namespace MDS.GUI
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(58, 17);
             this.toolStripStatusLabel1.Text = "Bezczynny";
             // 
-            // tabControl1
+            // _tabControl
             // 
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 24);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(642, 387);
-            this.tabControl1.TabIndex = 4;
+            this._tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._tabControl.Location = new System.Drawing.Point(0, 24);
+            this._tabControl.Name = "_tabControl";
+            this._tabControl.SelectedIndex = 0;
+            this._tabControl.Size = new System.Drawing.Size(642, 387);
+            this._tabControl.TabIndex = 4;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(642, 433);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this._tabControl);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip);
             this.IsMdiContainer = true;
@@ -139,6 +139,6 @@ namespace MDS.GUI
         private System.Windows.Forms.ToolStripMenuItem _mData;
         private System.Windows.Forms.ToolStripMenuItem _mReadData;
         private System.Windows.Forms.ToolStripMenuItem _mProcessData;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl _tabControl;
     }
 }
