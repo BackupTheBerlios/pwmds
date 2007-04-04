@@ -16,9 +16,8 @@ namespace MDS
         private Hashtable inputData; // Hastablica zawierajaca Listy wczytanych danych, jako key otrzymuje nazwe pliku z ktorego dane byly wczytywane
         private List<Network.Perceptron> netList;
 
-        public MainANN(GUI.frmMain frmMain)
+        public MainANN()
         {
-            this.frmMain = frmMain;
             inputData = new Hashtable();
             netList = new List<MDS.Network.Perceptron>();
         }
@@ -78,6 +77,20 @@ namespace MDS
         {
             get { return inputData; }
             set { inputData = value; }
+        }
+
+
+        /** Gets names of available inputData.*/
+        public List<String> DataNames
+        {
+            get 
+            {
+                List<String> names = new List<string>(inputData.Count);
+                IEnumerator en = inputData.Keys.GetEnumerator();
+                while (en.MoveNext())
+                    names.Add((String)en.Current);
+                return names;
+            }
         }
     }
 }
