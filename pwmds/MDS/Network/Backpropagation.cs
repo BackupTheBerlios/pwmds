@@ -10,9 +10,10 @@ namespace MDS.Network
         private Data.LearningParam param;
         private int layers;
         //1 - warstwa neuronu koñcowego, 2 - pocz¹tkowy neuron, 3 - koñcowy neuron
-        private double[,,] deltaT;
+        private double[, ,] deltaT;
+        private double[, ,] w, w1;   //w(t) i w(t-1)
 
-        public Backpropagation( Perceptron perceptron, Data.LearningParam param)
+        public Backpropagation(Perceptron perceptron, Data.LearningParam param)
         {
             this.perceptron = perceptron;
             this.param = param;
@@ -20,9 +21,238 @@ namespace MDS.Network
 
             int n = perceptron.MaxLayerSize;
             deltaT = new double[layers, n, n];
+            w = new double[layers, n, n];
+            w1 = new double[layers, n, n];
+        }
+        public void Learn()
+        {
+            int i = 0, j = 1;
+            //for (int i = 0; i < 5; ++i)            
+            {
+                 // for (int j = 0; j < param.Input.Count; ++j)
+                {
+                    learnOneSample(j);
+                    Console.Out.Write("po uczeniu nr: " + i + " :: wzorzec nr: " + j);
+                    PrintResultsOfLearning(j);
+                }
+            }
+
+           /* Console.Out.WriteLine("PO NAUCE WSZYSTKICH WZORCOW:   ");
+            for (int k = 0; k < param.Input.Count; ++k)
+            {
+                PrintResultsOfLearning(k);
+            }
+            * */
+        }
+        private void learnOneSample(int vectNr)
+        {
+            int iter = 0;
+            double globalError = param.Epsilon;
+            //while(globalError >= param.Epsilon ) //b³¹d
+            while (iter < 1000)
+            {
+                if (globalError < param.Epsilon) break;
+
+                perceptron.calculateOutput(param.Input[vectNr]);
+                this.calculateLastLayerErrors(vectNr);//warstwa ostatnia               
+                for (int k = perceptron.Size - 2; k > 0; k--) //pozostale warstwy //!!!!!!!!>=0
+                    this.calculateHiddenLayerErorrs(vectNr, k);
+                
+                for (int k = perceptron.Size - 1; k > 0; k--)
+                    this.calculateDeltaT(k);
+
+                for (int k = 1; k < perceptron.Size; k++) //warstwy
+                    for (int j = 0; j < perceptron.getLayer(k).Size; j++)
+                        for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
+                        {
+                            this.modifyT(k, j, i);
+                        }
+
+                globalError = calculateGlobalError(vectNr);
+                
+                this.updateTableW();
+
+                iter++;
+                if (iter % 100 == 0)
+                {
+                    Console.Out.Write("iter::::: " + iter + " GLOBAL ERROR: " + globalError);
+                    PrintResultsOfLearning(vectNr);
+
+                }
+                //Console.Out.WriteLine(iter);
+            }
 
         }
-        public void LearnDemo()
+
+        private void updateTableW()
+        {
+            //w: 1 - warstwa neuronu koñcowego, 2 - pocz¹tkowy neuron, 3 - koñcowy neuron
+            //Console.Out.Write("update w: ");
+            for (int k = 1; k < this.perceptron.Size; k++)
+            {
+                Layer layer = this.perceptron.getLayer(k);
+                Layer prevLayer = this.perceptron.getLayer(k - 1);
+                for (int i = 0; i < layer.Size; i++)
+                {
+                    Neuron neuron = layer.getNeuronIndex(i);
+                    for (int j = 0; j < prevLayer.Size; j++)
+                    {
+                        Neuron neuron1 = prevLayer.getNeuronIndex(j);
+                        this.w1[k, j, i] = this.w[k, j, i];
+                        this.w[k, j, i] = neuron.GetT(neuron1);
+                        //Console.Out.Write(this.w1[k, j, i] + " "); 
+                    }
+                }
+            }
+            //Console.Out.WriteLine(); Console.Out.WriteLine(); Console.Out.WriteLine();
+
+        }
+        //layerNr - nr warstwy neuronu koncowego, neuronNrJ - neuron koncowy, neuronNrI- neuron poczatkowy
+        private void modifyT(int layerNr, int neuronNrJ, int neuronNrI)
+        {
+            Neuron prevNeuron = perceptron.getLayer(layerNr - 1).getNeuronIndex(neuronNrI);
+            double actT = (double)perceptron.getLayer(layerNr).getNeuronIndex(neuronNrJ).getInputHashtable()[prevNeuron];
+            double newT;
+
+            newT = actT -/*param.Tau **/ deltaT[layerNr, neuronNrI, neuronNrJ];
+
+            perceptron.getLayer(layerNr).getNeuronIndex(neuronNrJ).getInputHashtable()[prevNeuron] = newT;
+
+        }
+        /*private void clearDeltaT()
+        {
+            for (int k = 1; k < this.layers; k++)
+            {
+                for (int i = 0; i < this.perceptron.MaxLayerSize; i++)
+                {                   
+                    for (int j = 0; j < this.perceptron.MaxLayerSize; j++)
+                        this.deltaT[k,i,j] = 0;
+                }
+            }
+            return;
+        }
+        private void  calculateLastLayer()
+        {
+            return;
+        }*/
+        private void calculateDeltaT(int layerNr)
+        {
+            if (layerNr == 0)
+                return;
+
+            Layer layer = perceptron.getLayer(layerNr);
+            Layer layerPrev = perceptron.getLayer(layerNr - 1);
+            Neuron neuroni, neuronj;
+
+            for (int j = 0; j < layer.Size; ++j)
+            {
+                neuronj = layer.getNeuronIndex(j);
+                for (int i = 0; i < layerPrev.Size; i++)
+                {
+                    neuroni = layerPrev.getNeuronIndex(i);
+                    this.deltaT[layerNr, i, j] = 2 * param.Teta * neuronj.D * neuroni.Output // out[ut*w??  xj!!!!!!
+                        + param.Alpha * (w[layerNr, i, j] - w1[layerNr, i, j]);
+
+                    //fEi = layerPrev.getFunction().calculate(neuroni.InputSum);
+                    //this.deltaT[layerNr, i, j] = param.Alpha * this.deltaT[layerNr, i, j]
+                    //+ (1 - param.Alpha) * dj * fEi;
+                }
+            }
+
+        }
+        private void calculateLastLayerErrors(int vectNr)
+        {
+            Layer layer = perceptron.getLayer(layers - 1);
+            Neuron neuron;
+            double[] vect = param.Output[vectNr];
+            for (int i = 0; i < layer.Size; ++i)
+            {
+                neuron = layer.getNeuronIndex(i);
+                double d, dU;
+
+                dU = vect[i] - neuron.Output;
+                d = dU * layer.getFunction().derivative(neuron.InputSum);
+                neuron.D = d;
+            }
+
+        }
+        private void calculateHiddenLayerErorrs(int vectNr, int layerNr)
+        {
+            Layer layer = perceptron.getLayer(layerNr),
+                nextlayer = perceptron.getLayer(layerNr + 1);
+            Neuron neuron, neuron1;
+            double[] vect = param.Output[vectNr];
+            for (int i = 0; i < layer.Size; ++i)
+            {
+                neuron = layer.getNeuronIndex(i);
+                double d, dU, T;
+
+                dU = 0;
+                for (int j = 0; j < nextlayer.Size; ++j)
+                {
+                    neuron1 = nextlayer.getNeuronIndex(j);
+                    T = (double)neuron1.getInputHashtable()[neuron];
+                    dU += neuron1.D * T;
+                }
+                d = dU * layer.getFunction().derivative(neuron.InputSum);
+                neuron.D = d;
+            }
+
+        }
+        private double calculateGlobalError(int vectNr)
+        {
+            Layer lastLayer = perceptron.getLayer(layers - 1);
+            double[] output = new double[lastLayer.Size];
+            for (int i = 0; i < lastLayer.Size; ++i)
+                output[i] = lastLayer.getNeuronIndex(i).Output;
+            //Console.Out.WriteLine("GlobalError: " + Function.NormSqrt(param.Input[vectNr], output));
+            return Function.NormSqrt(param.Output[vectNr], output);
+        }
+        public Data.LearningParam Param
+        {
+            get { return param; }
+            set { param = value; }
+        }
+        public void PrintResultsOfLearning(int i)
+        {
+
+            Console.Out.WriteLine();
+            Console.Out.Write("WEJSCIE:   ");
+
+            for (int j = 0; j < param.Input[i].Length; ++j)
+            {
+                Console.Out.Write(param.Input[i][j] + " ");
+            }
+            Console.Out.WriteLine();
+
+            Console.Out.Write("WZORZEC WYJŒCIA:   ");
+            for (int j = 0; j < param.Output[i].Length; ++j)
+            {
+                Console.Out.Write(param.Output[i][j] + " ");
+            }
+            Console.Out.WriteLine();
+
+            Console.Out.Write("PO NAUCE:  ");
+            perceptron.calculateOutput(param.Input[i]);
+            perceptron.PrintOutput();
+            Console.Out.WriteLine();
+        }
+        public void PrintLocalError()
+        {
+            Console.Out.WriteLine("");
+            Console.Out.WriteLine("PRINT LOCAL ERROR:");
+            for (int k = 1; k < perceptron.Size; k++) //warstwy
+                for (int j = 0; j < perceptron.getLayer(k).Size; j++)
+                {
+                    for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
+                        Console.Out.Write("\tdT[:" + k + ",od" + i + ",do" + j + "]: " + deltaT[k, i, j]);
+                    Console.Out.WriteLine("");
+                    Console.Out.WriteLine("Layer: " + k + " neuron: " + j + " d: "
+                        + perceptron.getLayer(k).getNeuronIndex(j).D);
+
+                }
+        }
+        /*public void LearnDemo()
         {
             //learnOneSample(0);
             int vectNr = 0;
@@ -31,9 +261,7 @@ namespace MDS.Network
             this.calculateLastLayerErrors(vectNr);
             //pozostale warstwy
             for (int k = perceptron.Size - 2; k >= 0; k--)
-                this.calculateHiddenLayerErorrs(vectNr, k);
-
-           
+                this.calculateHiddenLayerErorrs(vectNr, k);          
 
             for (int k = perceptron.Size - 1; k >= 0; k--)
                 this.calculateDeltaT(k);
@@ -47,182 +275,7 @@ namespace MDS.Network
             PrintLocalError();
             Console.Out.Write("LEARN DEMO:");
             PrintResultsOfLearning(0);   
-            
-        }
-        public void Learn()
-        {
-            for (int i = 0; i < 5; ++i)            
-            {
-                for (int j = 0; j < param.Input.Count; ++j)
-                {
-                    learnOneSample(j);
-                    Console.Out.Write("po uczeniu nr: "+i+" :: wzorzec nr: "+j);
-                    PrintResultsOfLearning(j);
-                }
-            }
-            //sprawdzenie co sie nauczyla:
-            Console.Out.WriteLine("Po nauce wszystkich wzorcow:   ");
-            for (int i = 0; i < param.Input.Count; ++i)           
-            {                
-                perceptron.calculateOutput(param.Input[i]);
-                perceptron.PrintOutput();
-            }
-        }
-        public void PrintResultsOfLearning(int i)
-        {
-            Console.Out.WriteLine();
-            Console.Out.Write("WZORZEC:   ");
-            for (int j = 0; j < param.Output[i].Length; ++j)
-            {
-                Console.Out.Write(param.Output[i][j] + " ");
-            }
-            Console.Out.WriteLine();
-
-            Console.Out.Write("PO NAUCE:  ");
-            perceptron.calculateOutput(param.Input[i]);
-            perceptron.PrintOutput();
-            Console.Out.WriteLine();
-        }
-
-        public void PrintLocalError()
-        {
-            Console.Out.WriteLine("");
-            Console.Out.WriteLine("PRINT LOCAL ERROR:");
-            for (int k = 1; k < perceptron.Size; k++) //warstwy
-                for (int j = 0; j < perceptron.getLayer(k).Size; j++)
-                {
-                    for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
-                        Console.Out.Write("\tdT[:"+k+",od"+i+",do"+j+"]: "+ deltaT[k, i, j]);
-                    Console.Out.WriteLine("");
-                    Console.Out.WriteLine("Layer: " + k + " neuron: " + j + " d: " 
-                        +perceptron.getLayer(k).getNeuronIndex(j).D);
-
-                }
-        }
-        private void learnOneSample(int vectNr)
-        {
-            int iter = 30;
-            double globalError = param.Epsilon;
-            //while(globalError >= param.Epsilon ) //b³¹d
-            while (iter-- != 0) 
-            {
-                perceptron.calculateOutput(param.Input[vectNr]);
-                //warstwa ostatnia
-                this.calculateLastLayerErrors(vectNr);
-                //pozostale warstwy
-                for (int k = perceptron.Size - 2; k >= 0; k--)
-                    this.calculateHiddenLayerErorrs(vectNr, k);
-                
-                for (int k = perceptron.Size - 1; k >= 0; k--)
-                    this.calculateDeltaT(k);
-
-                for (int k = 1; k < perceptron.Size; k++) //warstwy
-                    for (int j = 0; j < perceptron.getLayer(k).Size; j++)
-                        for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
-                        {
-                            this.modifyT(k, j, i);                           
-                        }
-                globalError = calculateGlobalError(vectNr);
-                //PrintLocalError();
-            }
- 
-        }
-        //layerNr - nr warstwy neuronu koncowego, neuronNrJ - neuron koncowy, neuronNrI- neuron poczatkowy
-        private void modifyT(int layerNr, int neuronNrJ, int neuronNrI)
-        {
-            Neuron prevNeuron = perceptron.getLayer(layerNr - 1).getNeuronIndex(neuronNrI);
-            double actT = (double)perceptron.getLayer(layerNr).getNeuronIndex(neuronNrJ).getInputHashtable()[prevNeuron];
-            double newT;
-
-            newT = actT - param.Tau * deltaT[layerNr, neuronNrI, neuronNrJ];
-            perceptron.getLayer(layerNr).getNeuronIndex(neuronNrJ).getInputHashtable()[prevNeuron] = newT;
-
-        }
-
-        private void calculateLastLayer()
-        {
-            return;
-        }
-        private void calculateDeltaT(int layerNr)
-        {
-            if(layerNr == 0)
-                return;
-
-            Layer layer = perceptron.getLayer(layerNr);
-            Layer layerPrev = perceptron.getLayer(layerNr-1);
-            Neuron neuroni,neuronj;
-            double dj, fEi;          
-
-            for (int j = 0; j < layer.Size; ++j) 
-            {
-                neuronj = layer.getNeuronIndex(j);
-                dj = neuronj.D;
-                for(int i=0; i < layerPrev.Size; i++)
-                {
-                    neuroni = layerPrev.getNeuronIndex(i);                    
-                    fEi = layerPrev.getFunction().calculate(neuroni.InputSum);
-                    this.deltaT[layerNr, i, j] = param.Alpha * this.deltaT[layerNr, i, j]
-                        + (1 - param.Alpha) * dj * fEi;
-                }
-            }
-
-        }
-        private void calculateLastLayerErrors( int vectNr )
-        {
-            Layer layer = perceptron.getLayer(layers - 1);
-            Neuron neuron;
-            double[] vect = param.Output[vectNr];
-            for (int i = 0; i < layer.Size; ++i)
-            {
-                neuron = layer.getNeuronIndex(i);
-                double d, dU;
-
-                dU = vect[i] - neuron.Output;
-                d = dU * layer.getFunction().derivative(neuron.InputSum);
-                neuron.D = d;
-            }     
-
-        }
-
-        private void calculateHiddenLayerErorrs(int vectNr, int layerNr)
-        {
-            Layer layer = perceptron.getLayer(layerNr),
-                nextlayer = perceptron.getLayer(layerNr+1);
-            Neuron neuron,neuron1;
-            double[] vect = param.Output[vectNr];            
-            for (int i = 0; i < layer.Size; ++i)
-            {
-                neuron = layer.getNeuronIndex(i);
-                double d, dU,T;
-
-                dU = 0;
-                for (int j = 0; j < nextlayer.Size; ++j)
-                {
-                    neuron1 = nextlayer.getNeuronIndex(j);
-                    //T = (double) neuron1.getInputHashtable()[neuron1];
-                    T = (double)neuron1.getInputHashtable()[neuron];
-                    dU += neuron1.D * T;
-                }
-                d = dU * layer.getFunction().derivative(neuron.InputSum);
-                neuron.D = d;
-            }
-
-        }
-
-        private double calculateGlobalError( int vectNr)
-        {
-            Layer lastLayer = perceptron.getLayer(layers - 1);
-            double[] output = new double[lastLayer.Size];
-            for (int i = 0; i < lastLayer.Size; ++i)
-                output[i] = lastLayer.getNeuronIndex(i).Output;
-            return Function.NormSqrt(param.Input[vectNr], output);
-        }
-
-
-        public Data.LearningParam Param
-        {
-            get { return param; }
-            set { param = value; }
-        }
+                    
+        }*/
     }
 }

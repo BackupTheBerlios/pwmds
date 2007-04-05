@@ -105,7 +105,11 @@ namespace MDS.Network
             }
             //Console.Out.WriteLine();
         }
-
+        public double GetT(Neuron neuron) //neuron poczatkowy po³aczenia
+        {
+            //Console.Out.WriteLine("GetT:   "+layer.Number+"   "+this.neuronNumber);
+            return ((double)this.neuronInput[neuron]);
+        }
         public double InputSum
         {
             get { return inputSum; }

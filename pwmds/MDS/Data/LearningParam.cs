@@ -7,7 +7,9 @@ namespace MDS.Data
     class LearningParam
     {
         private double alpha;
-        private double tau;
+        private double teta;
+
+        private double tau;/////////
         private double epsilon;
 
         private List<double[]> input;
@@ -17,6 +19,11 @@ namespace MDS.Data
         {
             get { return alpha; }
             set { alpha = value; }
+        }
+        public double Teta
+        {
+            get { return teta; }
+            set { teta = value; }
         }
 
         public double Tau
