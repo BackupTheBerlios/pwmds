@@ -11,7 +11,7 @@ namespace MDS.GUI
     public partial class CreateNetwork : Form
     {
         private int ROW_HEIGHT = 40;
-        private int NUMBER_COL = 0,
+        public static  int NUMBER_COL = 0,
                     NEURON_COL = 1,
                     FUNCTION_COL = 2,
                     DELETE_COL = 3;
@@ -23,6 +23,8 @@ namespace MDS.GUI
         private List<Network.Function> functions;
         private List<int> neuronsInLayer;
         private int type;
+
+        private String networkName;
 
         public List<Network.Function> Functions
         {
@@ -98,7 +100,7 @@ namespace MDS.GUI
 
         private void _buttonAddLayer_Click(object sender, EventArgs e)
         {
-            this._tableLayers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+//            this._tableLayers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             Label label = new Label();
             ++lastLayerNr;
             label.Text = lastLayerNr.ToString();
@@ -115,25 +117,29 @@ namespace MDS.GUI
             this._tableLayers.Controls.Add(combo, FUNCTION_COL, lastLayerNr);
 
             int width, height;
-            width = this._tableLayers.Size.Width;
-            height = this._tableLayers.Size.Height;
-            height += ROW_HEIGHT;
-            
-            this._tableLayers.Size = new System.Drawing.Size(width, height);
+            if (lastLayerNr < 4)
+            {
+                width = this._tableLayers.Size.Width;
+                height = this._tableLayers.Size.Height;
+                height += ROW_HEIGHT;
 
-            //przesuñ wszystkie kontrolki poni¿ej o rowHeight
-            this._buttonAddLayer.Location = new Point(this._buttonAddLayer.Location.X,
-                                                this._buttonAddLayer.Location.Y + ROW_HEIGHT);
-            this._buttonCreateNetwork.Location = new Point(this._buttonCreateNetwork.Location.X,
-                                                this._buttonCreateNetwork.Location.Y + ROW_HEIGHT);
-            this._labelOutLayer.Location = new Point(this._labelOutLayer.Location.X,
-                                                this._labelOutLayer.Location.Y + ROW_HEIGHT);
-            this._cancelButton.Location = new Point(this._cancelButton.Location.X,
-                                                this._cancelButton.Location.Y + ROW_HEIGHT);
-            this._tboxSolutionLayerNr.Location = new Point(this._tboxSolutionLayerNr.Location.X,
-                                                this._tboxSolutionLayerNr.Location.Y + ROW_HEIGHT);
-            this.Size = new Size(this.Size.Width,
-                                    this.Size.Height + ROW_HEIGHT);
+                this._tableLayers.Size = new System.Drawing.Size(width, height);
+
+                //przesuñ wszystkie kontrolki poni¿ej o rowHeight
+                //this._buttonAddLayer.Location = new Point(this._buttonAddLayer.Location.X,
+                  //                                  this._buttonAddLayer.Location.Y + ROW_HEIGHT);
+                this._buttonCreateNetwork.Location = new Point(this._buttonCreateNetwork.Location.X,
+                                                    this._buttonCreateNetwork.Location.Y + ROW_HEIGHT);
+                this._labelOutLayer.Location = new Point(this._labelOutLayer.Location.X,
+                                                    this._labelOutLayer.Location.Y + ROW_HEIGHT);
+                this._cancelButton.Location = new Point(this._cancelButton.Location.X,
+                                                    this._cancelButton.Location.Y + ROW_HEIGHT);
+                this._tboxSolutionLayerNr.Location = new Point(this._tboxSolutionLayerNr.Location.X,
+                                                    this._tboxSolutionLayerNr.Location.Y + ROW_HEIGHT);
+                this.Size = new Size(this.Size.Width,
+                                        this.Size.Height + ROW_HEIGHT);
+
+            }
             //dodaj now¹ warstwê
             addNewLayer();
 
@@ -173,7 +179,7 @@ namespace MDS.GUI
                 return;
             }*/
             //newLayer = new Network.Layer(lastLayerNr, 1);
-            String funName = this._tableLayers.Controls[(lastLayerNr - 1) * (FUNCTION_COL + 1) + FUNCTION_COL].Text;
+            String funName = this._tableLayers.Controls[(lastLayerNr) * (FUNCTION_COL + 1) + FUNCTION_COL].Text;
             Network.Function fun = new Network.Function();
             fun.setId(funName);
             functions.Add( fun );
@@ -189,6 +195,7 @@ namespace MDS.GUI
             //sprawdŸ czy wszystkie pola s¹ wype³nione
             if (neuronsInLayer.Count == 0)
                 MessageBox.Show("No layers");
+            networkName = this._tboxNetworkName.Text;
 
 
         }
@@ -261,21 +268,6 @@ namespace MDS.GUI
             }
             return nr;
         }
-        
-        public List<int> NeuronsInLayer
-        {
-            get { return neuronsInLayer; }
-        }
-
-        public int Type
-        {
-            get { return type; }
-        }
-
-        public int LayersNumber
-        {
-            get { return lastLayerNr; }
-        }
 
         private void _radioMDS_CheckedChanged(object sender, EventArgs e)
         {
@@ -292,5 +284,27 @@ namespace MDS.GUI
                 this._tboxSolutionLayerNr.Enabled = false;
             }
         }
+        
+        public List<int> NeuronsInLayer
+        {
+            get { return neuronsInLayer; }
+        }
+
+        public int Type
+        {
+            get { return type; }
+        }
+
+        public int LayersNumber
+        {
+            get { return lastLayerNr; }
+        }
+
+        public String NetworkName
+        {
+            get { return networkName; }
+        }
+
+        
     }
 }
