@@ -58,7 +58,7 @@ namespace MDS.Network
             
             for (int i = 0; i < layers; i++)
             {
-                Layer l = new Layer(i, param.Neurons[i]);
+                Layer l = new Layer(i+1, param.Neurons[i]);
                 l.SetFunction(param.Functions[i]);
                 layerList.Add(l);
             }

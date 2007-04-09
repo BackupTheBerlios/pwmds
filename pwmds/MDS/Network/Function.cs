@@ -17,6 +17,7 @@ namespace MDS.Network
 
                             
         private int id;
+        private String name;
         /*public Function(int ident)
         {
             this.id = ident;
@@ -24,6 +25,7 @@ namespace MDS.Network
         public void setId(int ident)
         {
             this.id = ident;
+            name = FUNCTIONS[ident];
         }
 
         public void setId(String name)
@@ -36,6 +38,7 @@ namespace MDS.Network
                 this.id = 2;
             else if (name.CompareTo(FUNCTIONS[3]) == 0)
                 this.id = 3;
+            this.name = name;
         }
 
         public double calculate (double x)
@@ -82,7 +85,9 @@ namespace MDS.Network
             return Math.Sqrt(res);
         }
 
-
-
+        public String Name
+        {
+            get { return name; }
+        }
     }
 }
