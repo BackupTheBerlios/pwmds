@@ -33,6 +33,7 @@ namespace MDS.GUI
         // wczytuje z pliku dane do skalowania
         private void wczytajDaneToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            /*
             OpenFileDialog openFileDialog = new OpenFileDialog();
             String filePath = null;
             int i;
@@ -68,6 +69,16 @@ namespace MDS.GUI
                 Cursor.Current = Cursors.Default;
                 this.statusStrip1.Items[0].Text = "Bezczynny";
             }
+             */
+        }
+        private void _mReadData_Click(object sender, EventArgs e)
+        {
+            ReadData readDialog = new ReadData();
+            if (readDialog.ShowDialog() == DialogResult.OK)
+            {
+                mainANN.loadInputData(readDialog.DataName, readDialog.FileName);
+            }
+            readDialog.Dispose();
         }
         
         private void _mNewNetwork_Click(object sender, EventArgs e)

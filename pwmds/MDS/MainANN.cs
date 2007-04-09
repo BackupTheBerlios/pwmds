@@ -23,7 +23,7 @@ namespace MDS
         }
 
         // wczytuje dane do skalowania z pliku do tablicy potem do listy inputData
-        public int loadInputData(String filePath)
+        public int loadInputData(String name, String filePath)
         {
             List<double[]> loadedData;
             double[] row;
@@ -58,7 +58,8 @@ namespace MDS
                   line = reader.ReadLine();
                   i++;
               }
-              this.inputData.Add(filePath, loadedData);
+              //this.inputData.Add(filePath, loadedData);
+              this.inputData.Add(name, loadedData);
               reader.Close();
             }
             return i;

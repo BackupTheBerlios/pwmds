@@ -72,7 +72,7 @@ namespace MDS.GUI
             this._mReadData.Name = "_mReadData";
             this._mReadData.Size = new System.Drawing.Size(180, 22);
             this._mReadData.Text = "Wczytaj dane";
-            this._mReadData.Click += new System.EventHandler(this.wczytajDaneToolStripMenuItem_Click);
+            this._mReadData.Click += new System.EventHandler(this._mReadData_Click);
             // 
             // _mProcessData
             // 

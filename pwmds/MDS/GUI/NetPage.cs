@@ -13,10 +13,13 @@ namespace MDS.GUI
         private int nr;
         private Perceptron perceptron;
         private String networkName;
+        private List<String> dataNames;
+
         private TableLayoutPanel _layeresPanel;
         private Label label1;
         private Label _networkType;
-        private List<String> dataNames;
+        private ComboBox _comboData;
+        
 
         public NetPage()
         { }
@@ -44,6 +47,7 @@ namespace MDS.GUI
             this._layeresPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this._networkType = new System.Windows.Forms.Label();
+            this._comboData = new ComboBox();
             this.SuspendLayout();
             // 
             // _layeresPanel
@@ -60,9 +64,8 @@ namespace MDS.GUI
             this._layeresPanel.Name = "_layeresPanel";
             this._layeresPanel.RowCount = 2;
             this._layeresPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            for (int i = 0; i < perceptron.Size; ++i )
-                this._layeresPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this._layeresPanel.Size = new System.Drawing.Size(600, 30 * (perceptron.Size + 1) + 8);
+//je¿eli za du¿o warstw to zrób scroll
+            
             this._layeresPanel.TabIndex = 0;
             // 
             // label1
@@ -85,12 +88,23 @@ namespace MDS.GUI
             this._networkType.TabIndex = 0;
             this._networkType.Text = perceptron.TypeName;
             // 
+            // _comboData
+            // 
+            this._comboData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._comboData.Location = new System.Drawing.Point(700, 100);
+            this._comboData.Name = "_comboData";
+            this._comboData.Size = new System.Drawing.Size(100, 18);
+            this._comboData.TabIndex = 0;
+            for (int i = 0; i < dataNames.Count; ++i )
+                this._comboData.Items.Add(this.dataNames[i]);
+            // 
             // NetPage
             // 
             this.AccessibleName = "hgfds";
             this.Controls.Add(this.label1);
             this.Controls.Add(this._networkType);
             this.Controls.Add(this._layeresPanel);
+            this.Controls.Add(this._comboData);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,6 +112,10 @@ namespace MDS.GUI
 
         private void initializeLayersTable()
         {
+            for (int i = 0; i < perceptron.Size; ++i)
+                this._layeresPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this._layeresPanel.Size = new System.Drawing.Size(600, 30 * (perceptron.Size + 1) + 8);
+
             Label label = new Label();
             label.Text = "Numer warstwy";
             label.Dock = DockStyle.Fill;

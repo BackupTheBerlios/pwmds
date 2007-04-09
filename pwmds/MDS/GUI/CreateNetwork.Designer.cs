@@ -195,7 +195,7 @@ namespace MDS.GUI
             this.Controls.Add(this._buttonCreateNetwork);
             this.Controls.Add(this._groupBox1);
             this.Name = "CreateNetwork";
-            this.Text = "CreateNetwork";
+            this.Text = "Tworzenie sieci";
             this._groupBox1.ResumeLayout(false);
             this._groupBox1.PerformLayout();
             this.ResumeLayout(false);
