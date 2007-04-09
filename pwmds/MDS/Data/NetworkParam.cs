@@ -6,7 +6,8 @@ namespace MDS.Data
 {
     class NetworkParam
     {
-        public static int CLASSIFIER = 3531, MDS = 3532;
+        public static int CLASSIFIER = 0, MDS = 1;
+        public static String[] TYPES = { "Classifier network, Multidimensional scaling network" };
         private int layerNumber;
         private List<int> neurons;
         /**if the network is a classifier or mds*/
