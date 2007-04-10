@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 using System.Windows.Forms;
 using MDS.Network;
@@ -13,26 +14,37 @@ namespace MDS.GUI
         private int nr;
         private Perceptron perceptron;
         private String networkName;
-        private List<String> dataNames;
+        //private List<String> dataNames;
+        private Hashtable inputData;
 
         private TableLayoutPanel _layeresPanel;
         private Label label1;
+        
         private Label _networkType;
-        private ComboBox _comboData;
+        private Label _learnDataLabel;
+        private Label _workDataLabel;
+        private Label _inputLearnDataLabel;
+        private Label _outputLearnDataLabel;
+
+        private Label _inputWorkDataLabel;
+        private ComboBox _comboInputLearnData;
+        private ComboBox _comboOutputLearnData;
+        private ComboBox _comboInputWorkData;
         
 
         public NetPage()
         { }
 
-        public NetPage( int nr, List<String> dataNames, Perceptron perceptron)
+        public NetPage( int nr, Hashtable inputData, Perceptron perceptron)
         {
             
             
             this.nr = nr;
-            this.dataNames = dataNames;
+            this.inputData = inputData;
             this.perceptron = perceptron;
             InitializeComponent();
             initializeLayersTable();
+            initializeComboBox();
         }
 
         //setters and getters
@@ -47,7 +59,10 @@ namespace MDS.GUI
             this._layeresPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this._networkType = new System.Windows.Forms.Label();
-            this._comboData = new ComboBox();
+            this._learnDataLabel = new Label();
+            this._workDataLabel = new Label();
+            this._comboInputLearnData = new ComboBox();
+            this._inputLearnDataLabel = new Label();
             this.SuspendLayout();
             // 
             // _layeresPanel
@@ -87,16 +102,64 @@ namespace MDS.GUI
             this._networkType.Size = new System.Drawing.Size(0, 200);
             this._networkType.TabIndex = 0;
             this._networkType.Text = perceptron.TypeName;
+            
+            // 
+            // _inputLearnDataLabel
+            // 
+            this._inputLearnDataLabel.AutoSize = true;
+            this._inputLearnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._inputLearnDataLabel.Location = new System.Drawing.Point(710, 105);
+            this._inputLearnDataLabel.Name = "_inputDataLabel";
+            this._inputLearnDataLabel.Size = new System.Drawing.Size(80, 20);
+            this._inputLearnDataLabel.TabIndex = 0;
+            this._inputLearnDataLabel.Text = "Dane wejœciowe:";
             // 
             // _comboData
             // 
-            this._comboData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._comboData.Location = new System.Drawing.Point(700, 100);
-            this._comboData.Name = "_comboData";
-            this._comboData.Size = new System.Drawing.Size(100, 18);
-            this._comboData.TabIndex = 0;
-            for (int i = 0; i < dataNames.Count; ++i )
-                this._comboData.Items.Add(this.dataNames[i]);
+            this._comboInputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._comboInputLearnData.Location = new System.Drawing.Point(840, 100);
+            this._comboInputLearnData.Name = "_comboData";
+            this._comboInputLearnData.Size = new System.Drawing.Size(150, 15);
+            this._comboInputLearnData.TabIndex = 0;
+
+            // 
+            // _outputLearnDataLabel
+            // 
+            if (perceptron.Type.CompareTo(Data.NetworkParam.CLASSIFIER) == 0)
+            {
+
+                this._outputLearnDataLabel.AutoSize = true;
+                this._outputLearnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._outputLearnDataLabel.Location = new System.Drawing.Point(710, 135);
+                this._outputLearnDataLabel.Name = "_inputDataLabel";
+                this._outputLearnDataLabel.Size = new System.Drawing.Size(80, 20);
+                this._outputLearnDataLabel.TabIndex = 0;
+                this._outputLearnDataLabel.Text = "Dane wyjœciowe:";
+            }
+
+            // 
+            // _learnDataLabel
+            // 
+            this._learnDataLabel.AutoSize = true;
+            this._learnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._learnDataLabel.Location = new System.Drawing.Point(690, 70);
+            this._learnDataLabel.Name = "_learnDataLabel";
+            this._learnDataLabel.Size = new System.Drawing.Size(73, 20);
+            this._learnDataLabel.TabIndex = 0;
+            this._learnDataLabel.Text = "Dane ucz¹ce:";
+
+            // 
+            // _workDataLabel
+            // 
+            this._workDataLabel.AutoSize = true;
+            this._workDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._workDataLabel.Location = new System.Drawing.Point(690, 300);
+            this._workDataLabel.Name = "_workDataLabel";
+            this._workDataLabel.Size = new System.Drawing.Size(73, 20);
+            this._workDataLabel.TabIndex = 0;
+            this._workDataLabel.Text = "Dane do przetwarzania";
+
+            
             // 
             // NetPage
             // 
@@ -104,7 +167,19 @@ namespace MDS.GUI
             this.Controls.Add(this.label1);
             this.Controls.Add(this._networkType);
             this.Controls.Add(this._layeresPanel);
-            this.Controls.Add(this._comboData);
+            this.Controls.Add(this._learnDataLabel);
+
+            this.Controls.Add(this._inputLearnDataLabel);
+            this.Controls.Add(this._comboInputLearnData);
+
+            if (perceptron.Type.CompareTo(Data.NetworkParam.CLASSIFIER) == 0)
+            {
+                this.Controls.Add(this._outputLearnDataLabel);
+                this.Controls.Add(this._comboOutputLearnData);
+            }
+            
+            
+            this.Controls.Add(this._workDataLabel);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -155,6 +230,18 @@ namespace MDS.GUI
                 label.Dock = DockStyle.Fill;
                 this._layeresPanel.Controls.Add(label, CreateNetwork.FUNCTION_COL, i + 1);
             }
+        }
+
+        private void initializeComboBox()
+        {
+            IEnumerator e = inputData.Keys.GetEnumerator();
+            while(e.MoveNext())
+                this._comboInputLearnData.Items.Add(e.Current);
+        }
+
+        public void AddNewData( String name )
+        {
+
         }
     }
 }

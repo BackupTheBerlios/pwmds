@@ -99,7 +99,7 @@ namespace MDS.GUI
                 try
                 {
                     int nr = mainANN.AddNetwork(param);
-                    NetPage page = new NetPage( nr, mainANN.DataNames, mainANN.GetNetwork(nr) );
+                    NetPage page = new NetPage( nr, mainANN.InputData, mainANN.GetNetwork(nr) );
                     page.NetworkName = createDialog.NetworkName;
                     this._tabControl.TabPages.Add(page);
                     this._tabControl.SelectedTab = page;
