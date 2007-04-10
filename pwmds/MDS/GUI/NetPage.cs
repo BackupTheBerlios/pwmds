@@ -366,9 +366,10 @@ namespace MDS.GUI
                 perceptron.Process(pdata);
                 currentOutput = pdata.Output;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show("Cannot start processing the network");
+                Console.Out.WriteLine(ex.Message);
             }
         }
     }

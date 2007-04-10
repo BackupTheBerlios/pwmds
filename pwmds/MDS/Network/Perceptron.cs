@@ -78,7 +78,9 @@ namespace MDS.Network
         public double[] calculateOutput(double[] input)
         {
             if (input == null) throw new Exception("Null pointer exception in calculateOutput");
-            if (input.Length != this.inputSize) throw new Exception("Wrong input size in calculateOutput");
+            
+            //trochê mi bruŸdzi³o wiêc wykomentowa³am - Agnieszka
+            //if (input.Length != this.inputSize) throw new Exception("Wrong input size in calculateOutput");
 
             //ustawiamy wyjscie neuronow pierwszej warstwy na wartosc wektora wejsciowego
             List<Neuron> l = this.layerList[0].getNeuronList();
