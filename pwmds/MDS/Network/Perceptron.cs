@@ -137,5 +137,10 @@ namespace MDS.Network
         {
             get { return Data.NetworkParam.TYPES[type]; }
         }
+
+        public int Type
+        {
+            get { return type; }
+        }
     }
 }
