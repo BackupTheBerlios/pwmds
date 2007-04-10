@@ -101,6 +101,7 @@ namespace MDS.GUI
         private void _buttonAddLayer_Click(object sender, EventArgs e)
         {
 //            this._tableLayers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this._tableLayers.Visible = false;
             Label label = new Label();
             ++lastLayerNr;
             label.Text = lastLayerNr.ToString();
@@ -145,6 +146,7 @@ namespace MDS.GUI
 
             this._tboxSolutionLayerNr.Enabled = true;
             this._tboxSolutionLayerNr.Text = "1";
+            this._tableLayers.Visible = true;
            
 
         }

@@ -15,7 +15,8 @@ namespace MDS.GUI
         private Perceptron perceptron;
         private String networkName;
         //private List<String> dataNames;
-        private Hashtable inputData;
+        private Hashtable data;
+        private List<double[]> currentOutput;
 
         private TableLayoutPanel _layeresPanel;
         private Label label1;
@@ -30,6 +31,9 @@ namespace MDS.GUI
         private ComboBox _comboInputLearnData;
         private ComboBox _comboOutputLearnData;
         private ComboBox _comboInputWorkData;
+
+        private Button _learnButton;
+        private Button _startButton;
         
 
         public NetPage()
@@ -40,7 +44,7 @@ namespace MDS.GUI
             
             
             this.nr = nr;
-            this.inputData = inputData;
+            this.data = inputData;
             this.perceptron = perceptron;
             InitializeComponent();
             initializeLayersTable();
@@ -71,6 +75,9 @@ namespace MDS.GUI
             this._workDataLabel = new Label();
             this._inputWorkDataLabel = new Label();
             this._comboInputWorkData = new ComboBox();
+            
+            this._learnButton = new Button();
+            this._startButton = new Button();
             this.SuspendLayout();
             // 
             // _layeresPanel
@@ -165,6 +172,17 @@ namespace MDS.GUI
                 this._comboOutputLearnData.TabIndex = 0;
 
             }
+
+            // 
+            // _learnButton
+            // 
+            this._learnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._learnButton.Location = new System.Drawing.Point(700, 170);
+            this._learnButton.Name = "_learnButton";
+            this._learnButton.Size = new System.Drawing.Size(150, 30);
+            this._learnButton.TabIndex = 0;
+            this._learnButton.Text = "Ucz sieæ";
+            this._learnButton.Click += new System.EventHandler(this._learnButton_Click);
           
             // 
             // _workDataLabel
@@ -196,6 +214,19 @@ namespace MDS.GUI
             this._comboInputWorkData.Size = new System.Drawing.Size(150, 15);
             this._comboInputWorkData.TabIndex = 0;
 
+
+            
+
+            // 
+            // _startButton
+            // 
+            this._startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._startButton.Location = new System.Drawing.Point(700, 550);
+            this._startButton.Name = "_startButton";
+            this._startButton.Size = new System.Drawing.Size(150, 30);
+            this._startButton.TabIndex = 0;
+            this._startButton.Text = "Rozpocznij przetwarzanie";
+            this._startButton.Click += new System.EventHandler(this._startButton_Click);
             
             // 
             // NetPage
@@ -219,6 +250,9 @@ namespace MDS.GUI
             this.Controls.Add(this._workDataLabel);
             this.Controls.Add(this._inputWorkDataLabel);
             this.Controls.Add(this._comboInputWorkData);
+
+            this.Controls.Add(this._learnButton);
+            this.Controls.Add(this._startButton);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,14 +311,14 @@ namespace MDS.GUI
             this._comboOutputLearnData.Items.Clear();
             this._comboInputWorkData.Items.Clear();
 
-            IEnumerator e = inputData.Keys.GetEnumerator();
+            IEnumerator e = data.Keys.GetEnumerator();
             while (e.MoveNext())
             {
                 this._comboOutputLearnData.Items.Add(e.Current);
                 this._comboInputLearnData.Items.Add(e.Current);
                 this._comboInputWorkData.Items.Add(e.Current);
             }
-            if (inputData.Count > 0)
+            if (data.Count > 0)
             {
                 this._comboInputLearnData.SelectedIndex = 0;
                 this._comboOutputLearnData.SelectedIndex = 0;
@@ -301,8 +335,40 @@ namespace MDS.GUI
         {
             set 
             { 
-                this.inputData = value;
+                this.data = value;
                 initializeComboBoxes();
+            }
+        }
+
+        private void _learnButton_Click(object sender, EventArgs e)
+        {
+            Data.LearningParam param = new Data.LearningParam();
+            String inputName = this._comboInputLearnData.Text,
+                    outputName;
+            if( perceptron.Type == Data.NetworkParam.CLASSIFIER)
+                outputName = this._comboOutputLearnData.Text;
+            else
+                outputName = inputName;
+            param.Input = (List<double[]>)data[inputName];
+            param.Output = (List<double[]>)data[outputName];
+//            new Network.Backpropagation( perceptron, );
+        }
+
+        private void _startButton_Click(object sender, EventArgs e)
+        {
+            
+            String inputName = this._comboInputWorkData.Text;
+            Data.ProcessData pdata = new MDS.Data.ProcessData();
+            pdata.Input = (List<double[]>)data[inputName];
+            try
+            {
+
+                perceptron.Process(pdata);
+                currentOutput = pdata.Output;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot start processing the network");
             }
         }
     }

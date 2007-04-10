@@ -75,7 +75,7 @@ namespace MDS.Network
             l.setFunId(functionId);
         }
             
-        public float[] calculateOutput(double[] input)
+        public double[] calculateOutput(double[] input)
         {
             if (input == null) throw new Exception("Null pointer exception in calculateOutput");
             if (input.Length != this.inputSize) throw new Exception("Wrong input size in calculateOutput");
@@ -95,6 +95,16 @@ namespace MDS.Network
            
             return null;
         }
+
+        public void Process(Data.ProcessData data)
+        {
+            foreach( double[] vector in data.Input )
+            {
+                data.AddOutput(calculateOutput(vector));
+            }
+        }
+
+
         public void PrintOutput()
         {
             this.layerList[this.layerList.Count-1].printOutput();
