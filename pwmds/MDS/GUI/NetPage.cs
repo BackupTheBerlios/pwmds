@@ -44,7 +44,7 @@ namespace MDS.GUI
             this.perceptron = perceptron;
             InitializeComponent();
             initializeLayersTable();
-            initializeComboBox();
+            initializeComboBoxes();
         }
 
         //setters and getters
@@ -59,10 +59,18 @@ namespace MDS.GUI
             this._layeresPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this._networkType = new System.Windows.Forms.Label();
+            
             this._learnDataLabel = new Label();
-            this._workDataLabel = new Label();
-            this._comboInputLearnData = new ComboBox();
             this._inputLearnDataLabel = new Label();
+            this._comboInputLearnData = new ComboBox();
+            this._outputLearnDataLabel = new Label();
+            this._comboOutputLearnData = new ComboBox();
+            
+            
+
+            this._workDataLabel = new Label();
+            this._inputWorkDataLabel = new Label();
+            this._comboInputWorkData = new ComboBox();
             this.SuspendLayout();
             // 
             // _layeresPanel
@@ -102,6 +110,17 @@ namespace MDS.GUI
             this._networkType.Size = new System.Drawing.Size(0, 200);
             this._networkType.TabIndex = 0;
             this._networkType.Text = perceptron.TypeName;
+
+            // 
+            // _learnDataLabel
+            // 
+            this._learnDataLabel.AutoSize = true;
+            this._learnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._learnDataLabel.Location = new System.Drawing.Point(690, 70);
+            this._learnDataLabel.Name = "_learnDataLabel";
+            this._learnDataLabel.Size = new System.Drawing.Size(73, 20);
+            this._learnDataLabel.TabIndex = 0;
+            this._learnDataLabel.Text = "Dane ucz¹ce:";
             
             // 
             // _inputLearnDataLabel
@@ -114,11 +133,11 @@ namespace MDS.GUI
             this._inputLearnDataLabel.TabIndex = 0;
             this._inputLearnDataLabel.Text = "Dane wejœciowe:";
             // 
-            // _comboData
+            // _comboInputLearnData
             // 
             this._comboInputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._comboInputLearnData.Location = new System.Drawing.Point(840, 100);
-            this._comboInputLearnData.Name = "_comboData";
+            this._comboInputLearnData.Name = "_comboInputLearnData";
             this._comboInputLearnData.Size = new System.Drawing.Size(150, 15);
             this._comboInputLearnData.TabIndex = 0;
 
@@ -135,19 +154,18 @@ namespace MDS.GUI
                 this._outputLearnDataLabel.Size = new System.Drawing.Size(80, 20);
                 this._outputLearnDataLabel.TabIndex = 0;
                 this._outputLearnDataLabel.Text = "Dane wyjœciowe:";
+
+                // 
+                // _comboOutputLearnData
+                // 
+                this._comboOutputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._comboOutputLearnData.Location = new System.Drawing.Point(840, 130);
+                this._comboOutputLearnData.Name = "_comboOutputLearnData";
+                this._comboOutputLearnData.Size = new System.Drawing.Size(150, 15);
+                this._comboOutputLearnData.TabIndex = 0;
+
             }
-
-            // 
-            // _learnDataLabel
-            // 
-            this._learnDataLabel.AutoSize = true;
-            this._learnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._learnDataLabel.Location = new System.Drawing.Point(690, 70);
-            this._learnDataLabel.Name = "_learnDataLabel";
-            this._learnDataLabel.Size = new System.Drawing.Size(73, 20);
-            this._learnDataLabel.TabIndex = 0;
-            this._learnDataLabel.Text = "Dane ucz¹ce:";
-
+          
             // 
             // _workDataLabel
             // 
@@ -158,6 +176,25 @@ namespace MDS.GUI
             this._workDataLabel.Size = new System.Drawing.Size(73, 20);
             this._workDataLabel.TabIndex = 0;
             this._workDataLabel.Text = "Dane do przetwarzania";
+
+            // 
+            // _inputWorkDataLabel
+            // 
+            this._inputWorkDataLabel.AutoSize = true;
+            this._inputWorkDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._inputWorkDataLabel.Location = new System.Drawing.Point(710, 335);
+            this._inputWorkDataLabel.Name = "_inputWorkDataLabel";
+            this._inputWorkDataLabel.Size = new System.Drawing.Size(80, 20);
+            this._inputWorkDataLabel.TabIndex = 0;
+            this._inputWorkDataLabel.Text = "Dane wejœciowe:";
+            // 
+            // _comboInputWorkData
+            // 
+            this._comboInputWorkData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._comboInputWorkData.Location = new System.Drawing.Point(840, 330);
+            this._comboInputWorkData.Name = "_comboInputWorkData";
+            this._comboInputWorkData.Size = new System.Drawing.Size(150, 15);
+            this._comboInputWorkData.TabIndex = 0;
 
             
             // 
@@ -180,6 +217,8 @@ namespace MDS.GUI
             
             
             this.Controls.Add(this._workDataLabel);
+            this.Controls.Add(this._inputWorkDataLabel);
+            this.Controls.Add(this._comboInputWorkData);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -232,16 +271,39 @@ namespace MDS.GUI
             }
         }
 
-        private void initializeComboBox()
+        private void initializeComboBoxes()
         {
+            this._comboInputLearnData.Items.Clear();
+            this._comboOutputLearnData.Items.Clear();
+            this._comboInputWorkData.Items.Clear();
+
             IEnumerator e = inputData.Keys.GetEnumerator();
-            while(e.MoveNext())
+            while (e.MoveNext())
+            {
+                this._comboOutputLearnData.Items.Add(e.Current);
                 this._comboInputLearnData.Items.Add(e.Current);
+                this._comboInputWorkData.Items.Add(e.Current);
+            }
+            if (inputData.Count > 0)
+            {
+                this._comboInputLearnData.SelectedIndex = 0;
+                this._comboOutputLearnData.SelectedIndex = 0;
+                this._comboInputWorkData.SelectedIndex = 0;
+            }
         }
 
         public void AddNewData( String name )
         {
 
+        }
+
+        public Hashtable InputData
+        {
+            set 
+            { 
+                this.inputData = value;
+                initializeComboBoxes();
+            }
         }
     }
 }

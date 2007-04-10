@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -79,6 +80,7 @@ namespace MDS.GUI
                 mainANN.loadInputData(readDialog.DataName, readDialog.FileName);
             }
             readDialog.Dispose();
+            setPagesNewInputData(mainANN.InputData);
         }
         
         private void _mNewNetwork_Click(object sender, EventArgs e)
@@ -114,5 +116,15 @@ namespace MDS.GUI
             createDialog.Dispose();
         }
 
+        private void setPagesNewInputData( Hashtable inputData)
+        {
+            IEnumerator e = this._tabControl.TabPages.GetEnumerator();
+            NetPage page;
+            while( e.MoveNext())
+            {
+                page = (NetPage)e.Current;
+                page.InputData = inputData;
+            }
+        }
     }
 }
