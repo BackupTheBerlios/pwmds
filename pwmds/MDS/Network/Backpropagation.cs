@@ -27,21 +27,43 @@ namespace MDS.Network
         public void Learn()
         {
             int i = 0;// j = 0;
-            //for (int i = 0; i < 5; ++i)            
+            //           
+            //for (int i = 0; i < 5; ++i) 
             {
-               for (int j = 0; j < param.Input.Count; ++j)
+                int iter = 30000;
+                while (iter > 0)
                 {
-                    learnOneSample(j);
-                    //Console.Out.Write("po uczeniu nr: " + i + " :: wzorzec nr: " + j);
-                    //PrintResultsOfLearning(j);
+                    for (int j = 0; j < param.Input.Count; ++j)
+                        learnOneSample(j);                       
+                    
+                    
+                    double globalError =0;
+                    for (int j = 0; j < param.Input.Count; ++j)
+                    {
+                        perceptron.calculateOutput(param.Input[j]);
+                        globalError += calculateGlobalError(j);
+                    }
+                    globalError = globalError / param.Input.Count;                    
+                    if (globalError < param.Epsilon) break;
+                    
+                    if (iter % 100 == 0)
+                    {
+                        Console.Out.WriteLine("iter::::: " + iter + " GLOBAL ERROR: " + globalError);
+                    }
+                    iter--;
                 }
+                /*for (int j = 0; j < param.Input.Count; ++j)
+                {                    
+                    Console.Out.Write("po uczeniu nr: " + i + " :: wzorzec nr: " + j);
+                    PrintResultsOfLearning(j);
+                }*/
             }
 
-            /*Console.Out.WriteLine("PO NAUCE WSZYSTKICH WZORCOW:   ");
+            Console.Out.WriteLine("PO NAUCE WSZYSTKICH WZORCOW:   ");
             for (int k = 0; k < param.Input.Count; ++k)
             {
                 PrintResultsOfLearning(k);
-            }*/
+            }
             
         }
         private void learnOneSample(int vectNr)
@@ -49,9 +71,9 @@ namespace MDS.Network
             int iter = 0;
             double globalError = param.Epsilon;
             //while(globalError >= param.Epsilon ) //b³¹d
-            while (iter < 1000)
+            //while (iter < 1)
             {
-                if (globalError < param.Epsilon) break;
+                //if (globalError < param.Epsilon) break;
 
                 perceptron.calculateOutput(param.Input[vectNr]);
                 this.calculateLastLayerErrors(vectNr);//warstwa ostatnia               

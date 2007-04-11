@@ -12,12 +12,12 @@ namespace MDS.Tests
         static void Main()
         {
 /////////////////////////// GUI TESTY ///////////////////////////////////////////////////
-            engine = new MainANN();
+            //engine = new MainANN();
             
-            Application.Run(new GUI.frmMain());
+            //Application.Run(new GUI.frmMain());
 
-            //TestBackpropagation tb = new TestBackpropagation();
-            //tb.Demo2();
+            TestBackpropagation tb = new TestBackpropagation();
+            tb.Demo2();
 ////////////////////////////END GUI TESTY ///////////////////////////////////////////////
         }
 

@@ -8,7 +8,7 @@ namespace MDS.Tests
     {
         public void Demo2()
         {
-            int[] tab = { 2, 3, 2 };
+            int[] tab = { 2, 4,4, 2 };
             Network.Perceptron p = new Network.Perceptron(tab);
             p.printWeights();
             /*p.setFunctionForLayer(0, 0);
@@ -17,10 +17,10 @@ namespace MDS.Tests
             p.setFunctionForLayer(0, 3);
             */
 
-            p.setFunctionForLayer(3, 0);
+            p.setFunctionForLayer(1, 0);
             p.setFunctionForLayer(3, 1);
             p.setFunctionForLayer(3, 2);
-            //p.setFunctionForLayer(3, 3);            
+            p.setFunctionForLayer(3, 3);            
             //p.setFunctionForLayer(3, 4);
             //p.setFunctionForLayer(3, 5);
 

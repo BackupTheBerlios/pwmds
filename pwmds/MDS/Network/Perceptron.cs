@@ -29,7 +29,7 @@ namespace MDS.Network
                 Layer l = new Layer(i,neurons[i]);
                 layerList.Add(l);
             }
-            for (int i = 0; i < layers-1; i++)
+      /*      for (int i = 0; i < layers-1; i++)
             {
                 for (int j = 0; j < neurons[i+1]; j++)
                 {
@@ -41,7 +41,8 @@ namespace MDS.Network
                         n.addToHashtable(l[k],0.1);//r.NextDouble() );
                     }
                 }
-            }
+            }*/
+            setRandomWeights();
         }
 
         public Perceptron(Data.NetworkParam param)
@@ -66,7 +67,7 @@ namespace MDS.Network
                 layerList.Add(l);
             }
 
-            setWeights();
+            setRandomWeights();
 
         }
 
@@ -105,7 +106,7 @@ namespace MDS.Network
 
                     for (int k = 0; k < l.Count; k++)
                     {
-                        n.addToHashtable(l[k], r.NextDouble() );
+                        n.addToHashtable(l[k], r.NextDouble()/3 );
                     }
                 }
             }
