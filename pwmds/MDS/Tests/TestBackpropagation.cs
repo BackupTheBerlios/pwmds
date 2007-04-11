@@ -44,22 +44,30 @@ namespace MDS.Tests
 
             param.Input = new List<double[]>();
             param.Output = new List<double[]>();
-            double[] i =  { 0.8, 0 };
+            double[] i =  { 0.8, 0.1 };
             double[] o = { 0.1, 0.6 };
+
+            double[] i1 =  { 0.1, 0.9 };
+            double[] o1 = { 0.7, 0.2 };
+            
+            double[] i2 =  { 0.2, 0.2 };
+            double[] o2 = { 0.2, 0.8 };
+
+            param.Input.Add(i1);
+            param.Output.Add(o1);
+            
             param.Input.Add(i);
             param.Output.Add(o);
+/* 
+           param.Input.Add(i2);
+            param.Output.Add(o2);
+
             double[] i1 =  { 0, 0.9 };
             double[] o1 = { 0.7, 0.2 };
             param.Input.Add(i1);
-            param.Output.Add(o1);
-            /*double[] i1 =  { 0, 0.9 };
-            double[] o1 = { 0.7, 0.2 };
-            param.Input.Add(i1);
             param.Output.Add(o1);*/
-            double[] i2 =  { 0, 0 };
-            double[] o2 = { 0.2, 0.8 };
-            param.Input.Add(i2);
-            param.Output.Add(o2);
+
+
             return param;
         }
 
