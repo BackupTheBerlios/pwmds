@@ -8,7 +8,7 @@ namespace MDS.Network
     {
         private int inputSize, outputSize;
         private List<Layer> layerList;
-        private int outLayerNr;
+        private int solutionLayerNr;
         private int type;
 
         public Perceptron(int[] neurons)  //liczba warstw i neuronow w kazdej warstwie
@@ -57,6 +57,7 @@ namespace MDS.Network
             this.inputSize = param.Neurons[0];
             this.outputSize = param.Neurons[layers - 1];
             this.type = param.Type;
+            this.solutionLayerNr = param.SolutionLayerNr;
             
             for (int i = 0; i < layers; i++)
             {

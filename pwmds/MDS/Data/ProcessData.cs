@@ -8,6 +8,7 @@ namespace MDS.Data
     {
         List<double[]> input;
         List<double[]> output;
+        List<double[]> solution;
 
         public ProcessData()
         {
@@ -18,6 +19,11 @@ namespace MDS.Data
         public void AddOutput(double[] v)
         {
             output.Add(v);
+        }
+        
+        public void AddSolution(double[] v)
+        {
+            solution.Add(v);
         }
 
         public double[] GetInputVector(int nr)
@@ -40,6 +46,12 @@ namespace MDS.Data
         {
             get { return output; }
             set { output = value; }
+        }
+
+        public List<double[]> Solution
+        {
+            get { return solution; }
+            set { solution = value; }
         }
 
     }

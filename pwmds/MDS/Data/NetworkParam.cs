@@ -16,7 +16,7 @@ namespace MDS.Data
         private List<Network.Function> functions;
         
         /**The number of layer where is the solution */
-        private int outLayerNr;
+        private int solutionLayerNr;
 
 
         public List<Network.Function> Functions
@@ -39,6 +39,12 @@ namespace MDS.Data
         {
             get { return type; }
             set { type = value; }
+        }
+
+        public int SolutionLayerNr
+        {
+            get { return solutionLayerNr; }
+            set { solutionLayerNr = value; }
         }
     }
 }
