@@ -351,7 +351,8 @@ namespace MDS.GUI
                 outputName = inputName;
             param.Input = (List<double[]>)data[inputName];
             param.Output = (List<double[]>)data[outputName];
-//            new Network.Backpropagation( perceptron, );
+            Network.Backpropagation backprop =  new Network.Backpropagation( perceptron, param );
+            backprop.Learn();
         }
 
         private void _startButton_Click(object sender, EventArgs e)
