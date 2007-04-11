@@ -17,6 +17,8 @@ namespace MDS.GUI
         //private List<String> dataNames;
         private Hashtable data;
         private List<double[]> currentOutput;
+        private Data.ProcessData processData;
+
 
         private TableLayoutPanel _layeresPanel;
         private Label label1;
@@ -34,7 +36,18 @@ namespace MDS.GUI
 
         private Button _learnButton;
         private Button _startButton;
-        
+
+
+        private Label _vectorNrLabel;
+        private TextBox _tboxVectorNr;
+        private Label _inVectorLabel;
+        private Label _inVector;
+
+        private Label _solutionVectorLabel;
+        private Label _solutionVector;
+
+        private Label _outVectorLabel;
+        private Label _outVector;
 
         public NetPage()
         { }
@@ -51,12 +64,7 @@ namespace MDS.GUI
             initializeComboBoxes();
         }
 
-        //setters and getters
-        public String NetworkName
-        {
-            get{ return networkName; }
-            set { networkName = value; }
-        }
+        
 
         private void InitializeComponent()
         {
@@ -78,6 +86,17 @@ namespace MDS.GUI
             
             this._learnButton = new Button();
             this._startButton = new Button();
+
+            this._vectorNrLabel = new Label();
+            this._tboxVectorNr = new TextBox();
+            this._inVectorLabel = new Label();
+            this._inVector = new Label();
+
+            this._solutionVectorLabel = new Label();
+            this._solutionVector = new Label();
+
+            this._outVectorLabel = new Label();
+            this._outVector = new Label();
             this.SuspendLayout();
             // 
             // _layeresPanel
@@ -221,13 +240,98 @@ namespace MDS.GUI
             // _startButton
             // 
             this._startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._startButton.Location = new System.Drawing.Point(700, 550);
+            this._startButton.Location = new System.Drawing.Point(710, 450);
             this._startButton.Name = "_startButton";
             this._startButton.Size = new System.Drawing.Size(150, 30);
             this._startButton.TabIndex = 0;
             this._startButton.Text = "Rozpocznij przetwarzanie";
             this._startButton.Click += new System.EventHandler(this._startButton_Click);
             
+            //
+            //_vectorNrLabel 
+            //
+            this._vectorNrLabel.AutoSize = true;
+            this._vectorNrLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._vectorNrLabel.Name = "_vectorNrLabel";
+            this._vectorNrLabel.Size = new System.Drawing.Size(80, 20);
+            this._vectorNrLabel.TabIndex = 0;
+            this._vectorNrLabel.Text = "Numer wektora:";
+            //
+            //_tboxVectorNr 
+            //
+            this._tboxVectorNr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            
+            this._tboxVectorNr.Name = "_tboxVectorNr";
+            this._tboxVectorNr.Size = new System.Drawing.Size(50, 22);
+            this._tboxVectorNr.TabIndex = 1;
+            this._tboxVectorNr.Text = "1";
+            this._tboxVectorNr.TextChanged += new System.EventHandler(this._tboxVectorNr_TextChanged);
+
+
+            //
+            //_inVectorLabel 
+            //
+            this._inVectorLabel.AutoSize = true;
+            this._inVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._inVectorLabel.Name = "_inVectorLabel";
+            this._inVectorLabel.Size = new System.Drawing.Size(80, 20);
+            this._inVectorLabel.TabIndex = 0;
+            this._inVectorLabel.Text = "Wektor wejœcia";
+
+            //
+            //_inVector
+            //
+            //this._inVector.AutoSize = true;
+            this._inVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._inVector.Name = "_inVector";
+            this._inVector.BackColor = System.Drawing.Color.White;
+            this._inVector.TabIndex = 0;
+            this._inVector.Text = "    ";
+
+           // if (perceptron.Type == Data.NetworkParam.MDS)
+            //{
+
+                //
+                //_solutionVectorLabel 
+                //
+                this._solutionVectorLabel.AutoSize = true;
+                this._solutionVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._solutionVectorLabel.Name = "_solutionVectorLabel";
+                this._solutionVectorLabel.Size = new System.Drawing.Size(80, 20);
+                this._solutionVectorLabel.TabIndex = 0;
+                this._solutionVectorLabel.Text = "Wektor rozwi¹zania";
+
+                //
+                //_solutionVector
+                //
+                //this._inVector.AutoSize = true;
+                this._solutionVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._solutionVector.Name = "_solutionVector";
+                this._solutionVector.BackColor = System.Drawing.Color.White;
+                this._solutionVector.TabIndex = 0;
+                this._solutionVector.Text = "    ";
+        //    }
+
+                //
+                //_outVectorLabel 
+                //
+                this._outVectorLabel.AutoSize = true;
+                this._outVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._outVectorLabel.Name = "_outVectorLabel";
+                this._outVectorLabel.Size = new System.Drawing.Size(80, 20);
+                this._outVectorLabel.TabIndex = 0;
+                this._outVectorLabel.Text = "Wektor wyjœciowy";
+
+                //
+                //_outVector
+                //
+                //this._inVector.AutoSize = true;
+                this._outVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._outVector.Name = "_outVector";
+                this._outVector.BackColor = System.Drawing.Color.White;
+                this._outVector.TabIndex = 0;
+                this._outVector.Text = "    ";
+
             // 
             // NetPage
             // 
@@ -253,6 +357,17 @@ namespace MDS.GUI
 
             this.Controls.Add(this._learnButton);
             this.Controls.Add(this._startButton);
+
+            this.Controls.Add(this._vectorNrLabel);
+            this.Controls.Add(this._tboxVectorNr);
+            this.Controls.Add(this._inVectorLabel);
+            this.Controls.Add(this._inVector);
+
+            this.Controls.Add(this._solutionVectorLabel);
+            this.Controls.Add(this._solutionVector);
+
+            this.Controls.Add(this._outVectorLabel);
+            this.Controls.Add(this._outVector);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -303,6 +418,21 @@ namespace MDS.GUI
                 label.Dock = DockStyle.Fill;
                 this._layeresPanel.Controls.Add(label, CreateNetwork.FUNCTION_COL, i + 1);
             }
+            this._vectorNrLabel.Location = new System.Drawing.Point(30, 150 + _layeresPanel.Size.Height);
+            this._tboxVectorNr.Location = new System.Drawing.Point(180, 150 + _layeresPanel.Size.Height);
+            this._inVectorLabel.Location = new System.Drawing.Point(30, 150 + _layeresPanel.Size.Height + 70);
+
+            this._inVector.Size = new System.Drawing.Size(_layeresPanel.Size.Width, 20);
+            this._inVector.Location = new System.Drawing.Point(30, 150 + _layeresPanel.Size.Height + 90);
+
+            this._solutionVectorLabel.Location = new System.Drawing.Point(30, 150 + _layeresPanel.Size.Height + 130);
+            this._solutionVector.Size = new System.Drawing.Size(_layeresPanel.Size.Width, 20);
+            this._solutionVector.Location = new System.Drawing.Point(30, 150 + _layeresPanel.Size.Height + 150);
+
+            this._outVectorLabel.Location = new System.Drawing.Point(30, 150 + _layeresPanel.Size.Height + 190);
+            this._outVector.Size = new System.Drawing.Size(_layeresPanel.Size.Width, 20);
+            this._outVector.Location = new System.Drawing.Point(30, 150 + _layeresPanel.Size.Height + 210);
+
         }
 
         private void initializeComboBoxes()
@@ -331,6 +461,13 @@ namespace MDS.GUI
 
         }
 
+        //setters and getters
+        public String NetworkName
+        {
+            get { return networkName; }
+            set { networkName = value; }
+        }
+
         public Hashtable InputData
         {
             set 
@@ -339,6 +476,7 @@ namespace MDS.GUI
                 initializeComboBoxes();
             }
         }
+
 
         private void _learnButton_Click(object sender, EventArgs e)
         {
@@ -359,19 +497,42 @@ namespace MDS.GUI
         {
             
             String inputName = this._comboInputWorkData.Text;
-            Data.ProcessData pdata = new MDS.Data.ProcessData();
-            pdata.Input = (List<double[]>)data[inputName];
+            processData = new MDS.Data.ProcessData();
+            processData.Input = (List<double[]>)data[inputName];
             try
             {
 
-                perceptron.Process(pdata);
-                currentOutput = pdata.Output;
+                perceptron.Process(processData);
+                currentOutput = processData.Output;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Cannot start processing the network");
                 Console.Out.WriteLine(ex.Message);
             }
+
+            //
+            try
+            {
+                int nr = 1;
+                this._tboxVectorNr.Text = "1";
+                this._inVector.Text = Data.ProcessData.GetStringList( processData.Input[nr-1]);
+                this._solutionVector.Text = Data.ProcessData.GetStringList(processData.Solution[nr-1]);
+                this._outVector.Text = Data.ProcessData.GetStringList(processData.Output[nr-1]);
+            }
+            catch (Exception) { }
+        }
+
+        private void _tboxVectorNr_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int nr = int.Parse(_tboxVectorNr.Text);
+                this._inVector.Text = Data.ProcessData.GetStringList(processData.Input[nr-1]);
+                this._solutionVector.Text = Data.ProcessData.GetStringList(processData.Solution[nr-1]);
+                this._outVector.Text = Data.ProcessData.GetStringList(processData.Output[nr-1]);
+            }
+            catch (Exception) { }
         }
     }
 }

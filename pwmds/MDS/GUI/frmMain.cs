@@ -94,6 +94,7 @@ namespace MDS.GUI
                 param.Neurons = createDialog.NeuronsInLayer;
                 param.LayerNumber = createDialog.LayersNumber;
                 param.Functions = createDialog.Functions;
+                param.SolutionLayerNr = createDialog.SolutionLayerNr;
 
             //    //get netowrikParam
             //    //createNetowork

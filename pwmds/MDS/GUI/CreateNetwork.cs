@@ -18,9 +18,10 @@ namespace MDS.GUI
 
 
         private int lastLayerNr;
-        private int outLayerNr;
+        private int solutionLayerNr;
 
         private List<Network.Function> functions;
+        //liczba neuronów w poszczególnych warstwach
         private List<int> neuronsInLayer;
         private int type;
 
@@ -210,14 +211,14 @@ namespace MDS.GUI
                 return;
             try
             {
-                outLayerNr = int.Parse( text );
+                solutionLayerNr = int.Parse( text );
             }
             catch (Exception ex)
             {
                 MessageBox.Show("You've given wrong argument");
             }
 
-            if( outLayerNr < 1 || outLayerNr > lastLayerNr )
+            if (solutionLayerNr < 1 || solutionLayerNr > lastLayerNr)
                 MessageBox.Show("You've given wrong value");
 
         }
@@ -305,6 +306,11 @@ namespace MDS.GUI
         public String NetworkName
         {
             get { return networkName; }
+        }
+
+        public int SolutionLayerNr
+        {
+            get { return solutionLayerNr; }
         }
 
         
