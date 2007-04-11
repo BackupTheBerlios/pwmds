@@ -144,9 +144,28 @@ namespace MDS.Network
 
         public void Process(Data.ProcessData data)
         {
+            int solutionSize = this.layerList[this.solutionLayerNr-1].Size,
+                lastSize = this.layerList[layerList.Count-1].Size;
+            double[] last = new double[lastSize],
+                solution = new double[solutionSize];
+            Layer solutionLayer = layerList[solutionLayerNr-1];
+            Layer lastLayer = layerList[layerList.Count-1];
+
             foreach( double[] vector in data.Input )
             {
-                data.AddOutput(calculateOutput(vector));
+                calculateOutput(vector);
+                //data.AddOutput(calculateOutput(vector));
+                //dodaj do last i solution
+                for (int i = 0; i < solutionSize; ++i)
+                {
+                    solution[i] = solutionLayer.getNeuronIndex(i).Output;
+                }
+                for (int i = 0; i < lastSize; ++i)
+                {
+                    last[i] = lastLayer.getNeuronIndex(i).Output;
+                }
+                data.AddOutput(last);
+                data.AddSolution(solution);
             }
         }
 

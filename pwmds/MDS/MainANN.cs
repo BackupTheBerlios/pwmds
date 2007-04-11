@@ -35,7 +35,7 @@ namespace MDS
 
             if (filePath != null)
             {
-              row = new double[800];
+              row = new double[10];
               loadedData = new List<double[]>(); // lista z tablicami(wierszami) danych wejsciowych, jedna lista == jeden zestaw danych 
               reader = File.OpenText(filePath);
               line = reader.ReadLine();
@@ -44,7 +44,7 @@ namespace MDS
               {
                   splitedLine = line.Split(',');
 
-                  for (j = 0; j < splitedLine.Length; j++)
+                  for (j = 0; j < 10; j++)
                   {
                       // zamienia kropke na przecinek(np 3.5 na 3,5) aby parser dobrze zamienil
                       splitedLine[j] = splitedLine[j].Replace('.', ',');
@@ -52,11 +52,13 @@ namespace MDS
                       if (!Double.TryParse(splitedLine[j], out row[j]))
                           row[j] = Double.NaN;               
                   }
-                  row[j] = Double.PositiveInfinity; // ostatnia wczytana kolumna, ktora zawsze jest 0(tak rozdziela split). Wpisujemy do nie nieskonczonosc aby okreslic koniec danego wiersza danych, gdyz tablica ma stala wielkosc 800
+                 // row[j] = Double.PositiveInfinity; // ostatnia wczytana kolumna, ktora zawsze jest 0(tak rozdziela split). Wpisujemy do nie nieskonczonosc aby okreslic koniec danego wiersza danych, gdyz tablica ma stala wielkosc 800
                   loadedData.Add(row);
-                  row = new double[800];
+                  row = new double[10];
                   line = reader.ReadLine();
                   i++;
+                  if (i >= 10)
+                      break;
               }
               //this.inputData.Add(filePath, loadedData);
               this.inputData.Add(name, loadedData);

@@ -14,3 +14,4 @@ obj\Release\MDS.exe
 obj\Release\MDS.pdb
 obj\Debug\MDS.GUI.frmMain.resources
 obj\Debug\MDS.GUI.CreateNetwork.resources
+obj\Debug\MDS.GUI.ReadData.resources

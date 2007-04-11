@@ -14,6 +14,7 @@ namespace MDS.Data
         {
             input = new List<double[]>();
             output = new List<double[]>();
+            solution = new List<double[]>();
         }
 
         public void AddOutput(double[] v)

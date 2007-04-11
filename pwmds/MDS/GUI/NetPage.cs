@@ -489,6 +489,10 @@ namespace MDS.GUI
                 outputName = inputName;
             param.Input = (List<double[]>)data[inputName];
             param.Output = (List<double[]>)data[outputName];
+            param.Alpha = 0.5;
+            param.Epsilon = 0.0001;
+            //param.Tau = 0;
+            param.Teta = 0.9;
             Network.Backpropagation backprop =  new Network.Backpropagation( perceptron, param );
             backprop.Learn();
         }
