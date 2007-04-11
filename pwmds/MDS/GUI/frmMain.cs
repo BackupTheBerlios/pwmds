@@ -19,6 +19,8 @@ namespace MDS.GUI
         {
             InitializeComponent();
             mainANN = new MainANN();
+            createFirstTabPage();
+
         }
       
         private void frmMain_Load(object sender, EventArgs e)
@@ -72,6 +74,7 @@ namespace MDS.GUI
             }
              */
         }
+
         private void _mReadData_Click(object sender, EventArgs e)
         {
             ReadData readDialog = new ReadData();
@@ -126,6 +129,40 @@ namespace MDS.GUI
                 page = (NetPage)e.Current;
                 page.InputData = inputData;
             }
+        }
+
+        private void createFirstTabPage()
+        {
+            List<int >neurons = new List<int>();
+            neurons.Add(10);
+            neurons.Add(9);
+            neurons.Add(10);
+
+            List<Network.Function> fun = new List<Network.Function>(); 
+            fun.Add( new Network.Function( Network.Function.SIGM)); 
+            fun.Add( new Network.Function( Network.Function.SIGM));
+            fun.Add(new Network.Function(Network.Function.SIGM));
+
+            Data.NetworkParam param = new Data.NetworkParam();
+            param.Type = Data.NetworkParam.MDS;
+            param.Neurons = neurons;
+            param.LayerNumber = neurons.Count;
+            param.Functions = fun;
+            param.SolutionLayerNr = 2;
+
+            //    //get netowrikParam
+            //    //createNetowork
+            //    //add Network to list
+                try
+                {
+                    int nr = mainANN.AddNetwork(param);
+                    NetPage page = new NetPage( nr, mainANN.InputData, mainANN.GetNetwork(nr) );
+                    page.NetworkName = "Sieæ pierwsza";
+                    this._tabControl.TabPages.Add(page);
+                    this._tabControl.SelectedTab = page;
+                }
+            catch(Exception)
+           {}
         }
     }
 }

@@ -465,7 +465,11 @@ namespace MDS.GUI
         public String NetworkName
         {
             get { return networkName; }
-            set { networkName = value; }
+            set 
+            { 
+                networkName = value;
+                this.Text = value;
+            }
         }
 
         public Hashtable InputData

@@ -18,10 +18,18 @@ namespace MDS.Network
                             
         private int id;
         private String name;
-        /*public Function(int ident)
+        public Function()
+        {
+            this.id = 0;
+            this.name = FUNCTIONS[id];
+        }
+
+        public Function(int ident)
         {
             this.id = ident;
-        )*/
+            this.name = FUNCTIONS[ident];
+        }
+
         public void setId(int ident)
         {
             this.id = ident;

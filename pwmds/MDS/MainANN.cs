@@ -16,10 +16,19 @@ namespace MDS
         private Hashtable inputData; // Hastablica zawierajaca Listy wczytanych danych, jako key otrzymuje nazwe pliku z ktorego dane byly wczytywane
         private List<Network.Perceptron> netList;
 
+        private String file1 = "arrhythmia.data", 
+                file2 = "housing.data", 
+                file3 = "dane1.txt";
+        private String name1 = "Arrythmia",
+                        name2 = "Housing",
+                        name3 = "Example data";
+
+
         public MainANN()
         {
             inputData = new Hashtable();
             netList = new List<MDS.Network.Perceptron>();
+            readDefaultFiles();
         }
 
         // wczytuje dane do skalowania z pliku do tablicy potem do listy inputData
@@ -44,7 +53,7 @@ namespace MDS
               {
                   splitedLine = line.Split(',');
 
-                  for (j = 0; j < 10; j++)
+                  for (j = 0; j < splitedLine.Length && j < 10; j++)
                   {
                       // zamienia kropke na przecinek(np 3.5 na 3,5) aby parser dobrze zamienil
                       splitedLine[j] = splitedLine[j].Replace('.', ',');
@@ -75,6 +84,13 @@ namespace MDS
             Perceptron newNetwork = new Perceptron(param);
             netList.Add( newNetwork);
             return netList.Count - 1;
+        }
+
+        private void readDefaultFiles()
+        {
+            loadInputData(name1, file1);
+            loadInputData(name2, file2);
+            loadInputData(name3, file3);
         }
 
         public Hashtable InputData
