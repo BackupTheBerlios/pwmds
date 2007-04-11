@@ -54,5 +54,13 @@ namespace MDS.Data
             set { solution = value; }
         }
 
+        public static String GetStringList(double[] tab)
+        {
+            String ret = "";
+            for (int i = 0; i < tab.Length; ++i)
+                ret += tab[i] + " ";
+            return ret;
+        }
+
     }
 }
