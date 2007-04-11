@@ -17,11 +17,11 @@ namespace MDS
         private List<Network.Perceptron> netList;
 
         private String file1 = "arrhythmia.data", 
-                file2 = "housing.data", 
-                file3 = "dane1.txt";
+                file2 = "in.txt", 
+                file3 = "out.txt";
         private String name1 = "Arrythmia",
-                        name2 = "Housing",
-                        name3 = "Example data";
+                        name2 = "In",
+                        name3 = "Out";
 
 
         public MainANN()
@@ -35,45 +35,54 @@ namespace MDS
         public int loadInputData(String name, String filePath)
         {
             List<double[]> loadedData;
+            List<double> list = new List<double>();
             double[] row;
+            double val;
             StreamReader reader;
             String line;
             String[] splitedLine;
             int j = 0;
-            int i = 0;
+            //int i = 0;
 
             if (filePath != null)
             {
-              row = new double[10];
+                
               loadedData = new List<double[]>(); // lista z tablicami(wierszami) danych wejsciowych, jedna lista == jeden zestaw danych 
               reader = File.OpenText(filePath);
               line = reader.ReadLine();
               // wczytuje kolejno wiersze pliku i rozbija je do tablicy ktora zapisywana jest do tablicy
               while (line != null)
               {
+                  list.Clear();
                   splitedLine = line.Split(',');
 
                   for (j = 0; j < splitedLine.Length && j < 10; j++)
                   {
                       // zamienia kropke na przecinek(np 3.5 na 3,5) aby parser dobrze zamienil
                       splitedLine[j] = splitedLine[j].Replace('.', ',');
+
     
-                      if (!Double.TryParse(splitedLine[j], out row[j]))
-                          row[j] = Double.NaN;               
+                      if (!Double.TryParse(splitedLine[j], out val))
+                         val = Double.NaN;
+                     list.Add(val);
                   }
+
                  // row[j] = Double.PositiveInfinity; // ostatnia wczytana kolumna, ktora zawsze jest 0(tak rozdziela split). Wpisujemy do nie nieskonczonosc aby okreslic koniec danego wiersza danych, gdyz tablica ma stala wielkosc 800
+                  row = new double[list.Count];
+                  for (int i = 0; i < list.Count; ++i)
+                      row[i] = list[i];
                   loadedData.Add(row);
                   row = new double[10];
                   line = reader.ReadLine();
-                  i++;
-                  if (i >= 10)
-                      break;
+                 /// i++;
+//                  if (i >= 10)
+  //                    break;
               }
               //this.inputData.Add(filePath, loadedData);
               this.inputData.Add(name, loadedData);
               reader.Close();
             }
-            return i;
+            return 0;
         }// end loadInput Data
 
 

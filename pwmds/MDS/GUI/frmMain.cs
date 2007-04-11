@@ -20,6 +20,7 @@ namespace MDS.GUI
             InitializeComponent();
             mainANN = new MainANN();
             createFirstTabPage();
+            createSecondTabPage();
 
         }
       
@@ -163,6 +164,41 @@ namespace MDS.GUI
                 }
             catch(Exception)
            {}
+        }
+        private void createSecondTabPage()
+        {
+            List<int> neurons = new List<int>();
+            neurons.Add(2);
+            neurons.Add(4);
+            neurons.Add(4);
+            neurons.Add(2);
+
+            List<Network.Function> fun = new List<Network.Function>();
+            fun.Add(new Network.Function(Network.Function.IDENTITY));
+            fun.Add(new Network.Function(Network.Function.SIGM));
+            fun.Add(new Network.Function(Network.Function.SIGM));
+            fun.Add(new Network.Function(Network.Function.SIGM));
+
+            Data.NetworkParam param = new Data.NetworkParam();
+            param.Type = Data.NetworkParam.CLASSIFIER;
+            param.Neurons = neurons;
+            param.LayerNumber = neurons.Count;
+            param.Functions = fun;
+            //param.SolutionLayerNr = 2;
+
+            //    //get netowrikParam
+            //    //createNetowork
+            //    //add Network to list
+            try
+            {
+                int nr = mainANN.AddNetwork(param);
+                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                page.NetworkName = "Test";
+                this._tabControl.TabPages.Add(page);
+                this._tabControl.SelectedTab = page;
+            }
+            catch (Exception)
+            { }
         }
     }
 }
