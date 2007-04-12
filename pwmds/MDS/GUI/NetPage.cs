@@ -49,19 +49,26 @@ namespace MDS.GUI
         private Label _outVectorLabel;
         private Label _outVector;
 
+        private Label _learnRatiosLabel;
+        private Label _alphaRatioLabel;
+        private Label _epsilonRatioLabel;
+        private Label _tetaRatioLabel;
+        private TextBox _tboxAlpha;
+        private TextBox _tboxEpsilon;
+        private TextBox _tboxTeta;
+
         public NetPage()
         { }
 
         public NetPage( int nr, Hashtable inputData, Perceptron perceptron)
         {
-            
-            
             this.nr = nr;
             this.data = inputData;
             this.perceptron = perceptron;
             InitializeComponent();
             initializeLayersTable();
             initializeComboBoxes();
+            initializeRatios();
         }
 
         
@@ -97,6 +104,16 @@ namespace MDS.GUI
 
             this._outVectorLabel = new Label();
             this._outVector = new Label();
+
+            this._learnRatiosLabel = new Label();
+            this._alphaRatioLabel = new Label();
+            this._epsilonRatioLabel = new Label();
+            this._tetaRatioLabel = new Label();
+
+            this._tboxAlpha = new TextBox();
+            this._tboxEpsilon = new TextBox();
+            this._tboxTeta = new TextBox();
+
             this.SuspendLayout();
             // 
             // _layeresPanel
@@ -141,7 +158,7 @@ namespace MDS.GUI
             // _learnDataLabel
             // 
             this._learnDataLabel.AutoSize = true;
-            this._learnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._learnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._learnDataLabel.Location = new System.Drawing.Point(690, 70);
             this._learnDataLabel.Name = "_learnDataLabel";
             this._learnDataLabel.Size = new System.Drawing.Size(73, 20);
@@ -152,7 +169,7 @@ namespace MDS.GUI
             // _inputLearnDataLabel
             // 
             this._inputLearnDataLabel.AutoSize = true;
-            this._inputLearnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._inputLearnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._inputLearnDataLabel.Location = new System.Drawing.Point(710, 105);
             this._inputLearnDataLabel.Name = "_inputDataLabel";
             this._inputLearnDataLabel.Size = new System.Drawing.Size(80, 20);
@@ -161,7 +178,7 @@ namespace MDS.GUI
             // 
             // _comboInputLearnData
             // 
-            this._comboInputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._comboInputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._comboInputLearnData.Location = new System.Drawing.Point(840, 100);
             this._comboInputLearnData.Name = "_comboInputLearnData";
             this._comboInputLearnData.Size = new System.Drawing.Size(150, 15);
@@ -174,7 +191,7 @@ namespace MDS.GUI
             {
 
                 this._outputLearnDataLabel.AutoSize = true;
-                this._outputLearnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._outputLearnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
                 this._outputLearnDataLabel.Location = new System.Drawing.Point(710, 135);
                 this._outputLearnDataLabel.Name = "_inputDataLabel";
                 this._outputLearnDataLabel.Size = new System.Drawing.Size(80, 20);
@@ -184,7 +201,7 @@ namespace MDS.GUI
                 // 
                 // _comboOutputLearnData
                 // 
-                this._comboOutputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._comboOutputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
                 this._comboOutputLearnData.Location = new System.Drawing.Point(840, 130);
                 this._comboOutputLearnData.Name = "_comboOutputLearnData";
                 this._comboOutputLearnData.Size = new System.Drawing.Size(150, 15);
@@ -192,11 +209,83 @@ namespace MDS.GUI
 
             }
 
+            //
+            //_learnRatiosLabel 
+            //
+            this._learnRatiosLabel.AutoSize = true;
+            this._learnRatiosLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._learnRatiosLabel.Name = "_learnRatiosLabel";
+            this._learnRatiosLabel.Size = new System.Drawing.Size(80, 20);
+            this._learnRatiosLabel.Location = new System.Drawing.Point(700, 170);
+            this._learnRatiosLabel.TabIndex = 0;
+            this._learnRatiosLabel.Text = "Wspó³czynniki uczenia";
+
+            //
+            //_alphaRatioLabel 
+            //
+            this._alphaRatioLabel.AutoSize = true;
+            this._alphaRatioLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._alphaRatioLabel.Name = "_learnRatiosLabel";
+            this._alphaRatioLabel.Size = new System.Drawing.Size(80, 20);
+            this._alphaRatioLabel.Location = new System.Drawing.Point(720, 200);
+            this._alphaRatioLabel.TabIndex = 0;
+            this._alphaRatioLabel.Text = "Wspó³czynnik alpha";
+
+            //
+            //_tboxAlpha 
+            //
+            this._tboxAlpha.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._tboxAlpha.Name = "_tboxAlpha";
+            this._tboxAlpha.Size = new System.Drawing.Size(50, 22);
+            this._tboxAlpha.TabIndex = 1;
+            this._tboxAlpha.Location = new System.Drawing.Point(880, 200);
+            //this._tboxAlpha.Text = "1";
+            //this._tboxVectorNr.TextChanged += new System.EventHandler(this._tboxVectorNr_TextChanged);
+
+            //
+            //_epsilonRatioLabel 
+            //
+            this._epsilonRatioLabel.AutoSize = true;
+            this._epsilonRatioLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._epsilonRatioLabel.Name = "_epsilonRatioLabel";
+            this._epsilonRatioLabel.Size = new System.Drawing.Size(80, 20);
+            this._epsilonRatioLabel.Location = new System.Drawing.Point(720, 230);
+            this._epsilonRatioLabel.TabIndex = 0;
+            this._epsilonRatioLabel.Text = "Wspó³czynnik epsilon";
+            //
+            //_tboxEpsilon 
+            //
+            this._tboxEpsilon.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._tboxEpsilon.Name = "_tboxEpsilon";
+            this._tboxEpsilon.Size = new System.Drawing.Size(50, 22);
+            this._tboxEpsilon.TabIndex = 1;
+            this._tboxEpsilon.Location = new System.Drawing.Point(880, 230);
+            //
+            //_tetaRatioLabel 
+            //
+            this._tetaRatioLabel.AutoSize = true;
+            this._tetaRatioLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._tetaRatioLabel.Name = "_tetaRatioLabel";
+            this._tetaRatioLabel.Size = new System.Drawing.Size(80, 20);
+            this._tetaRatioLabel.Location = new System.Drawing.Point(720, 260);
+            this._tetaRatioLabel.TabIndex = 0;
+            this._tetaRatioLabel.Text = "Wspó³czynnik teta";
+
+            //
+            //_tboxTeta 
+            //
+            this._tboxTeta.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._tboxTeta.Name = "_tboxTeta";
+            this._tboxTeta.Size = new System.Drawing.Size(50, 22);
+            this._tboxTeta.TabIndex = 1;
+            this._tboxTeta.Location = new System.Drawing.Point(880, 260);
+            
+
             // 
             // _learnButton
             // 
-            this._learnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._learnButton.Location = new System.Drawing.Point(700, 170);
+            this._learnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._learnButton.Location = new System.Drawing.Point(700, 290);
             this._learnButton.Name = "_learnButton";
             this._learnButton.Size = new System.Drawing.Size(150, 30);
             this._learnButton.TabIndex = 0;
@@ -207,8 +296,8 @@ namespace MDS.GUI
             // _workDataLabel
             // 
             this._workDataLabel.AutoSize = true;
-            this._workDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._workDataLabel.Location = new System.Drawing.Point(690, 300);
+            this._workDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._workDataLabel.Location = new System.Drawing.Point(690, 350);
             this._workDataLabel.Name = "_workDataLabel";
             this._workDataLabel.Size = new System.Drawing.Size(73, 20);
             this._workDataLabel.TabIndex = 0;
@@ -218,8 +307,8 @@ namespace MDS.GUI
             // _inputWorkDataLabel
             // 
             this._inputWorkDataLabel.AutoSize = true;
-            this._inputWorkDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._inputWorkDataLabel.Location = new System.Drawing.Point(710, 335);
+            this._inputWorkDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._inputWorkDataLabel.Location = new System.Drawing.Point(710, 385);
             this._inputWorkDataLabel.Name = "_inputWorkDataLabel";
             this._inputWorkDataLabel.Size = new System.Drawing.Size(80, 20);
             this._inputWorkDataLabel.TabIndex = 0;
@@ -227,8 +316,8 @@ namespace MDS.GUI
             // 
             // _comboInputWorkData
             // 
-            this._comboInputWorkData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._comboInputWorkData.Location = new System.Drawing.Point(840, 330);
+            this._comboInputWorkData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._comboInputWorkData.Location = new System.Drawing.Point(840, 380);
             this._comboInputWorkData.Name = "_comboInputWorkData";
             this._comboInputWorkData.Size = new System.Drawing.Size(150, 15);
             this._comboInputWorkData.TabIndex = 0;
@@ -239,8 +328,8 @@ namespace MDS.GUI
             // 
             // _startButton
             // 
-            this._startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._startButton.Location = new System.Drawing.Point(710, 450);
+            this._startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._startButton.Location = new System.Drawing.Point(710, 500);
             this._startButton.Name = "_startButton";
             this._startButton.Size = new System.Drawing.Size(150, 30);
             this._startButton.TabIndex = 0;
@@ -251,7 +340,7 @@ namespace MDS.GUI
             //_vectorNrLabel 
             //
             this._vectorNrLabel.AutoSize = true;
-            this._vectorNrLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._vectorNrLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._vectorNrLabel.Name = "_vectorNrLabel";
             this._vectorNrLabel.Size = new System.Drawing.Size(80, 20);
             this._vectorNrLabel.TabIndex = 0;
@@ -272,7 +361,7 @@ namespace MDS.GUI
             //_inVectorLabel 
             //
             this._inVectorLabel.AutoSize = true;
-            this._inVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._inVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._inVectorLabel.Name = "_inVectorLabel";
             this._inVectorLabel.Size = new System.Drawing.Size(80, 20);
             this._inVectorLabel.TabIndex = 0;
@@ -282,7 +371,7 @@ namespace MDS.GUI
             //_inVector
             //
             //this._inVector.AutoSize = true;
-            this._inVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._inVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._inVector.Name = "_inVector";
             this._inVector.BackColor = System.Drawing.Color.White;
             this._inVector.TabIndex = 0;
@@ -295,7 +384,7 @@ namespace MDS.GUI
                 //_solutionVectorLabel 
                 //
                 this._solutionVectorLabel.AutoSize = true;
-                this._solutionVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._solutionVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
                 this._solutionVectorLabel.Name = "_solutionVectorLabel";
                 this._solutionVectorLabel.Size = new System.Drawing.Size(80, 20);
                 this._solutionVectorLabel.TabIndex = 0;
@@ -305,7 +394,7 @@ namespace MDS.GUI
                 //_solutionVector
                 //
                 //this._inVector.AutoSize = true;
-                this._solutionVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._solutionVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
                 this._solutionVector.Name = "_solutionVector";
                 this._solutionVector.BackColor = System.Drawing.Color.White;
                 this._solutionVector.TabIndex = 0;
@@ -316,7 +405,7 @@ namespace MDS.GUI
                 //_outVectorLabel 
                 //
                 this._outVectorLabel.AutoSize = true;
-                this._outVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._outVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
                 this._outVectorLabel.Name = "_outVectorLabel";
                 this._outVectorLabel.Size = new System.Drawing.Size(80, 20);
                 this._outVectorLabel.TabIndex = 0;
@@ -326,11 +415,16 @@ namespace MDS.GUI
                 //_outVector
                 //
                 //this._inVector.AutoSize = true;
-                this._outVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this._outVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
                 this._outVector.Name = "_outVector";
                 this._outVector.BackColor = System.Drawing.Color.White;
                 this._outVector.TabIndex = 0;
                 this._outVector.Text = "    ";
+
+               
+
+
+
 
             // 
             // NetPage
@@ -368,6 +462,16 @@ namespace MDS.GUI
 
             this.Controls.Add(this._outVectorLabel);
             this.Controls.Add(this._outVector);
+
+            this.Controls.Add(this._learnRatiosLabel);
+            this.Controls.Add(this._alphaRatioLabel);
+            this.Controls.Add(this._epsilonRatioLabel);
+            this.Controls.Add(this._tetaRatioLabel);
+            
+            this.Controls.Add(this._tboxAlpha);
+            this.Controls.Add(this._tboxEpsilon);
+            this.Controls.Add(this._tboxTeta);
+
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -456,6 +560,13 @@ namespace MDS.GUI
             }
         }
 
+
+        private void initializeRatios()
+        {
+            this._tboxAlpha.Text = "0,5";
+            this._tboxEpsilon.Text = "0,0001";
+            this._tboxTeta.Text = "0,9";
+        }
         public void AddNewData( String name )
         {
 
@@ -493,12 +604,22 @@ namespace MDS.GUI
                 outputName = inputName;
             param.Input = (List<double[]>)data[inputName];
             param.Output = (List<double[]>)data[outputName];
-            param.Alpha = 0.5;
-            param.Epsilon = 0.0001;
-            //param.Tau = 0;
-            param.Teta = 0.9;
-            Network.Backpropagation backprop =  new Network.Backpropagation( perceptron, param );
-            backprop.Learn();
+            try
+            {
+                param.Alpha = Double.Parse(this._tboxAlpha.Text);
+                //0.5;
+                param.Epsilon = Double.Parse(this._tboxEpsilon.Text);
+                    //0.0001;
+                //param.Tau = 0;
+                param.Teta = Double.Parse(this._tboxTeta.Text);
+                    //0.9;
+
+                Network.Backpropagation backprop = new Network.Backpropagation(perceptron, param);
+                backprop.Learn();
+            }
+            catch(Exception)
+            {
+            }
         }
 
         private void _startButton_Click(object sender, EventArgs e)
