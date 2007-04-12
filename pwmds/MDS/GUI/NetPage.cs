@@ -218,7 +218,7 @@ namespace MDS.GUI
             this._learnRatiosLabel.Size = new System.Drawing.Size(80, 20);
             this._learnRatiosLabel.Location = new System.Drawing.Point(700, 170);
             this._learnRatiosLabel.TabIndex = 0;
-            this._learnRatiosLabel.Text = "Wspó³czynniki uczenia";
+            this._learnRatiosLabel.Text = "Wspó³czynniki";
 
             //
             //_alphaRatioLabel 
@@ -229,7 +229,7 @@ namespace MDS.GUI
             this._alphaRatioLabel.Size = new System.Drawing.Size(80, 20);
             this._alphaRatioLabel.Location = new System.Drawing.Point(720, 200);
             this._alphaRatioLabel.TabIndex = 0;
-            this._alphaRatioLabel.Text = "Wspó³czynnik alpha";
+            this._alphaRatioLabel.Text = "Wspó³czynnik momentum";
 
             //
             //_tboxAlpha 
@@ -251,7 +251,7 @@ namespace MDS.GUI
             this._epsilonRatioLabel.Size = new System.Drawing.Size(80, 20);
             this._epsilonRatioLabel.Location = new System.Drawing.Point(720, 230);
             this._epsilonRatioLabel.TabIndex = 0;
-            this._epsilonRatioLabel.Text = "Wspó³czynnik epsilon";
+            this._epsilonRatioLabel.Text = "Epsilon";
             //
             //_tboxEpsilon 
             //
@@ -269,7 +269,7 @@ namespace MDS.GUI
             this._tetaRatioLabel.Size = new System.Drawing.Size(80, 20);
             this._tetaRatioLabel.Location = new System.Drawing.Point(720, 260);
             this._tetaRatioLabel.TabIndex = 0;
-            this._tetaRatioLabel.Text = "Wspó³czynnik teta";
+            this._tetaRatioLabel.Text = "Wspó³czynnik uczenia";
 
             //
             //_tboxTeta 

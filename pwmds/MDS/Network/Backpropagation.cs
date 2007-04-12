@@ -24,11 +24,13 @@ namespace MDS.Network
         }
         public void Learn()
         {
-            int iter = 30000;
-            double globalError;  
+            int startIter = 100000;
+            int iter = startIter;
+            double globalError=0;
+            Console.Out.WriteLine("Start backpropagation...   ");
             while (iter >= 0)
             {
-                globalError =0; 
+                globalError =0;
                 for (int j = 0; j < param.Input.Count; ++j)
                 {    
                     learnOneSample(j);           
@@ -38,13 +40,13 @@ namespace MDS.Network
                 globalError = globalError / param.Input.Count;                    
                 if (globalError < param.Epsilon) break;
                     
-                if (iter % 200 == 0)
+                if (iter % 10000 == 0)
                 {
-                    Console.Out.WriteLine("iter::::: " + iter + " GLOBAL ERROR: " + globalError);
+                    Console.Out.WriteLine("iter::::: " + (startIter-iter) + " GLOBAL ERROR: " + globalError);
                 }
                 iter--;
-            }         
-
+            }
+            Console.Out.WriteLine("Liczba iteracji " + (startIter-iter) + " GLOBAL ERROR: " + globalError);
             Console.Out.WriteLine("PO NAUCE WSZYSTKICH WZORCOW:   ");
             for (int k = 0; k < param.Input.Count; ++k)
             {
@@ -54,7 +56,7 @@ namespace MDS.Network
 
 
 
-            globalError =0; 
+            /*globalError =0; 
             for (int j = 0; j < param.Input.Count; ++j)
             {                
                 perceptron.calculateOutput(param.Input[j]);
@@ -68,6 +70,7 @@ namespace MDS.Network
             }
               globalError = globalError / param.Input.Count; 
               Console.Out.WriteLine("GlobalError :!!!!!: "+ globalError ); 
+             */ 
             
         }
         private void learnOneSample(int vectNr)
@@ -129,9 +132,7 @@ namespace MDS.Network
             double deltaT;
             Layer layer = perceptron.getLayer(layerNr);
             Layer layerPrev = perceptron.getLayer(layerNr - 1);
-            Neuron neuroni, neuronj;
-
-        
+            Neuron neuroni, neuronj;        
             
             int j = neuronNr;
             neuronj = layer.getNeuronIndex(neuronNr);
@@ -234,40 +235,20 @@ namespace MDS.Network
 
                 }
         }
-        public void Learn1()
-        {
-            int i = 0;// j = 0;
-            //           
-            //for (int i = 0; i < 5; ++i) 
+        
+        /*public void Learn1()
+        {                    
+            for (int i = 0; i < 5; ++i) 
             {
-                int iter = 30000;
-                while (iter > 0)
-                {
-                    for (int j = 0; j < param.Input.Count; ++j)
-                        learnOneSample(j);
-
-
-                    double globalError = 0;
-                    for (int j = 0; j < param.Input.Count; ++j)
-                    {
-                        perceptron.calculateOutput(param.Input[j]);
-                        globalError += calculateGlobalError(j);
-                    }
-                    globalError = globalError / param.Input.Count;
-                    if (globalError < param.Epsilon) break;
-
-                    if (iter % 100 == 0)
-                    {
-                        Console.Out.WriteLine("iter::::: " + iter + " GLOBAL ERROR: " + globalError);
-                    }
-                    iter--;
-                }
-                /*for (int j = 0; j < param.Input.Count; ++j)
-                {                    
-                    Console.Out.Write("po uczeniu nr: " + i + " :: wzorzec nr: " + j);
-                    PrintResultsOfLearning(j);
-                }*/
+                for (int j = 0; j < param.Input.Count; ++j)
+                    learnOneSample(j);
+             
+                                 
+                //    Console.Out.Write("po uczeniu nr: " + i + " :: wzorzec nr: " + j);
+                //    PrintResultsOfLearning(j);
+                //}
             }
+           
 
             Console.Out.WriteLine("PO NAUCE WSZYSTKICH WZORCOW:   ");
             for (int k = 0; k < param.Input.Count; ++k)
@@ -278,20 +259,17 @@ namespace MDS.Network
         }
         private void learnOneSample1(int vectNr)
         {
-            int iter = 0;
+            int iter = 30000;
             double globalError = param.Epsilon;
             //while(globalError >= param.Epsilon ) //b³¹d
-            //while (iter < 1)
+            while (iter < 1)
             {
-                //if (globalError < param.Epsilon) break;
+                if (globalError < param.Epsilon) break;
 
                 perceptron.calculateOutput(param.Input[vectNr]);
                 this.calculateLastLayerErrors(vectNr);//warstwa ostatnia               
                 for (int k = perceptron.Size - 2; k >= 0; k--) //pozostale warstwy //!!!!!!!!>=0
                     this.calculateHiddenLayerErorrs(vectNr, k);
-
-                //for (int k = perceptron.Size - 1; k > 0; k--)
-                //   this.calculateDeltaT(k);
 
                 for (int k = 1; k < perceptron.Size; k++) //warstwy
                     for (int j = 0; j < perceptron.getLayer(k).Size; j++)
@@ -305,16 +283,16 @@ namespace MDS.Network
                 this.updateTableW();
 
                 iter++;
-                /*if (iter % 100 == 0)
-                {
-                    Console.Out.Write("iter::::: " + iter + " GLOBAL ERROR: " + globalError);
-                    PrintResultsOfLearning(vectNr);
-
-                }*/
+                //if (iter % 100 == 0)
+                //{
+                 //   Console.Out.Write("iter::::: " + iter + " GLOBAL ERROR: " + globalError);
+                //
+                //}
                 //Console.Out.WriteLine(iter);
-            }
+            }          
 
-        }
+
+        }*/
        
     }
 }
