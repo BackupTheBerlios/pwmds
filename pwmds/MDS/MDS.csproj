@@ -37,6 +37,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DataPreprocessor.cs" />
     <Compile Include="Data\LearningParam.cs" />
     <Compile Include="Data\NetworkParam.cs" />
     <Compile Include="Data\ProcessData.cs" />

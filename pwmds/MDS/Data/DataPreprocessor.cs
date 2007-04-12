@@ -8,24 +8,43 @@ namespace MDS
     class DataPreprocessor
     {
 
-        private Hashtable standarizeData(Hashtable x)
+        private Hashtable standarizeData(Hashtable x, int o, int a, int b) //o - rodzaj standaryzacji a,b-konce przedzialu
         {
        
             IDictionaryEnumerator e = x.GetEnumerator();
-            double[] t = new double[8000];
+            //double[] t = new double[8000];
             List<double[]> l;
-            while (e.MoveNext())
+            while (e.MoveNext())  //petla po hastable
             {
                 l = (List<double[]>)e.Value;
+                double[] t = new double[l.Count]; //tymczasowa tablica na zmienne
                 IEnumerator<double[]> f = l.GetEnumerator();
-                for (int i = 0; i < f.Current.Length; i++)
+                for (int i = 0; i < f.Current.Length; i++) 
                 {
                     f.Reset();
-                    while (f.MoveNext())
+                    if (double.IsPositiveInfinity(f.Current[i])) break;
+                    int j = 0;
+                    while (f.MoveNext() && j < t.Length) //petla po liscie tablic
                     {
-                        t[i] = f.Current[i];
+                        t[j] = f.Current[i]; //do tymczasowej tablicy wpisujemy i-ty element kazdej tablicy
+                        j++;
                     }
-                    this.standarizeVariable(t);
+                    if (o == 1)
+                    {
+                        this.standarizeVariable(t);
+                    }
+                    else if (o == 2)
+                    {
+                        this.scaleVariable(a, b, t);
+                    }
+                    else throw new Exception("Bad standarizeData parameter");
+                    f.Reset();
+                    j = 0;
+                    while (f.MoveNext() && j < t.Length)
+                    {
+                        f.Current[i] = t[j];  //wpisanie nowych wartosci po standaryzacji z powrotem do i-tego elementu kazdej tablicy na liscie
+                        j++;
+                    }
                 }
             }
             return x;
