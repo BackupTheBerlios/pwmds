@@ -616,9 +616,10 @@ namespace MDS.GUI
 
                 Network.Backpropagation backprop = new Network.Backpropagation(perceptron, param);
                 backprop.Learn();
-            }
-            catch(Exception)
+             }
+            catch(Exception ex)
             {
+                Console.Out.WriteLine(ex.Message);
             }
         }
 
