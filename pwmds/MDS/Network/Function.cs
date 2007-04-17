@@ -72,11 +72,11 @@ namespace MDS.Network
                 case 0:
                     return 1;
                 case 1:
-                    return Math.Tanh(x);
+                    return 1/(Math.Cosh(x)*Math.Cosh(x));
                 case 2:
                     return 0;
                 case 3:
-                    return -(Math.Exp(-x)) / Math.Pow((1 + Math.Exp(-x)), 2);
+                    return Math.Exp(-x) / Math.Pow((1 + Math.Exp(-x)), 2);
             }
             return 0;
         }
@@ -90,7 +90,7 @@ namespace MDS.Network
             for (int i = 0; i < size; ++i)
                 res += Math.Pow(x[i] - y[i], 2);
 
-            return Math.Sqrt(res);
+            return Math.Sqrt(res)/size;   //podzielic przez size?
         }
 
         public String Name
