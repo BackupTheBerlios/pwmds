@@ -18,10 +18,12 @@ namespace MDS
 
         private String file1 = "arrhythmia.data", 
                 file2 = "in.txt", 
-                file3 = "out.txt";
+                file3 = "out.txt",
+                file4 = "in2.txt";
         private String name1 = "Arrythmia",
                         name2 = "In",
-                        name3 = "Out";
+                        name3 = "Out",
+                        name4 = "In2";
 
 
         public MainANN()
@@ -100,6 +102,7 @@ namespace MDS
             loadInputData(name1, file1);
             loadInputData(name2, file2);
             loadInputData(name3, file3);
+            loadInputData(name4, file4);
         }
 
         public Hashtable InputData

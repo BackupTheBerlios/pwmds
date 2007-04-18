@@ -42,7 +42,7 @@ namespace MDS.Network
                     }
                 }
             }*/
-            setRandomWeights();
+            SetRandomWeights();
         }
 
         public Perceptron(Data.NetworkParam param)
@@ -67,7 +67,7 @@ namespace MDS.Network
                 layerList.Add(l);
             }
 
-            setRandomWeights();
+            SetRandomWeights();
 
         }
 
@@ -91,11 +91,12 @@ namespace MDS.Network
             }
         }
 
-        private void setRandomWeights()
+        public void SetRandomWeights()
         {
             int layers = layerList.Count;
             int neurons;
             Random r = new Random();
+            
             for (int i = 0; i < layers - 1; i++)
             {
                 neurons = layerList[i + 1].Size;
@@ -103,7 +104,7 @@ namespace MDS.Network
                 {
                     List<Neuron> l = this.layerList[i].getNeuronList();
                     Neuron n = this.layerList[i + 1].getNeuronIndex(j);
-
+                    n.ClearHashtable();
                     for (int k = 0; k < l.Count; k++)
                     {
                         n.addToHashtable(l[k], r.NextDouble()/3 );

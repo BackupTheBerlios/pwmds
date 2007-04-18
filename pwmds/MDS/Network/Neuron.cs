@@ -93,6 +93,12 @@ namespace MDS.Network
             }
             Console.Out.WriteLine();
         }
+
+        public void ClearHashtable()
+        {
+            this.neuronInput.Clear();
+        }
+
         public void printOutput()
         {
             int layerNumber = this.layer.Number;

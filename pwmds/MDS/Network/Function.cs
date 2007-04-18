@@ -93,6 +93,20 @@ namespace MDS.Network
             return Math.Sqrt(res)/size;   //podzielic przez size?
         }
 
+        public static double Square(double[] x, double[] y)
+        {
+            double res = 0;
+            int size = x.Length;
+            if (y.Length < size)
+                size = y.Length;
+            for (int i = 0; i < size; ++i)
+                res += Math.Pow(x[i] - y[i], 2);
+
+            return res;   //podzielic przez size?
+        }
+
+
+
         public String Name
         {
             get { return name; }

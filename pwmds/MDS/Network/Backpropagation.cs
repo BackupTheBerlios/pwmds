@@ -11,6 +11,7 @@ namespace MDS.Network
         private int layers;
         //1 - warstwa neuronu koñcowego, 2 - pocz¹tkowy neuron, 3 - koñcowy neuron       
         private double[, ,] w, w1;   //w(t) i w(t-1)
+        //mo¿e by te tavlice zainicjowac wagami pocz¹tkowymi
 
         public Backpropagation(Perceptron perceptron, Data.LearningParam param)
         {
@@ -28,6 +29,7 @@ namespace MDS.Network
             int iter = startIter;
             double globalError=0;
             Console.Out.WriteLine("Start backpropagation...   ");
+            perceptron.SetRandomWeights();
             while (iter >= 0)
             {
                 globalError =0;
@@ -186,10 +188,17 @@ namespace MDS.Network
         {
             Layer lastLayer = perceptron.getLayer(layers - 1);
             double[] output = new double[lastLayer.Size];
+            
             for (int i = 0; i < lastLayer.Size; ++i)
+            {
                 output[i] = lastLayer.getNeuronIndex(i).Output;
+                //diff = output[i] - param.Output[vectNr];
+                //error += Math.Pow(
+            }
             //Console.Out.WriteLine("GlobalError: " + Function.NormSqrt(param.Input[vectNr], output));
-            return Function.NormSqrt(param.Output[vectNr], output);
+
+            //return Function.NormSqrt(param.Output[vectNr], output);
+            return 1.0 / 2.0 * Function.Square(param.Output[vectNr], output);
         }
         public Data.LearningParam Param
         {
