@@ -27,7 +27,7 @@ namespace MDS.Network
         {
             int startIter = 100000;
             int iter = startIter;
-            double globalError=0;
+            double globalError = 0, prevError = 0;
             Console.Out.WriteLine("Start backpropagation...   ");
             perceptron.SetRandomWeights();
             while (iter >= 0)
@@ -41,7 +41,10 @@ namespace MDS.Network
                 }
                 globalError = globalError / param.Input.Count;                    
                 if (globalError < param.Epsilon) break;
-                    
+                if (prevError != 0 && globalError > 1.04 * prevError)
+                    break;
+                prevError = globalError;
+
                 if (iter % 10000 == 0)
                 {
                     Console.Out.WriteLine("iter::::: " + (startIter-iter) + " GLOBAL ERROR: " + globalError);
