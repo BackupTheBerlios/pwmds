@@ -76,7 +76,8 @@ namespace MDS.Network
                 case 2:
                     return 0;
                 case 3:
-                    return Math.Exp(-x) / Math.Pow((1 + Math.Exp(-x)), 2);
+                    //return Math.Exp(-x) / Math.Pow((1 + Math.Exp(-x)), 2);
+                    return calculate(x) * (1 - calculate(x));
             }
             return 0;
         }

@@ -34,7 +34,7 @@ namespace MDS.Network
             while (e.MoveNext())
             {
                 Neuron n = (Neuron)e.Key;
-                sum += n.Output * (double)e.Value;
+                    sum += n.Output * (double)e.Value;
             }
             inputSum = sum;
             this.output = this.layer.getFunction().calculate(sum);

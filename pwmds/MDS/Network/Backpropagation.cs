@@ -155,7 +155,7 @@ namespace MDS.Network
                 neuron = layer.getNeuronIndex(i);
                 double d, dU;
 
-                dU = vect[i] - neuron.Output;
+                dU = neuron.Output - vect[i];
                 d = dU * layer.getFunction().derivative(neuron.InputSum);
                 neuron.D = d;
             }
