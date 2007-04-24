@@ -107,6 +107,7 @@ namespace MDS.Network
                     n.ClearHashtable();
                     for (int k = 0; k < l.Count; k++)
                     {
+                        
                         n.addToHashtable(l[k], r.NextDouble()/3 );
                     }
                 }

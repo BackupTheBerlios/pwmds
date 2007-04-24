@@ -3,41 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MDS
+namespace MDS.Data
 {
     class DataPreprocessor
     {
 
-        private Hashtable standarizeData(Hashtable x, int o, int a, int b) //o - rodzaj standaryzacji a,b-konce przedzialu
+        public void standarizeData(List<double[]> l, int opt, int a, int b) //o - rodzaj standaryzacji a,b-konce przedzialu
         {
-       
-            IDictionaryEnumerator e = x.GetEnumerator();
-            //double[] t = new double[8000];
-            List<double[]> l;
-            while (e.MoveNext())  //petla po hastable
-            {
-                l = (List<double[]>)e.Value;
-                double[] t = new double[l.Count]; //tymczasowa tablica na zmienne
+            if ( opt!=1 && opt!=2) throw new Exception("Bad standarizeData parameter"); 
+            
+                double[] t = new double[l.Count]; //tymczasowa tablica na skalowane zmienne
                 IEnumerator<double[]> f = l.GetEnumerator();
-                for (int i = 0; i < f.Current.Length; i++) 
+                                
+                for (int i = 0; i < l[0].Length; i++) //wybieramy i-ty element z kazdej tablicy na liscie
                 {
                     f.Reset();
-                    if (double.IsPositiveInfinity(f.Current[i])) break;
+                    if (double.IsPositiveInfinity(l[0][i])) break;
                     int j = 0;
                     while (f.MoveNext() && j < t.Length) //petla po liscie tablic
                     {
                         t[j] = f.Current[i]; //do tymczasowej tablicy wpisujemy i-ty element kazdej tablicy
                         j++;
                     }
-                    if (o == 1)
+                    if (opt == 1)
                     {
                         this.standarizeVariable(t);
                     }
-                    else if (o == 2)
+                    else if (opt == 2)
                     {
                         this.scaleVariable(a, b, t);
                     }
-                    else throw new Exception("Bad standarizeData parameter");
+                    
                     f.Reset();
                     j = 0;
                     while (f.MoveNext() && j < t.Length)
@@ -46,8 +42,8 @@ namespace MDS
                         j++;
                     }
                 }
-            }
-            return x;
+            
+            
         }
         private void standarizeVariable(double[] tab)
         {
@@ -70,6 +66,7 @@ namespace MDS
             for (int i = 0; i < n; i++)    //standaryzacja
             {
                 tab[i] = (tab[i] - mean) / stdev;
+                
             }
         }
         private void scaleVariable(int a, int b, double[] tab)
@@ -82,9 +79,10 @@ namespace MDS
                 if (tab[i] > max) max = tab[i];
                 if (tab[i] < min) min = tab[i];
             }
+            //skalowanie przedzialu
             y = (max - min) / (b - a);
             x = max - b * y;
-            for (int i = 0; i < tab.Length; i++)  //skalowanie przedialu
+            for (int i = 0; i < tab.Length; i++)  
             {
                 tab[i] = (tab[i] - x) / y;
             }

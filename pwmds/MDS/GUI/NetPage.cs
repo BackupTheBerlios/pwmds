@@ -892,8 +892,8 @@ namespace MDS.GUI
             if (name.CompareTo("") == 0)
                 return;
             actData = (List<double[]>)data[name];
-            DataDetails dialog = new DataDetails( actData, name );
-            dialog.ShowDialog();
+            //DataDetails dialog = new DataDetails( actData, name );
+            //dialog.ShowDialog();
         }
     }
 }

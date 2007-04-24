@@ -19,18 +19,19 @@ namespace MDS
         private String file1 = "arrhythmia.data", 
                 file2 = "in.txt", 
                 file3 = "out.txt",
-                file4 = "in2.txt";
+                file4 = "dane1.txt";
         private String name1 = "Arrythmia",
                         name2 = "In",
                         name3 = "Out",
                         name4 = "In2";
 
-
+        
         public MainANN()
         {
             inputData = new Hashtable();
             netList = new List<MDS.Network.Perceptron>();
             readDefaultFiles();
+            
         }
 
         // wczytuje dane do skalowania z pliku do tablicy potem do listy inputData

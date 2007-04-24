@@ -79,6 +79,7 @@ namespace MDS.GUI
             this._mProcessData.Name = "_mProcessData";
             this._mProcessData.Size = new System.Drawing.Size(180, 22);
             this._mProcessData.Text = "Przetwarzanie danych";
+            this._mProcessData.Click += new System.EventHandler(this._mProcessData_Click);
             // 
             // statusStrip1
             // 

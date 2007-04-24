@@ -107,6 +107,7 @@
     <Compile Include="Tests\main.cs" />
     <Compile Include="Tests\TestBackpropagation.cs" />
     <Compile Include="Tests\testLoadData.cs" />
+    <Compile Include="Tests\TestPreprocessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classifier\" />

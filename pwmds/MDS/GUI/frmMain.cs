@@ -14,16 +14,22 @@ namespace MDS.GUI
     public partial class frmMain : Form
     {
         private MainANN mainANN; // glowna klasa "Engine" aplikacji.
-
+        private Data.DataPreprocessor d;
+        private Tests.TestPreprocessor pretest;  //do testow
         public frmMain()
         {
             InitializeComponent();
             mainANN = new MainANN();
             createFirstTabPage();
             createSecondTabPage();
+
+            d = new MDS.Data.DataPreprocessor();
+            pretest = new MDS.Tests.TestPreprocessor();
+
             createThirdTabPage();
             createFourthTabPage();
             createFithTabPage();
+
         }
       
         private void frmMain_Load(object sender, EventArgs e)
@@ -203,6 +209,26 @@ namespace MDS.GUI
             { }
         }
 
+        //kod testowy dla preprocesiingu danych
+        private void _mProcessData_Click(object sender, EventArgs e)
+        {
+            this.mainANN.InputData.Remove("Arrythmia");
+            IDictionaryEnumerator en = this.mainANN.InputData.GetEnumerator();
+            while (en.MoveNext())
+            {
+                try
+                {
+                    this.d.standarizeData((List<double[]>)en.Value, 2, 1, 3);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            pretest.printProcessedHashtable(this.mainANN.InputData);
+        }
+
+
         private void createThirdTabPage()
         {
             List<int> neurons = new List<int>();
@@ -310,6 +336,7 @@ namespace MDS.GUI
             catch (Exception)
             { }
         }
+
 
 
     }
