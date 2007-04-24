@@ -129,7 +129,7 @@ namespace MDS.GUI
             comboBoxes.Add(comboData);
             panel.Controls.Add(comboData);
 
-            //"Rozmiar danych"
+/*            //"Rozmiar danych"
             Label prelabelDataSize = new Label();
             prelabelDataSize.Text = "Rozmiar danych";
             prelabelDataSize.AutoSize = true;
@@ -174,8 +174,21 @@ namespace MDS.GUI
             labelVectorSize.TabIndex = 0;
             //labelDataSize.BackColor = System.Drawing.Color.White;
             panel.Controls.Add(labelVectorSize);
+ */
+            Button _buttonDataDetails = new Button();
+            _buttonDataDetails.Text = "Szczegó³y";
+            _buttonDataDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            _buttonDataDetails.Name = "_buttonDataDetails";
+            _buttonDataDetails.Location = new System.Drawing.Point(comboData.Location.X + comboData.Size.Width +
+                CONTROL_HDISTANCE_B, comboData.Location.Y);
+            _buttonDataDetails.AutoSize = true;
+            _buttonDataDetails.Click += new EventHandler(_buttonDataDetails_Click);
+            panel.Controls.Add(_buttonDataDetails);
 
-            width = labelVectorSize.Location.X + labelVectorSize.Size.Width;
+
+            //width = labelVectorSize.Location.X + labelVectorSize.Size.Width;
+            width = _buttonDataDetails.Location.X + _buttonDataDetails.Size.Width;
             panel.Size = new System.Drawing.Size(width, height);
             return panel;
         }
@@ -757,6 +770,7 @@ namespace MDS.GUI
         {
             
             String inputName = this._comboInputWorkData.Text;
+            int oneSize, size;
             processData = new MDS.Data.ProcessData();
             processData.Input = (List<double[]>)data[inputName];
             try
@@ -771,9 +785,7 @@ namespace MDS.GUI
                 Console.Out.WriteLine(ex.Message);
             }
 
-            //
-            int oneSize,
-                size = processData.Output.Count;
+            size = processData.Output.Count;
             if (perceptron.Type == Data.NetworkParam.MDS)
             {
                 oneSize = 8;
@@ -784,16 +796,9 @@ namespace MDS.GUI
                 size *= 6;
                 oneSize = 6;
             }
-            //if()
 
             try
             {
-                //int nr = 1;
-
-                //this._tboxVectorNr.Text = "1";
-                //this._inVector.Text = Data.ProcessData.GetStringList( processData.Input[nr-1]);
-                //this._solutionVector.Text = Data.ProcessData.GetStringList(processData.Solution[nr-1]);
-                //this._outVector.Text = Data.ProcessData.GetStringList(processData.Output[nr-1]);
                 String[] lines = new string[size];
 
                 for (int i = 0; i < processData.Output.Count; ++i)
@@ -867,6 +872,28 @@ namespace MDS.GUI
             ComboBox combo = (ComboBox)sender;
             actualizeFields(combo);
            
+        }
+        private void _buttonDataDetails_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            Panel panel = (Panel)button.Parent;
+            
+            String name = "";
+
+            List<double[]> actData;
+            IEnumerator ie = panel.Controls.GetEnumerator();
+            while (ie.MoveNext())
+            {
+                System.Console.Out.WriteLine(ie.Current.GetType());
+                if (ie.Current.GetType().IsInstanceOfType(new ComboBox()))
+                    name = ((ComboBox)ie.Current).Text;
+
+            }
+            if (name.CompareTo("") == 0)
+                return;
+            actData = (List<double[]>)data[name];
+            DataDetails dialog = new DataDetails( actData, name );
+            dialog.ShowDialog();
         }
     }
 }
