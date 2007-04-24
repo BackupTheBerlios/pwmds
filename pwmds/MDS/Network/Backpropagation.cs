@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace MDS.Network
 {
@@ -12,6 +14,13 @@ namespace MDS.Network
         //1 - warstwa neuronu koñcowego, 2 - pocz¹tkowy neuron, 3 - koñcowy neuron       
         private double[, ,] w, w1;   //w(t) i w(t-1)
         //mo¿e by te tavlice zainicjowac wagami pocz¹tkowymi
+        private double globalError, prevError;
+        private Thread learnThread;
+        
+        private bool endthread;
+        private int iter;
+        
+
 
         public Backpropagation(Perceptron perceptron, Data.LearningParam param)
         {
@@ -23,26 +32,90 @@ namespace MDS.Network
             w = new double[layers, n, n];
             w1 = new double[layers, n, n];
         }
-        public void Learn()
+
+        public void StartLearn()
+        {
+            learnThread = new Thread( new ThreadStart(learn));
+            learnThread.Start(); 
+        }
+
+        public void StopLearn()
+        {
+            endthread = true;
+        }
+
+        public void Start()
+        {
+            iter = 100000;
+            prevError = 0;
+            globalError = 0;
+            Console.Out.WriteLine("Start backpropagation...   ");
+            perceptron.SetRandomWeights();
+            //endthread = false;
+        }
+        public bool NextIteration()
+        {
+            globalError = 0;
+            for (int j = 0; j < param.Input.Count; ++j)
+            {
+                learnOneSample(j);
+                perceptron.calculateOutput(param.Input[j]);
+                globalError += calculateGlobalError(j);
+            }
+            globalError = globalError / param.Input.Count;
+            //tboxError.Text = tboxError.Text + "\n" + globalError;
+            if (globalError < param.Epsilon) 
+                return false;
+            if (prevError != 0 && globalError > 1.04 * prevError)
+                return false;
+            prevError = globalError;
+
+            if (iter % 10000 == 0)
+            {
+                Console.Out.WriteLine("iter::::: " + (100000 - iter) + " GLOBAL ERROR: " + globalError);
+            }
+            iter--;
+            return true;
+        }
+
+        private void learn()
+        {
+            perceptron.SetRandomWeights();
+            if (param.KFoldSamples == 0)
+                learnFunction(-1, -1);
+            else
+                kFoldCrossValidation();
+        }
+
+
+        private void learnFunction( int startTestId, int endTestId )
         {
             int startIter = 100000;
             int iter = startIter;
-            double globalError = 0, prevError = 0;
+            double prevError = 0;
+            globalError = 0;
             Console.Out.WriteLine("Start backpropagation...   ");
-            perceptron.SetRandomWeights();
-            while (iter >= 0)
+            
+            endthread = false;
+            while (!endthread) //(iter>0)
             {
                 globalError =0;
                 for (int j = 0; j < param.Input.Count; ++j)
-                {    
+                {
+                    if (j >= startTestId && j <= endTestId)
+                        continue;
                     learnOneSample(j);           
                     perceptron.calculateOutput(param.Input[j]);
                     globalError += calculateGlobalError(j);
                 }
-                globalError = globalError / param.Input.Count;                    
-                if (globalError < param.Epsilon) break;
-                if (prevError != 0 && globalError > 1.04 * prevError)
+                globalError = globalError / param.Input.Count;
+                //tboxError.Text = tboxError.Text + "\n" + globalError;
+                if (globalError == Double.NaN)
                     break;
+                if (globalError < param.Epsilon) 
+                    break;
+                //if (prevError != 0 && globalError > 1.04 * prevError)
+                  //  break;
                 prevError = globalError;
 
                 if (iter % 10000 == 0)
@@ -58,9 +131,6 @@ namespace MDS.Network
                 perceptron.calculateOutput(param.Input[k]);
                 PrintResultsOfLearning(k);
             }
-
-
-
             /*globalError =0; 
             for (int j = 0; j < param.Input.Count; ++j)
             {                
@@ -76,8 +146,25 @@ namespace MDS.Network
               globalError = globalError / param.Input.Count; 
               Console.Out.WriteLine("GlobalError :!!!!!: "+ globalError ); 
              */ 
-            
         }
+
+        private void kFoldCrossValidation()
+        {
+            int kFoldSamples = param.KFoldSamples;
+            int oneSetSize = (int)Math.Floor((double)param.Input.Count / kFoldSamples );
+            int start, end;
+            for (int i = 0; i < kFoldSamples; ++i)
+            {
+                start = i * oneSetSize;
+                end = start+oneSetSize - 1;
+                if( end > param.Input.Count)
+                    end = param.Input.Count;
+                learnFunction(start, end);
+            }
+        }
+
+
+
         private void learnOneSample(int vectNr)
         {
            
@@ -203,11 +290,7 @@ namespace MDS.Network
             //return Function.NormSqrt(param.Output[vectNr], output);
             return 1.0 / 2.0 * Function.Square(param.Output[vectNr], output);
         }
-        public Data.LearningParam Param
-        {
-            get { return param; }
-            set { param = value; }
-        }
+        
         public void PrintResultsOfLearning(int i)
         {
 
@@ -305,6 +388,21 @@ namespace MDS.Network
 
 
         }*/
+/*        public TextBox TBoxError
+        {
+            set { tboxError = value; }
+        }*/
+        public double GlobalError
+        {
+            get { return globalError; }
+        }
+
        
+        public Data.LearningParam Param
+        {
+            get { return param; }
+            set { param = value; }
+        }
+        
     }
 }

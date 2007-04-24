@@ -11,6 +11,8 @@ namespace MDS.Data
 
         private double tau;/////////
         private double epsilon;
+        
+        private int kFoldSamples;
 
         private List<double[]> input;
         private List<double[]> output;
@@ -36,6 +38,12 @@ namespace MDS.Data
         {
             get { return epsilon; }
             set { epsilon = value; }
+        }
+
+        public int KFoldSamples
+        {
+            get { return kFoldSamples; }
+            set { kFoldSamples = value; }
         }
 
         public List<double[]> Input

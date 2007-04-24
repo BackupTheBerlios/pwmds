@@ -6,10 +6,10 @@ namespace MDS.Network
 {
     public class Function
     {
-        public static String[] FUNCTIONS = {"Funkcja identycznoœciowa",
-                            "Funkcja tangensowa",                            
+        public static String[] FUNCTIONS = {"IDENTYCZNOŒCIOWA",
+                            "TANGENSOWA",                            
                             "Jakaœ",
-                            "Funkcja sigmoidalna"};
+                            "SIGMOIDALNA"};
         public static int IDENTITY = 0,
                         TANH = 1,
                         CONST = 2,

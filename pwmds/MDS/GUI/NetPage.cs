@@ -11,6 +11,13 @@ namespace MDS.GUI
 
     class NetPage : TabPage
     {
+        private static int LEFT_MARGIN = 30, RIGHT_MARGIN = 30,
+                            UP_MARGIN = 20, DOWN_MARGIN = 20,
+                            PANEL_DISTANCE = 50,
+                            CONTROL_VDISTANCE_S = 5, CONTROL_HDISTANCE_S = 5,
+                            CONTROL_VDISTANCE_B = 20, CONTROL_HDISTANCE_B = 20,
+                            CONTROL_HEIGHT = 40, CONTROL_WIDTH = 180,
+                            LAYERS_PANEL_WIDTH = 400;
         private int nr;
         private Perceptron perceptron;
         private String networkName;
@@ -18,26 +25,61 @@ namespace MDS.GUI
         private Hashtable data;
         private List<double[]> currentOutput;
         private Data.ProcessData processData;
+        Network.Backpropagation backprop;
 
+        
+    #region declaration_network_info_controls
 
         private TableLayoutPanel _layeresPanel;
-        private Label label1;
+        private Label _labelPreNetType;
+        private Label _labelNetType;
+    #endregion
+    #region declaration_learning_controls
+        private Panel _panelLearn;
+        private Label _labelLearnTitle;
         
-        private Label _networkType;
-        private Label _learnDataLabel;
-        private Label _workDataLabel;
-        private Label _inputLearnDataLabel;
-        private Label _outputLearnDataLabel;
-
-        private Label _inputWorkDataLabel;
+        private Panel _panelLearnInputData;       
         private ComboBox _comboInputLearnData;
+        
+        private Panel _panelLearnOutputData;
         private ComboBox _comboOutputLearnData;
+
+        private Label _labelGlobalError;
+
+        private Label _alphaRatioLabel;
+        private Label _epsilonRatioLabel;
+        private Label _tetaRatioLabel;
+        private TextBox _tboxAlpha;
+        private TextBox _tboxEpsilon;
+        private TextBox _tboxTeta;
+
+        private CheckBox _chboxKFold;
+        private TextBox _tboxKFold;
+
+        private Button _buttonLearn;
+        private Button _buttonStopLearn;
+    #endregion
+
+    #region declaration_working_controls
+        //private Label _workDataLabel;
+        //private Label _inputWorkDataLabel;
+        private Label _workDataLabel;
+        private Panel _panelWork;
+        private Panel _panelWorkInputData;
         private ComboBox _comboInputWorkData;
 
-        private Button _learnButton;
         private Button _startButton;
+    #endregion
 
+    #region declaration_result_controls
+        private Panel _panelResult;
+        private Label _prelabelResult;
+        //private Label _labelResult;
+        private TextBox _tboxResult;
+    #endregion
 
+    #region declaration_other_controls
+        private List<ComboBox> comboBoxes;
         private Label _vectorNrLabel;
         private TextBox _tboxVectorNr;
         private Label _inVectorLabel;
@@ -48,14 +90,7 @@ namespace MDS.GUI
 
         private Label _outVectorLabel;
         private Label _outVector;
-
-        private Label _learnRatiosLabel;
-        private Label _alphaRatioLabel;
-        private Label _epsilonRatioLabel;
-        private Label _tetaRatioLabel;
-        private TextBox _tboxAlpha;
-        private TextBox _tboxEpsilon;
-        private TextBox _tboxTeta;
+    #endregion
 
         public NetPage()
         { }
@@ -65,34 +100,88 @@ namespace MDS.GUI
             this.nr = nr;
             this.data = inputData;
             this.perceptron = perceptron;
+            comboBoxes = new List<ComboBox>();
             InitializeComponent();
-            initializeLayersTable();
-            initializeComboBoxes();
+            
+            initializeDataPanels();
             initializeRatios();
+            backprop = new Backpropagation(perceptron, null);
         }
 
-        
+        private Panel createProcessDataPanel( String preComboText, ComboBox comboData, int dataSize, int vectorSize )
+        {
+            int LABEL_Y = 8, 
+                width = 0, height = 40;
+            Panel panel = new Panel();
+            //czy dane s¹ wejœciowe, czy wyjœciowa
+            Label preComboLabel = new Label();
+            preComboLabel.Text = preComboText;
+            preComboLabel.AutoSize = true;
+            preComboLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            preComboLabel.Location = new System.Drawing.Point(0, LABEL_Y);
+            preComboLabel.TabIndex = 0;
+            panel.Controls.Add(preComboLabel);
+
+
+            //ComboBox z danymi
+            comboData.Location = new System.Drawing.Point(preComboLabel.Size.Width + CONTROL_HDISTANCE_S, 0);
+            comboData.SelectedValueChanged += new EventHandler(_comboBox_SelectedValueChanged);
+            comboBoxes.Add(comboData);
+            panel.Controls.Add(comboData);
+
+            //"Rozmiar danych"
+            Label prelabelDataSize = new Label();
+            prelabelDataSize.Text = "Rozmiar danych";
+            prelabelDataSize.AutoSize = true;
+            prelabelDataSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            prelabelDataSize.Location = new System.Drawing.Point(comboData.Location.X + comboData.Size.Width +
+                CONTROL_HDISTANCE_B, LABEL_Y);
+            prelabelDataSize.TabIndex = 0;
+            panel.Controls.Add(prelabelDataSize);
+
+            //rozmiar danych
+            Label labelDataSize = new Label();
+            labelDataSize.Name = "_dataSize";
+            labelDataSize.Text = "" + dataSize;
+            labelDataSize.AutoSize = true;
+            labelDataSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, 
+                System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            labelDataSize.Location = new System.Drawing.Point(prelabelDataSize.Location.X +
+                prelabelDataSize.Size.Width + CONTROL_HDISTANCE_S, LABEL_Y);
+            labelDataSize.TabIndex = 0;
+            //labelDataSize.BackColor = System.Drawing.Color.White;
+            panel.Controls.Add(labelDataSize);
+
+            //"Rozmiar wektora"
+            Label prelabelVectorSize = new Label();
+            prelabelVectorSize.Text = "Rozmiar wektora";
+            prelabelVectorSize.AutoSize = true;
+            prelabelVectorSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            prelabelVectorSize.Location = new System.Drawing.Point(labelDataSize.Location.X + labelDataSize.Size.Width +
+                CONTROL_HDISTANCE_B, LABEL_Y);
+            prelabelVectorSize.TabIndex = 0;
+            panel.Controls.Add(prelabelVectorSize);
+
+            //rozmiar wektora
+            Label labelVectorSize = new Label();
+            labelVectorSize.Name = "_vectorSize";
+            labelVectorSize.Text = "" + vectorSize;
+            labelVectorSize.AutoSize = true;
+            labelVectorSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            labelVectorSize.Location = new System.Drawing.Point(prelabelVectorSize.Location.X +
+                prelabelVectorSize.Size.Width + CONTROL_HDISTANCE_S, LABEL_Y);
+            labelVectorSize.TabIndex = 0;
+            //labelDataSize.BackColor = System.Drawing.Color.White;
+            panel.Controls.Add(labelVectorSize);
+
+            width = labelVectorSize.Location.X + labelVectorSize.Size.Width;
+            panel.Size = new System.Drawing.Size(width, height);
+            return panel;
+        }
 
         private void InitializeComponent()
         {
-            this._layeresPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this._networkType = new System.Windows.Forms.Label();
-            
-            this._learnDataLabel = new Label();
-            this._inputLearnDataLabel = new Label();
-            this._comboInputLearnData = new ComboBox();
-            this._outputLearnDataLabel = new Label();
-            this._comboOutputLearnData = new ComboBox();
-            
-            
-
-            this._workDataLabel = new Label();
-            this._inputWorkDataLabel = new Label();
-            this._comboInputWorkData = new ComboBox();
-            
-            this._learnButton = new Button();
-            this._startButton = new Button();
 
             this._vectorNrLabel = new Label();
             this._tboxVectorNr = new TextBox();
@@ -105,20 +194,36 @@ namespace MDS.GUI
             this._outVectorLabel = new Label();
             this._outVector = new Label();
 
-            this._learnRatiosLabel = new Label();
-            this._alphaRatioLabel = new Label();
-            this._epsilonRatioLabel = new Label();
-            this._tetaRatioLabel = new Label();
-
-            this._tboxAlpha = new TextBox();
-            this._tboxEpsilon = new TextBox();
-            this._tboxTeta = new TextBox();
-
             this.SuspendLayout();
+
+        #region initialization_network_info_controls
+            // 
+            // _labelPreNetType
+            // 
+            this._labelPreNetType = new System.Windows.Forms.Label();
+            this._labelPreNetType.AutoSize = true;
+            this._labelPreNetType.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._labelPreNetType.Location = new System.Drawing.Point(LEFT_MARGIN, UP_MARGIN);
+            this._labelPreNetType.Name = "_labelPreNetType";
+            this._labelPreNetType.TabIndex = 0;
+            this._labelPreNetType.Text = "Typ sieci:";
+            // 
+            // _labelNetType
+            // 
+            this._labelNetType = new System.Windows.Forms.Label();
+            this._labelNetType.AutoSize = true;
+            this._labelNetType.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._labelNetType.Location = new System.Drawing.Point(LEFT_MARGIN + this._labelPreNetType.Size.Width + CONTROL_HDISTANCE_S, UP_MARGIN);
+            this._labelNetType.Name = "_labelNetType";
+            this._labelNetType.TabIndex = 0;
+            this._labelNetType.Text = perceptron.TypeName;
+            
             // 
             // _layeresPanel
             // 
-            //this._layeresPanel.AutoScroll = true;
+            
+            this._layeresPanel = new System.Windows.Forms.TableLayoutPanel();
+            
             this._layeresPanel.BackColor = System.Drawing.Color.White;
             this._layeresPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this._layeresPanel.ColumnCount = 3;
@@ -126,175 +231,237 @@ namespace MDS.GUI
             this._layeresPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this._layeresPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this._layeresPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._layeresPanel.Location = new System.Drawing.Point(30, 100);
+            this._layeresPanel.Location = new System.Drawing.Point(LEFT_MARGIN, UP_MARGIN + this._labelNetType.Size.Height + CONTROL_VDISTANCE_S);
             this._layeresPanel.Name = "_layeresPanel";
             this._layeresPanel.RowCount = 2;
             this._layeresPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
 //je¿eli za du¿o warstw to zrób scroll
             
             this._layeresPanel.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(20, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(73, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Typ sieci:";
-            // 
-            // _networkType
-            // 
-            this._networkType.AutoSize = true;
-            this._networkType.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._networkType.Location = new System.Drawing.Point(100, 20);
-            this._networkType.Name = "_networkType";
-            this._networkType.Size = new System.Drawing.Size(0, 200);
-            this._networkType.TabIndex = 0;
-            this._networkType.Text = perceptron.TypeName;
+            initializeLayersTable();
+            
+            
+        #endregion
+        #region initialization_learning_controls
+            //_learnPanel
+
+            this._panelLearn = new Panel();
+            this._panelLearn.Location = new System.Drawing.Point(LEFT_MARGIN + LAYERS_PANEL_WIDTH+ PANEL_DISTANCE, UP_MARGIN);
+            //this._panelLearn.BorderStyle = BorderStyle.FixedSingle;
+            this._panelLearn.Size = new System.Drawing.Size(750, 300);
 
             // 
-            // _learnDataLabel
+            // _labelLearnTitle
             // 
-            this._learnDataLabel.AutoSize = true;
-            this._learnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._learnDataLabel.Location = new System.Drawing.Point(690, 70);
-            this._learnDataLabel.Name = "_learnDataLabel";
-            this._learnDataLabel.Size = new System.Drawing.Size(73, 20);
-            this._learnDataLabel.TabIndex = 0;
-            this._learnDataLabel.Text = "Dane ucz¹ce:";
-            
-            // 
-            // _inputLearnDataLabel
-            // 
-            this._inputLearnDataLabel.AutoSize = true;
-            this._inputLearnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._inputLearnDataLabel.Location = new System.Drawing.Point(710, 105);
-            this._inputLearnDataLabel.Name = "_inputDataLabel";
-            this._inputLearnDataLabel.Size = new System.Drawing.Size(80, 20);
-            this._inputLearnDataLabel.TabIndex = 0;
-            this._inputLearnDataLabel.Text = "Dane wejœciowe:";
+            this._labelLearnTitle = new Label();
+            this._labelLearnTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._labelLearnTitle.Name = "_labelLearnTitle";
+            this._labelLearnTitle.Size = new System.Drawing.Size(this._panelLearn.Size.Width, 20);
+            this._labelLearnTitle.TabIndex = 0;
+            this._labelLearnTitle.Text = "UCZENIE SIECI";
+            this._labelLearnTitle.Location = new System.Drawing.Point(0, 5);
+            this._labelLearnTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+
+            this._panelLearn.Controls.Add(this._labelLearnTitle);
+
             // 
             // _comboInputLearnData
             // 
-            this._comboInputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._comboInputLearnData.Location = new System.Drawing.Point(840, 100);
+            this._comboInputLearnData = new ComboBox();
+            
+            this._comboInputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, 
+                    System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._comboInputLearnData.Name = "_comboInputLearnData";
             this._comboInputLearnData.Size = new System.Drawing.Size(150, 15);
             this._comboInputLearnData.TabIndex = 0;
+            this._comboInputLearnData.Sorted = true;
+            // 
+            // _panelLearnInputData
+            // 
+            this._panelLearnInputData = createProcessDataPanel("Dane wejœciowe", this._comboInputLearnData, 0, 0);
+            this._panelLearnInputData.Location = new System.Drawing.Point(0, this._labelLearnTitle.Location.Y + 
+                this._labelLearnTitle.Size.Height + CONTROL_VDISTANCE_B);
+
+            this._panelLearn.Controls.Add(this._panelLearnInputData);
 
             // 
-            // _outputLearnDataLabel
+            // _comboOutputLearnData
             // 
-            if (perceptron.Type.CompareTo(Data.NetworkParam.CLASSIFIER) == 0)
-            {
+            this._comboOutputLearnData = new ComboBox();
+            this._comboOutputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._comboOutputLearnData.Location = new System.Drawing.Point(140, 90);
+            this._comboOutputLearnData.Name = "_comboOutputLearnData";
+            this._comboOutputLearnData.Size = new System.Drawing.Size(150, 15);
+            this._comboOutputLearnData.TabIndex = 0;
+            this._comboOutputLearnData.Sorted = true;
+            
 
-                this._outputLearnDataLabel.AutoSize = true;
-                this._outputLearnDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-                this._outputLearnDataLabel.Location = new System.Drawing.Point(710, 135);
-                this._outputLearnDataLabel.Name = "_inputDataLabel";
-                this._outputLearnDataLabel.Size = new System.Drawing.Size(80, 20);
-                this._outputLearnDataLabel.TabIndex = 0;
-                this._outputLearnDataLabel.Text = "Dane wyjœciowe:";
+            // 
+            // _panelLearnOutputData
+            // 
+            this._panelLearnOutputData = createProcessDataPanel("Dane wyjœciowe", this._comboOutputLearnData, 0, 0);
+            this._panelLearnOutputData.Location = new System.Drawing.Point(0, this._panelLearnInputData.Location.Y +
+                    this._panelLearnInputData.Size.Height + CONTROL_VDISTANCE_S);
 
-                // 
-                // _comboOutputLearnData
-                // 
-                this._comboOutputLearnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-                this._comboOutputLearnData.Location = new System.Drawing.Point(840, 130);
-                this._comboOutputLearnData.Name = "_comboOutputLearnData";
-                this._comboOutputLearnData.Size = new System.Drawing.Size(150, 15);
-                this._comboOutputLearnData.TabIndex = 0;
-
-            }
-
-            //
-            //_learnRatiosLabel 
-            //
-            this._learnRatiosLabel.AutoSize = true;
-            this._learnRatiosLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._learnRatiosLabel.Name = "_learnRatiosLabel";
-            this._learnRatiosLabel.Size = new System.Drawing.Size(80, 20);
-            this._learnRatiosLabel.Location = new System.Drawing.Point(700, 170);
-            this._learnRatiosLabel.TabIndex = 0;
-            this._learnRatiosLabel.Text = "Wspó³czynniki";
+            this._panelLearn.Controls.Add(this._panelLearnOutputData);
 
             //
             //_alphaRatioLabel 
             //
+            this._alphaRatioLabel = new Label();
             this._alphaRatioLabel.AutoSize = true;
             this._alphaRatioLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._alphaRatioLabel.Name = "_learnRatiosLabel";
             this._alphaRatioLabel.Size = new System.Drawing.Size(80, 20);
-            this._alphaRatioLabel.Location = new System.Drawing.Point(720, 200);
+            this._alphaRatioLabel.Location = new System.Drawing.Point(0, this._panelLearnOutputData.Location.Y + 
+                this._panelLearnOutputData.Size.Height + CONTROL_VDISTANCE_B );
             this._alphaRatioLabel.TabIndex = 0;
-            this._alphaRatioLabel.Text = "Wspó³czynnik momentum";
+            this._alphaRatioLabel.Text = "Wspó³czynnik momentu";
+
+            this._panelLearn.Controls.Add(this._alphaRatioLabel);
 
             //
             //_tboxAlpha 
             //
+            this._tboxAlpha = new TextBox();
             this._tboxAlpha.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._tboxAlpha.Name = "_tboxAlpha";
-            this._tboxAlpha.Size = new System.Drawing.Size(50, 22);
+            this._tboxAlpha.Size = new System.Drawing.Size(55, 22);
             this._tboxAlpha.TabIndex = 1;
-            this._tboxAlpha.Location = new System.Drawing.Point(880, 200);
+            this._tboxAlpha.Location = new System.Drawing.Point(CONTROL_WIDTH , this._alphaRatioLabel.Location.Y);
+            this._tboxAlpha.TextAlign = HorizontalAlignment.Center;
+            this._panelLearn.Controls.Add(this._tboxAlpha);
+
             //this._tboxAlpha.Text = "1";
             //this._tboxVectorNr.TextChanged += new System.EventHandler(this._tboxVectorNr_TextChanged);
 
             //
             //_epsilonRatioLabel 
             //
+            this._epsilonRatioLabel = new Label();
             this._epsilonRatioLabel.AutoSize = true;
             this._epsilonRatioLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._epsilonRatioLabel.Name = "_epsilonRatioLabel";
-            this._epsilonRatioLabel.Size = new System.Drawing.Size(80, 20);
-            this._epsilonRatioLabel.Location = new System.Drawing.Point(720, 230);
+            //this._epsilonRatioLabel.Size = new System.Drawing.Size(80, 20);
+            this._epsilonRatioLabel.Location = new System.Drawing.Point(0, this._alphaRatioLabel.Location.Y + 
+                        this._alphaRatioLabel.Size.Height + CONTROL_VDISTANCE_S);
             this._epsilonRatioLabel.TabIndex = 0;
-            this._epsilonRatioLabel.Text = "Epsilon";
+            this._epsilonRatioLabel.Text = "Dok³adnoœæ";
+            this._panelLearn.Controls.Add(this._epsilonRatioLabel);
             //
             //_tboxEpsilon 
             //
+            this._tboxEpsilon = new TextBox();
             this._tboxEpsilon.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._tboxEpsilon.Name = "_tboxEpsilon";
-            this._tboxEpsilon.Size = new System.Drawing.Size(50, 22);
+            this._tboxEpsilon.Size = new System.Drawing.Size(55, 22);
             this._tboxEpsilon.TabIndex = 1;
-            this._tboxEpsilon.Location = new System.Drawing.Point(880, 230);
+            this._tboxEpsilon.Location = new System.Drawing.Point(CONTROL_WIDTH, this._epsilonRatioLabel.Location.Y);
+            this._tboxEpsilon.TextAlign = HorizontalAlignment.Center;
+            this._panelLearn.Controls.Add(this._tboxEpsilon);
             //
             //_tetaRatioLabel 
             //
+            this._tetaRatioLabel = new Label();
             this._tetaRatioLabel.AutoSize = true;
             this._tetaRatioLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._tetaRatioLabel.Name = "_tetaRatioLabel";
-            this._tetaRatioLabel.Size = new System.Drawing.Size(80, 20);
-            this._tetaRatioLabel.Location = new System.Drawing.Point(720, 260);
+            //this._tetaRatioLabel.Size = new System.Drawing.Size(80, 20);
+            this._tetaRatioLabel.Location = new System.Drawing.Point(0, this._epsilonRatioLabel.Location.Y +
+                        this._epsilonRatioLabel.Size.Height + CONTROL_VDISTANCE_S);
             this._tetaRatioLabel.TabIndex = 0;
             this._tetaRatioLabel.Text = "Wspó³czynnik uczenia";
+            this._panelLearn.Controls.Add(this._tetaRatioLabel);
 
             //
             //_tboxTeta 
             //
+            this._tboxTeta = new TextBox();
             this._tboxTeta.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._tboxTeta.Name = "_tboxTeta";
-            this._tboxTeta.Size = new System.Drawing.Size(50, 22);
+            this._tboxTeta.Size = new System.Drawing.Size(55, 22);
             this._tboxTeta.TabIndex = 1;
-            this._tboxTeta.Location = new System.Drawing.Point(880, 260);
+            this._tboxTeta.Location = new System.Drawing.Point(CONTROL_WIDTH, this._tetaRatioLabel.Location.Y);
+            this._tboxTeta.TextAlign = HorizontalAlignment.Center;
+            this._panelLearn.Controls.Add(this._tboxTeta);
+
+            //
+            //_tboxGlobalError
+            //
+/*            this._labelGlobalError = new Label();
+            this._labelGlobalError.Location = new System.Drawing.Point(this._tboxAlpha.Location.X +
+                this._tboxAlpha.Width + CONTROL_HDISTANCE_B, this._tboxAlpha.Location.Y);
+            this._labelGlobalError.Size = new System.Drawing.Size(100, 350);
+            this._panelLearn.Controls.Add(this._labelGlobalError);
+
+  */
+            //
+            //_chboxKFold 
+            //
+            this._chboxKFold = new CheckBox();
+            this._chboxKFold.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, 
+                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._chboxKFold.Text = "K fold cross validation";
+            this._chboxKFold.AutoSize = true;
+            this._chboxKFold.Location = new System.Drawing.Point(0, this._tetaRatioLabel.Location.Y + 
+                    this._tetaRatioLabel.Size.Height + CONTROL_VDISTANCE_B);
+            this._chboxKFold.CheckedChanged += new System.EventHandler(this._chboxKFold_CheckedChanged);
+            this._panelLearn.Controls.Add(this._chboxKFold);
+
+            //
+            //_tboxKFold 
+            //
+            this._tboxKFold = new TextBox();
+            this._tboxKFold.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F,
+                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._tboxKFold.Enabled = false;
+            this._tboxKFold.TextAlign = HorizontalAlignment.Center;
+            this._tboxKFold.Size = new System.Drawing.Size(55, 22);
+            this._tboxKFold.Text = "0";
+            this._tboxKFold.Location = new System.Drawing.Point(this._chboxKFold.Location.X + CONTROL_WIDTH, 
+                        this._chboxKFold.Location.Y);
             
+            this._panelLearn.Controls.Add(this._tboxKFold);
 
             // 
-            // _learnButton
+            // _buttonLearn
             // 
-            this._learnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._learnButton.Location = new System.Drawing.Point(700, 290);
-            this._learnButton.Name = "_learnButton";
-            this._learnButton.Size = new System.Drawing.Size(150, 30);
-            this._learnButton.TabIndex = 0;
-            this._learnButton.Text = "Ucz sieæ";
-            this._learnButton.Click += new System.EventHandler(this._learnButton_Click);
+            this._buttonLearn = new Button();
+            this._buttonLearn.AutoSize = true;
+            this._buttonLearn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._buttonLearn.Location = new System.Drawing.Point(0, this._chboxKFold.Location.Y + 
+                        this._chboxKFold.Size.Height + CONTROL_VDISTANCE_B);
+            this._buttonLearn.Name = "_buttonLearn";
+            //this._buttonLearn.Size = new System.Drawing.Size(150, 30);
+            this._buttonLearn.TabIndex = 0;
+            this._buttonLearn.Text = "Start";
+            this._buttonLearn.Click += new System.EventHandler(this._learnButton_Click);
+            this._panelLearn.Controls.Add(this._buttonLearn);
+
+            // 
+            // _buttonStopLearn
+            // 
+            this._buttonStopLearn = new Button();
+            this._buttonStopLearn.AutoSize = true;
+            this._buttonStopLearn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._buttonStopLearn.Location = new System.Drawing.Point(this._buttonLearn.Size.Width + CONTROL_HDISTANCE_B, 
+                                                                    this._buttonLearn.Location.Y);
+            this._buttonStopLearn.Name = "_buttonStopLearn";
+            //this._buttonStopLearn.Size = new System.Drawing.Size(150, 30);
+            this._buttonStopLearn.TabIndex = 0;
+            this._buttonStopLearn.Text = "Stop";
+            this._buttonStopLearn.Click += new System.EventHandler(this._stopLearnButton_Click);
+            this._panelLearn.Controls.Add(this._buttonStopLearn);
+
+
+            
           
+        #endregion
+        #region initialization_working_controls
             // 
             // _workDataLabel
             // 
+            this._workDataLabel = new Label();
             this._workDataLabel.AutoSize = true;
             this._workDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._workDataLabel.Location = new System.Drawing.Point(690, 350);
@@ -302,175 +469,120 @@ namespace MDS.GUI
             this._workDataLabel.Size = new System.Drawing.Size(73, 20);
             this._workDataLabel.TabIndex = 0;
             this._workDataLabel.Text = "Dane do przetwarzania";
-
+           
             // 
-            // _inputWorkDataLabel
+            // _panelWork
             // 
-            this._inputWorkDataLabel.AutoSize = true;
-            this._inputWorkDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._inputWorkDataLabel.Location = new System.Drawing.Point(710, 385);
-            this._inputWorkDataLabel.Name = "_inputWorkDataLabel";
-            this._inputWorkDataLabel.Size = new System.Drawing.Size(80, 20);
-            this._inputWorkDataLabel.TabIndex = 0;
-            this._inputWorkDataLabel.Text = "Dane wejœciowe:";
+            this._panelWork = new Panel();
+            this._panelWork.Size = new System.Drawing.Size( this._panelLearn.Size.Width,
+                300 );
+            this._panelWork.Location = new System.Drawing.Point( this._panelLearn.Location.X,
+                this._panelLearn.Location.Y + this._panelLearn.Size.Height + PANEL_DISTANCE);
             // 
             // _comboInputWorkData
             // 
+            this._comboInputWorkData = new ComboBox();
             this._comboInputWorkData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this._comboInputWorkData.Location = new System.Drawing.Point(840, 380);
             this._comboInputWorkData.Name = "_comboInputWorkData";
             this._comboInputWorkData.Size = new System.Drawing.Size(150, 15);
             this._comboInputWorkData.TabIndex = 0;
 
-
+            //
+            //_panelWorkInputData
+            //
+            this._panelWorkInputData = createProcessDataPanel("Dane wejœciowe",
+                    this._comboInputWorkData, 0, 0);
+            this._panelWorkInputData.Location = new System.Drawing.Point( 0, 0);
+            // 
+            // _inputWorkDataLabel
+            // 
+/*            this._inputWorkDataLabel.AutoSize = true;
+            this._inputWorkDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._inputWorkDataLabel.Location = new System.Drawing.Point(710, 385);
+            this._inputWorkDataLabel.Name = "_inputWorkDataLabel";
+            this._inputWorkDataLabel.Size = new System.Drawing.Size(80, 20);
+            this._inputWorkDataLabel.TabIndex = 0;
+            this._inputWorkDataLabel.Text = "Dane wejœciowe:";
+ */
+            this._panelWork.Controls.Add(this._panelWorkInputData);
             
-
             // 
             // _startButton
             // 
+            this._startButton = new Button();
             this._startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._startButton.Location = new System.Drawing.Point(710, 500);
+            this._startButton.Location = new System.Drawing.Point(0, 
+                this._panelWorkInputData.Location.Y + this._panelWorkInputData.Size.Height);
             this._startButton.Name = "_startButton";
             this._startButton.Size = new System.Drawing.Size(150, 30);
             this._startButton.TabIndex = 0;
             this._startButton.Text = "Rozpocznij przetwarzanie";
             this._startButton.Click += new System.EventHandler(this._startButton_Click);
+
+            this._panelWork.Controls.Add(this._startButton);
+
+            this.Controls.Add(this._panelWork);
+        #endregion
+
+        #region initialization_result_controls
+
+            //
+            //_panelResult
+            //
+
+            this._panelResult = new Panel();
+            this._panelResult.Location = new System.Drawing.Point(this._layeresPanel.Location.X,
+                this._layeresPanel.Location.Y + this._layeresPanel.Size.Height + PANEL_DISTANCE);
+            this._panelResult.Size = new System.Drawing.Size(this._layeresPanel.Size.Width, 300);
+            //
+            //_prelableResult 
+            //
+
+            this._prelabelResult = new Label();
+            this._prelabelResult.Text = "WYNIKI";
+            this._prelabelResult.Location = new System.Drawing.Point(0, 0);
+            this._panelResult.Controls.Add(this._prelabelResult);
+
+            //
+            //_labelResult 
+            //
+
+/*            this._labelResult = new Label();
+            this._labelResult.AutoScrollOffset = new System.Drawing.Point(10, 10);
+            this._labelResult.Size = new System.Drawing.Size(this._layeresPanel.Size.Width,
+                100);
+            this._labelResult.BorderStyle = BorderStyle.FixedSingle;
+            this._labelResult.BackColor = System.Drawing.Color.White;
+            this._labelResult.Location = new System.Drawing.Point(this._prelabelResult.Location.X,
+                this._prelabelResult.Location.Y + this._prelabelResult.Size.Height + CONTROL_VDISTANCE_S);
+            this._panelResult.Controls.Add(this._labelResult);
+            */
+            _tboxResult = new TextBox();
+            //_tboxResult.Enabled = false;
+            _tboxResult.BackColor = System.Drawing.Color.White;
+            _tboxResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            _tboxResult.Location = new System.Drawing.Point(this._prelabelResult.Location.X,
+                this._prelabelResult.Location.Y + this._prelabelResult.Size.Height + CONTROL_VDISTANCE_S);
+
+            _tboxResult.Name = "_tboxResult";
+            _tboxResult.Size = new System.Drawing.Size(this._panelResult.Size.Width, 250);
+            _tboxResult.Multiline = true;
+            _tboxResult.WordWrap = false;
+            _tboxResult.ScrollBars = ScrollBars.Both;
             
-            //
-            //_vectorNrLabel 
-            //
-            this._vectorNrLabel.AutoSize = true;
-            this._vectorNrLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._vectorNrLabel.Name = "_vectorNrLabel";
-            this._vectorNrLabel.Size = new System.Drawing.Size(80, 20);
-            this._vectorNrLabel.TabIndex = 0;
-            this._vectorNrLabel.Text = "Numer wektora:";
-            //
-            //_tboxVectorNr 
-            //
-            this._tboxVectorNr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            
-            this._tboxVectorNr.Name = "_tboxVectorNr";
-            this._tboxVectorNr.Size = new System.Drawing.Size(50, 22);
-            this._tboxVectorNr.TabIndex = 1;
-            this._tboxVectorNr.Text = "1";
-            this._tboxVectorNr.TextChanged += new System.EventHandler(this._tboxVectorNr_TextChanged);
+            this._panelResult.Controls.Add(_tboxResult);
+            this.Controls.Add(_panelResult);
 
-
-            //
-            //_inVectorLabel 
-            //
-            this._inVectorLabel.AutoSize = true;
-            this._inVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._inVectorLabel.Name = "_inVectorLabel";
-            this._inVectorLabel.Size = new System.Drawing.Size(80, 20);
-            this._inVectorLabel.TabIndex = 0;
-            this._inVectorLabel.Text = "Wektor wejœcia";
-
-            //
-            //_inVector
-            //
-            //this._inVector.AutoSize = true;
-            this._inVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._inVector.Name = "_inVector";
-            this._inVector.BackColor = System.Drawing.Color.White;
-            this._inVector.TabIndex = 0;
-            this._inVector.Text = "    ";
-
-           // if (perceptron.Type == Data.NetworkParam.MDS)
-            //{
-
-                //
-                //_solutionVectorLabel 
-                //
-                this._solutionVectorLabel.AutoSize = true;
-                this._solutionVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-                this._solutionVectorLabel.Name = "_solutionVectorLabel";
-                this._solutionVectorLabel.Size = new System.Drawing.Size(80, 20);
-                this._solutionVectorLabel.TabIndex = 0;
-                this._solutionVectorLabel.Text = "Wektor rozwi¹zania";
-
-                //
-                //_solutionVector
-                //
-                //this._inVector.AutoSize = true;
-                this._solutionVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-                this._solutionVector.Name = "_solutionVector";
-                this._solutionVector.BackColor = System.Drawing.Color.White;
-                this._solutionVector.TabIndex = 0;
-                this._solutionVector.Text = "    ";
-        //    }
-
-                //
-                //_outVectorLabel 
-                //
-                this._outVectorLabel.AutoSize = true;
-                this._outVectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-                this._outVectorLabel.Name = "_outVectorLabel";
-                this._outVectorLabel.Size = new System.Drawing.Size(80, 20);
-                this._outVectorLabel.TabIndex = 0;
-                this._outVectorLabel.Text = "Wektor wyjœciowy";
-
-                //
-                //_outVector
-                //
-                //this._inVector.AutoSize = true;
-                this._outVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-                this._outVector.Name = "_outVector";
-                this._outVector.BackColor = System.Drawing.Color.White;
-                this._outVector.TabIndex = 0;
-                this._outVector.Text = "    ";
-
-               
-
-
-
-
+        #endregion
             // 
             // NetPage
             // 
-            this.AccessibleName = "hgfds";
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this._networkType);
+            //this.AccessibleName = "hgfds";
+            this.Controls.Add(this._labelPreNetType);
+            this.Controls.Add(this._labelNetType);
             this.Controls.Add(this._layeresPanel);
-            this.Controls.Add(this._learnDataLabel);
-
-            this.Controls.Add(this._inputLearnDataLabel);
-            this.Controls.Add(this._comboInputLearnData);
-
-            if (perceptron.Type.CompareTo(Data.NetworkParam.CLASSIFIER) == 0)
-            {
-                this.Controls.Add(this._outputLearnDataLabel);
-                this.Controls.Add(this._comboOutputLearnData);
-            }
-            
-            
-            this.Controls.Add(this._workDataLabel);
-            this.Controls.Add(this._inputWorkDataLabel);
-            this.Controls.Add(this._comboInputWorkData);
-
-            this.Controls.Add(this._learnButton);
-            this.Controls.Add(this._startButton);
-
-            this.Controls.Add(this._vectorNrLabel);
-            this.Controls.Add(this._tboxVectorNr);
-            this.Controls.Add(this._inVectorLabel);
-            this.Controls.Add(this._inVector);
-
-            this.Controls.Add(this._solutionVectorLabel);
-            this.Controls.Add(this._solutionVector);
-
-            this.Controls.Add(this._outVectorLabel);
-            this.Controls.Add(this._outVector);
-
-            this.Controls.Add(this._learnRatiosLabel);
-            this.Controls.Add(this._alphaRatioLabel);
-            this.Controls.Add(this._epsilonRatioLabel);
-            this.Controls.Add(this._tetaRatioLabel);
-            
-            this.Controls.Add(this._tboxAlpha);
-            this.Controls.Add(this._tboxEpsilon);
-            this.Controls.Add(this._tboxTeta);
+            this.Controls.Add(this._panelLearn);
 
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -481,7 +593,7 @@ namespace MDS.GUI
         {
             for (int i = 0; i < perceptron.Size; ++i)
                 this._layeresPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this._layeresPanel.Size = new System.Drawing.Size(600, 30 * (perceptron.Size + 1) + 8);
+            this._layeresPanel.Size = new System.Drawing.Size(LAYERS_PANEL_WIDTH, 30 * (perceptron.Size + 1) + 8);
 
             Label label = new Label();
             label.Text = "Numer warstwy";
@@ -507,17 +619,20 @@ namespace MDS.GUI
                 layer = perceptron.getLayer( i );
                 //pierwsza komóka
                 label = new Label();
+                label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
                 label.Text = layer.Number.ToString();
                 label.Dock = DockStyle.Fill;
                 this._layeresPanel.Controls.Add(label, CreateNetwork.NUMBER_COL, i + 1);
                 //druga komórka
                 label = new Label();
+                label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
                 label.Text = layer.Size.ToString();
                 label.Dock = DockStyle.Fill;
                 this._layeresPanel.Controls.Add(label, CreateNetwork.NEURON_COL, i+1);
 
                 //trzecia komórka
                 label = new Label();
+                label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
                 label.Text = layer.getFunction().Name;
                 label.Dock = DockStyle.Fill;
                 this._layeresPanel.Controls.Add(label, CreateNetwork.FUNCTION_COL, i + 1);
@@ -539,25 +654,32 @@ namespace MDS.GUI
 
         }
 
-        private void initializeComboBoxes()
+        private void initializeDataPanels()
         {
-            this._comboInputLearnData.Items.Clear();
-            this._comboOutputLearnData.Items.Clear();
-            this._comboInputWorkData.Items.Clear();
+            IEnumerator e;
+            ComboBox combo;
+            for (int i = 0; i < comboBoxes.Count; ++i)
+                comboBoxes[i].Items.Clear();
 
-            IEnumerator e = data.Keys.GetEnumerator();
+            e = data.Keys.GetEnumerator();
             while (e.MoveNext())
             {
-                this._comboOutputLearnData.Items.Add(e.Current);
-                this._comboInputLearnData.Items.Add(e.Current);
-                this._comboInputWorkData.Items.Add(e.Current);
+                for (int i = 0; i < comboBoxes.Count; ++i)
+                {
+                    comboBoxes[i].Items.Add(e.Current);
+                    
+                }
             }
             if (data.Count > 0)
             {
-                this._comboInputLearnData.SelectedIndex = 0;
-                this._comboOutputLearnData.SelectedIndex = 0;
-                this._comboInputWorkData.SelectedIndex = 0;
+                for (int i = 0; i < comboBoxes.Count; ++i)
+                {
+                    comboBoxes[i].SelectedIndex = comboBoxes.Count - 1;
+                    actualizeFields(comboBoxes[i]);
+                }
             }
+
+
         }
 
 
@@ -588,7 +710,7 @@ namespace MDS.GUI
             set 
             { 
                 this.data = value;
-                initializeComboBoxes();
+                initializeDataPanels();
             }
         }
 
@@ -598,10 +720,10 @@ namespace MDS.GUI
             Data.LearningParam param = new Data.LearningParam();
             String inputName = this._comboInputLearnData.Text,
                     outputName;
-            if( perceptron.Type == Data.NetworkParam.CLASSIFIER)
+            //if( perceptron.Type == Data.NetworkParam.CLASSIFIER)
                 outputName = this._comboOutputLearnData.Text;
-            else
-                outputName = inputName;
+            //else
+              //  outputName = inputName;
             param.Input = (List<double[]>)data[inputName];
             param.Output = (List<double[]>)data[outputName];
             try
@@ -613,9 +735,17 @@ namespace MDS.GUI
                 //param.Tau = 0;
                 param.Teta = Double.Parse(this._tboxTeta.Text);
                     //0.9;
+                param.KFoldSamples = int.Parse(this._tboxKFold.Text);
+                //backprop = new Network.Backpropagation(perceptron, param);
+                backprop.Param = param;
+                //backprop.TBoxError = this._tboxGlobalError;
 
-                Network.Backpropagation backprop = new Network.Backpropagation(perceptron, param);
-                backprop.Learn();
+                backprop.StartLearn();
+                //backprop.Start();
+                //while (backprop.NextIteration())
+                //{
+                  //  this._labelGlobalError.Text = this._labelGlobalError.Text +"\n" + backprop.GlobalError;
+                //}
              }
             catch(Exception ex)
             {
@@ -642,13 +772,47 @@ namespace MDS.GUI
             }
 
             //
+            int oneSize,
+                size = processData.Output.Count;
+            if (perceptron.Type == Data.NetworkParam.MDS)
+            {
+                oneSize = 8;
+                size *= 8;
+            }
+            else
+            {
+                size *= 6;
+                oneSize = 6;
+            }
+            //if()
+
             try
             {
-                int nr = 1;
-                this._tboxVectorNr.Text = "1";
-                this._inVector.Text = Data.ProcessData.GetStringList( processData.Input[nr-1]);
-                this._solutionVector.Text = Data.ProcessData.GetStringList(processData.Solution[nr-1]);
-                this._outVector.Text = Data.ProcessData.GetStringList(processData.Output[nr-1]);
+                //int nr = 1;
+
+                //this._tboxVectorNr.Text = "1";
+                //this._inVector.Text = Data.ProcessData.GetStringList( processData.Input[nr-1]);
+                //this._solutionVector.Text = Data.ProcessData.GetStringList(processData.Solution[nr-1]);
+                //this._outVector.Text = Data.ProcessData.GetStringList(processData.Output[nr-1]);
+                String[] lines = new string[size];
+
+                for (int i = 0; i < processData.Output.Count; ++i)
+                {
+                    lines[i*oneSize] = "Wektor nr. " + (i+1);
+                    lines[i * oneSize + 1] = "  WEJŒCIE:";
+                    lines[i * oneSize + 2] = Data.ProcessData.GetStringList(processData.Input[i]);
+                    lines[i * oneSize + 3] = "  WYJŒCIE:";
+                    lines[i * oneSize + 4] = Data.ProcessData.GetStringList(processData.Output[i]);
+                    if (perceptron.Type == Data.NetworkParam.MDS)
+                    {
+                        lines[i * oneSize + 5] = "  ROZWI¥ZANIE:";
+                        lines[i * oneSize + 6] = Data.ProcessData.GetStringList(processData.Solution[i]);
+                        lines[i * oneSize + 7] = "______________________________________________________";
+                    }
+                    else
+                        lines[i * oneSize + 5] = "______________________________________________________";
+                    this._tboxResult.Lines = lines;
+                }
             }
             catch (Exception) { }
         }
@@ -663,6 +827,46 @@ namespace MDS.GUI
                 this._outVector.Text = Data.ProcessData.GetStringList(processData.Output[nr-1]);
             }
             catch (Exception) { }
+        }
+        private void _stopLearnButton_Click(object sender, EventArgs e)
+        {
+            backprop.StopLearn();
+        }
+
+        private void _chboxKFold_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox chbox = (CheckBox)sender;
+            if( chbox.Checked == true )
+                this._tboxKFold.Enabled = true;
+            else
+                this._tboxKFold.Enabled = false;
+        }
+
+        private void actualizeFields( ComboBox combo )
+        {
+            Panel panel = (Panel)combo.Parent;
+            String name = combo.Text;
+            Control control;
+
+            int dataSize = ((List<double[]>)data[name]).Count;
+            int vectorSize = ((List<double[]>)data[name])[0].Length;
+
+            IEnumerator en = panel.Controls.GetEnumerator();
+            while (en.MoveNext())
+            {
+                control = (Control)en.Current;
+                if (control.Name.CompareTo("_dataSize") == 0)
+                    control.Text = "" + dataSize;
+                if (control.Name.CompareTo("_vectorSize") == 0)
+                    control.Text = "" + vectorSize;
+            }
+        }
+
+        private void _comboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            ComboBox combo = (ComboBox)sender;
+            actualizeFields(combo);
+           
         }
     }
 }
