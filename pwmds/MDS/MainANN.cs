@@ -64,9 +64,9 @@ namespace MDS
                       // zamienia kropke na przecinek(np 3.5 na 3,5) aby parser dobrze zamienil
                       splitedLine[j] = splitedLine[j].Replace('.', ',');
 
-    
+
                       if (!Double.TryParse(splitedLine[j], out val))
-                         val = Double.NaN;
+                          val = Double.NaN;
                      list.Add(val);
                   }
 
