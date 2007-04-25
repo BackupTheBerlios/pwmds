@@ -500,6 +500,7 @@ namespace MDS.GUI
             this._comboInputWorkData.Name = "_comboInputWorkData";
             this._comboInputWorkData.Size = new System.Drawing.Size(150, 15);
             this._comboInputWorkData.TabIndex = 0;
+            this._comboInputWorkData.Sorted = true;
 
             //
             //_panelWorkInputData

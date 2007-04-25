@@ -100,8 +100,8 @@ namespace MDS.GUI
         private void _mNewNetwork_Click(object sender, EventArgs e)
         {
             CreateNetwork createDialog = new CreateNetwork();
-            createDialog.ShowDialog();
-            if (createDialog.DialogResult == DialogResult.OK)
+            
+            if (createDialog.ShowDialog() == DialogResult.OK)
             {
                 Data.NetworkParam param = new Data.NetworkParam();
                 param.Type = createDialog.NetworkType;
@@ -126,9 +126,9 @@ namespace MDS.GUI
                 {
                     MessageBox.Show("Creating new network failed.");
                 }
-                
+                createDialog.Dispose();
             }
-            createDialog.Dispose();
+            
         }
 
         private void setPagesNewInputData( Hashtable inputData)
@@ -214,6 +214,12 @@ namespace MDS.GUI
         //kod testowy dla preprocesiingu danych
         private void _mProcessData_Click(object sender, EventArgs e)
         {
+            DataProcess dataDialog = new DataProcess();
+            dataDialog.Data = this.mainANN.InputData;
+            if (dataDialog.ShowDialog() == DialogResult.OK)
+            {
+
+            }
             this.mainANN.InputData.Remove("Arrythmia");
             IDictionaryEnumerator en = this.mainANN.InputData.GetEnumerator();
             while (en.MoveNext())

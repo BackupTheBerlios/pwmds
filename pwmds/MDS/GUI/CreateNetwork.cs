@@ -197,10 +197,12 @@ namespace MDS.GUI
         {
             //sprawdü czy wszystkie pola sπ wype≥nione
             if (neuronsInLayer.Count == 0)
+            {
                 MessageBox.Show("No layers");
+                this.DialogResult = DialogResult.Cancel;
+            }
             networkName = this._tboxNetworkName.Text;
-
-
+            
         }
 
         private void _tboxSolutionLayerNr_TextChanged(object sender, EventArgs e)
