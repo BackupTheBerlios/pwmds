@@ -12,9 +12,10 @@ namespace MDS
         [STAThread]
         static void Main()
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new MDS.GUI.frmMain());    
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MDS.GUI.frmMain());    
+            
 
 
             try

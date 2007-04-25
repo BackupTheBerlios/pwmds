@@ -118,7 +118,7 @@ namespace MDS.GUI
             this.MainMenuStrip = this.menuStrip;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MDS ver. 0.0";
+            this.Text = "MDS ver. 1.2";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.frmMain_Load);

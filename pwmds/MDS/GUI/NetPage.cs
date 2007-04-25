@@ -561,18 +561,8 @@ namespace MDS.GUI
             //_labelResult 
             //
 
-/*            this._labelResult = new Label();
-            this._labelResult.AutoScrollOffset = new System.Drawing.Point(10, 10);
-            this._labelResult.Size = new System.Drawing.Size(this._layeresPanel.Size.Width,
-                100);
-            this._labelResult.BorderStyle = BorderStyle.FixedSingle;
-            this._labelResult.BackColor = System.Drawing.Color.White;
-            this._labelResult.Location = new System.Drawing.Point(this._prelabelResult.Location.X,
-                this._prelabelResult.Location.Y + this._prelabelResult.Size.Height + CONTROL_VDISTANCE_S);
-            this._panelResult.Controls.Add(this._labelResult);
-            */
             _tboxResult = new TextBox();
-            //_tboxResult.Enabled = false;
+            _tboxResult.ReadOnly = true;
             _tboxResult.BackColor = System.Drawing.Color.White;
             _tboxResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             _tboxResult.Location = new System.Drawing.Point(this._prelabelResult.Location.X,
@@ -591,7 +581,6 @@ namespace MDS.GUI
             // 
             // NetPage
             // 
-            //this.AccessibleName = "hgfds";
             this.Controls.Add(this._labelPreNetType);
             this.Controls.Add(this._labelNetType);
             this.Controls.Add(this._layeresPanel);
@@ -726,6 +715,7 @@ namespace MDS.GUI
                 initializeDataPanels();
             }
         }
+
 
 
         private void _learnButton_Click(object sender, EventArgs e)
@@ -892,8 +882,8 @@ namespace MDS.GUI
             if (name.CompareTo("") == 0)
                 return;
             actData = (List<double[]>)data[name];
-            //DataDetails dialog = new DataDetails( actData, name );
-            //dialog.ShowDialog();
+            DataDetails dialog = new DataDetails( actData, name );
+            dialog.ShowDialog();
         }
     }
 }

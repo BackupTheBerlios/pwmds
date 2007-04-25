@@ -114,8 +114,8 @@ namespace MDS.Network
                     break;
                 if (globalError < param.Epsilon) 
                     break;
-                //if (prevError != 0 && globalError > 1.04 * prevError)
-                  //  break;
+                if (prevError != 0 && globalError > 1.04 * prevError)
+                    this.param.Alpha = 0 ;
                 prevError = globalError;
 
                 if (iter % 10000 == 0)
