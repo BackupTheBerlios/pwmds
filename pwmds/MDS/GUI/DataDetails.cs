@@ -12,14 +12,16 @@ namespace MDS.GUI
     {
         private List<double[]> data;
         private String dataName;
+        //private String dialogName;
         public DataDetails()
         {
             InitializeComponent();
         }
 
-        public DataDetails( List<double[]> ndata, String name)
+        public DataDetails( List<double[]> ndata, String name, String dialogName)
         {
             InitializeComponent();
+            this.Text = dialogName;
             data = ndata;
             dataName = name;
 
@@ -53,6 +55,11 @@ namespace MDS.GUI
         }
 
         #endregion
+
+        private void _buttonExit_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
 
     }
 }

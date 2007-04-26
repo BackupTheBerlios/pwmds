@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Threading;
+using System.ComponentModel;
+
+
 
 namespace MDS.Network
 {
@@ -19,6 +23,9 @@ namespace MDS.Network
         
         private bool endthread;
         private int iter;
+
+        private TextBox _tboxError;
+        delegate void SetTextCallback(string text);
         
 
 
@@ -93,6 +100,7 @@ namespace MDS.Network
             int startIter = 100000;
             int iter = startIter;
             double prevError = 0;
+            String text;
             globalError = 0;
             Console.Out.WriteLine("Start backpropagation...   ");
             
@@ -120,11 +128,17 @@ namespace MDS.Network
 
                 if (iter % 10000 == 0)
                 {
-                    Console.Out.WriteLine("iter::::: " + (startIter-iter) + " GLOBAL ERROR: " + globalError);
+                    text = "iter::::: " + (startIter - iter) + " GLOBAL ERROR: " + globalError;
+                    Console.Out.WriteLine(text);
+                    setErrorText(text + "\n");
                 }
                 iter--;
             }
-            Console.Out.WriteLine("Liczba iteracji " + (startIter-iter) + " GLOBAL ERROR: " + globalError);
+            
+            text = "Liczba iteracji " + (startIter - iter) + " GLOBAL ERROR: " + globalError;
+            Console.Out.WriteLine( text );
+            text += "\nKONIEC OBLICZEÑ";
+            setErrorText(text);
             Console.Out.WriteLine("PO NAUCE WSZYSTKICH WZORCOW:   ");
             for (int k = 0; k < param.Input.Count; ++k)
             {
@@ -146,6 +160,20 @@ namespace MDS.Network
               globalError = globalError / param.Input.Count; 
               Console.Out.WriteLine("GlobalError :!!!!!: "+ globalError ); 
              */ 
+        }
+
+        private void setErrorText(String text)
+        {
+            if (this._tboxError.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(setErrorText);
+                this._tboxError.Invoke(d, new object[] { text });
+            }
+            else
+            {
+                this._tboxError.AppendText(text);
+            }
+
         }
 
         private void kFoldCrossValidation()
@@ -388,10 +416,10 @@ namespace MDS.Network
 
 
         }*/
-/*        public TextBox TBoxError
+        public TextBox TBoxError
         {
-            set { tboxError = value; }
-        }*/
+            set { _tboxError = value; }
+        }
         public double GlobalError
         {
             get { return globalError; }

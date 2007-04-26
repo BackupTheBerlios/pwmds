@@ -59,9 +59,38 @@ namespace MDS.Data
         {
             String ret = "";
             for (int i = 0; i < tab.Length; ++i)
-                ret += tab[i] + " ";
+                if (tab[i].Equals(double.NaN))
+                    ret += "NaN   ";
+                else
+                    ret += GetStringNumber( tab[i]) + "   ";
             return ret;
         }
+
+        public static int GetMainVal(double d)
+        {
+            if (d < 0)
+                return (int)Math.Abs(Math.Ceiling( d));
+            else
+                return (int)Math.Floor(d);
+        }
+
+        public static int GetFraction(double d)
+        {
+            double dd = Math.Abs(d) - Math.Abs(GetMainVal(d));
+            dd *= 100;
+            return (int)Math.Floor(dd);
+        }
+
+        public static String GetStringNumber(double d)
+        {
+            String number = "";
+            if (d < 0)
+                number = "-";
+            number += GetMainVal(d) + "," + GetFraction(d);
+            
+            return number;
+        }
+
 
     }
 }

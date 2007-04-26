@@ -56,6 +56,8 @@ namespace MDS.GUI
         private CheckBox _chboxKFold;
         private TextBox _tboxKFold;
 
+        private TextBox _tboxError;
+
         private Button _buttonLearn;
         private Button _buttonStopLearn;
     #endregion
@@ -399,15 +401,19 @@ namespace MDS.GUI
             this._panelLearn.Controls.Add(this._tboxTeta);
 
             //
-            //_tboxGlobalError
+            //_tboxError
             //
-/*            this._labelGlobalError = new Label();
-            this._labelGlobalError.Location = new System.Drawing.Point(this._tboxAlpha.Location.X +
+            this._tboxError = new TextBox();
+            this._tboxError.Location = new System.Drawing.Point(this._tboxAlpha.Location.X +
                 this._tboxAlpha.Width + CONTROL_HDISTANCE_B, this._tboxAlpha.Location.Y);
-            this._labelGlobalError.Size = new System.Drawing.Size(100, 350);
-            this._panelLearn.Controls.Add(this._labelGlobalError);
+            this._tboxError.Size = new System.Drawing.Size(350, 150);
+            this._tboxError.Multiline = true;
+            this._tboxError.ReadOnly = true;
+            this._tboxError.ScrollBars = ScrollBars.Both;
+            this._tboxError.BackColor = System.Drawing.Color.White;
+            this._panelLearn.Controls.Add(this._tboxError);
 
-  */
+
             //
             //_chboxKFold 
             //
@@ -728,6 +734,7 @@ namespace MDS.GUI
                 outputName = this._comboOutputLearnData.Text;
             //else
               //  outputName = inputName;
+            this._tboxError.Text = "";
             param.Input = (List<double[]>)data[inputName];
             param.Output = (List<double[]>)data[outputName];
             try
@@ -742,7 +749,7 @@ namespace MDS.GUI
                 param.KFoldSamples = int.Parse(this._tboxKFold.Text);
                 //backprop = new Network.Backpropagation(perceptron, param);
                 backprop.Param = param;
-                //backprop.TBoxError = this._tboxGlobalError;
+                backprop.TBoxError = this._tboxError;
 
                 backprop.StartLearn();
                 //backprop.Start();
@@ -869,7 +876,8 @@ namespace MDS.GUI
             Button button = (Button)sender;
             Panel panel = (Panel)button.Parent;
             
-            String name = "";
+            String name = "",
+                    dialogName = "";
 
             List<double[]> actData;
             IEnumerator ie = panel.Controls.GetEnumerator();
@@ -878,13 +886,15 @@ namespace MDS.GUI
                 System.Console.Out.WriteLine(ie.Current.GetType());
                 if (ie.Current.GetType().IsInstanceOfType(new ComboBox()))
                     name = ((ComboBox)ie.Current).Text;
+                if (ie.Current.GetType().IsInstanceOfType(new Label()))
+                    dialogName = ((Label)ie.Current).Text;
 
             }
             if (name.CompareTo("") == 0)
                 return;
             actData = (List<double[]>)data[name];
-            DataDetails dialog = new DataDetails( actData, name );
-            dialog.ShowDialog();
+            DataDetails dialog = new DataDetails( actData, name, dialogName );
+            dialog.Show();
         }
     }
 }

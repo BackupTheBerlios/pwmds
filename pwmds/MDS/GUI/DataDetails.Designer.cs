@@ -112,7 +112,7 @@ namespace MDS.GUI
             this._tboxData.Name = "_tboxData";
             this._tboxData.ReadOnly = true;
             this._tboxData.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this._tboxData.Size = new System.Drawing.Size(812, 302);
+            this._tboxData.Size = new System.Drawing.Size(521, 284);
             this._tboxData.TabIndex = 6;
             this._tboxData.TabStop = false;
             this._tboxData.WordWrap = false;
@@ -131,18 +131,19 @@ namespace MDS.GUI
             // 
             this._buttonExit.DialogResult = System.Windows.Forms.DialogResult.OK;
             this._buttonExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._buttonExit.Location = new System.Drawing.Point(752, 477);
+            this._buttonExit.Location = new System.Drawing.Point(461, 461);
             this._buttonExit.Name = "_buttonExit";
             this._buttonExit.Size = new System.Drawing.Size(75, 23);
             this._buttonExit.TabIndex = 8;
             this._buttonExit.Text = "Wyjdü";
             this._buttonExit.UseVisualStyleBackColor = true;
+            this._buttonExit.Click += new System.EventHandler(this._buttonExit_Click);
             // 
             // DataDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(837, 519);
+            this.ClientSize = new System.Drawing.Size(569, 509);
             this.Controls.Add(this._buttonExit);
             this.Controls.Add(this._prelabelData);
             this.Controls.Add(this._tboxData);
