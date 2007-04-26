@@ -44,7 +44,6 @@ namespace MDS.GUI
         private Panel _panelLearnOutputData;
         private ComboBox _comboOutputLearnData;
 
-        private Label _labelGlobalError;
 
         private Label _alphaRatioLabel;
         private Label _epsilonRatioLabel;
@@ -59,16 +58,20 @@ namespace MDS.GUI
         private TextBox _tboxError;
 
         private Button _buttonLearn;
+        private Button _buttonPauseLearn;
         private Button _buttonStopLearn;
+        private Button _buttonContinueLearn;
     #endregion
 
     #region declaration_working_controls
         //private Label _workDataLabel;
         //private Label _inputWorkDataLabel;
+        private Label _labelWorkTitle;
         private Label _workDataLabel;
         private Panel _panelWork;
         private Panel _panelWorkInputData;
         private ComboBox _comboInputWorkData;
+
 
         private Button _startButton;
     #endregion
@@ -104,7 +107,7 @@ namespace MDS.GUI
             this.perceptron = perceptron;
             comboBoxes = new List<ComboBox>();
             InitializeComponent();
-            
+            //setControls();
             initializeDataPanels();
             initializeRatios();
             backprop = new Backpropagation(perceptron, null);
@@ -263,7 +266,8 @@ namespace MDS.GUI
             this._panelLearn = new Panel();
             this._panelLearn.Location = new System.Drawing.Point(LEFT_MARGIN + LAYERS_PANEL_WIDTH+ PANEL_DISTANCE, UP_MARGIN);
             //this._panelLearn.BorderStyle = BorderStyle.FixedSingle;
-            this._panelLearn.Size = new System.Drawing.Size(750, 300);
+            //this._panelLearn.Size = new System.Drawing.Size(750, 300);
+            this._panelLearn.AutoSize = true;
 
             // 
             // _labelLearnTitle
@@ -400,18 +404,7 @@ namespace MDS.GUI
             this._tboxTeta.TextAlign = HorizontalAlignment.Center;
             this._panelLearn.Controls.Add(this._tboxTeta);
 
-            //
-            //_tboxError
-            //
-            this._tboxError = new TextBox();
-            this._tboxError.Location = new System.Drawing.Point(this._tboxAlpha.Location.X +
-                this._tboxAlpha.Width + CONTROL_HDISTANCE_B, this._tboxAlpha.Location.Y);
-            this._tboxError.Size = new System.Drawing.Size(350, 150);
-            this._tboxError.Multiline = true;
-            this._tboxError.ReadOnly = true;
-            this._tboxError.ScrollBars = ScrollBars.Both;
-            this._tboxError.BackColor = System.Drawing.Color.White;
-            this._panelLearn.Controls.Add(this._tboxError);
+            
 
 
             //
@@ -472,14 +465,51 @@ namespace MDS.GUI
             this._buttonStopLearn.Click += new System.EventHandler(this._stopLearnButton_Click);
             this._panelLearn.Controls.Add(this._buttonStopLearn);
 
-
+            //
+            //_tboxError
+            //
+            this._tboxError = new TextBox();
+            this._tboxError.Location = new System.Drawing.Point(this._buttonLearn.Location.X, 
+                this._buttonLearn.Location.Y + this._buttonLearn.Height + CONTROL_VDISTANCE_S);
+            this._tboxError.Size = new System.Drawing.Size(this._panelLearnInputData.Width, 150);
+            this._tboxError.Multiline = true;
+            this._tboxError.ReadOnly = true;
+            this._tboxError.ScrollBars = ScrollBars.Both;
+            this._tboxError.BackColor = System.Drawing.Color.White;
+            this._panelLearn.Controls.Add(this._tboxError);
             
           
         #endregion
         #region initialization_working_controls
+
+            // 
+            // _panelWork
+            // 
+            this._panelWork = new Panel();
+            this._panelWork.Size = new System.Drawing.Size(this._layeresPanel.Size.Width,
+                70);
+            this._panelWork.Location = new System.Drawing.Point(this._layeresPanel.Location.X,
+                this._layeresPanel.Location.Y + this._layeresPanel.Size.Height + PANEL_DISTANCE);
+
+
+            //
+            //_labelWorkTitle
+            //
+
+            this._labelWorkTitle = new Label();
+            this._labelWorkTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._labelWorkTitle.Name = "_labelWorkTitle";
+            this._labelWorkTitle.Size = new System.Drawing.Size(this._panelWork.Size.Width, 20);
+            this._labelWorkTitle.TabIndex = 0;
+            this._labelWorkTitle.Text = "PRZETWARZANIE DANYCH";
+            this._labelWorkTitle.Location = new System.Drawing.Point(0, 5);
+            this._labelWorkTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._panelWork.Controls.Add(this._labelWorkTitle);
+
             // 
             // _workDataLabel
             // 
+            /*
             this._workDataLabel = new Label();
             this._workDataLabel.AutoSize = true;
             this._workDataLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -488,15 +518,8 @@ namespace MDS.GUI
             this._workDataLabel.Size = new System.Drawing.Size(73, 20);
             this._workDataLabel.TabIndex = 0;
             this._workDataLabel.Text = "Dane do przetwarzania";
-           
-            // 
-            // _panelWork
-            // 
-            this._panelWork = new Panel();
-            this._panelWork.Size = new System.Drawing.Size( this._panelLearn.Size.Width,
-                300 );
-            this._panelWork.Location = new System.Drawing.Point( this._panelLearn.Location.X,
-                this._panelLearn.Location.Y + this._panelLearn.Size.Height + PANEL_DISTANCE);
+           */
+            
             // 
             // _comboInputWorkData
             // 
@@ -513,7 +536,8 @@ namespace MDS.GUI
             //
             this._panelWorkInputData = createProcessDataPanel("Dane wejœciowe",
                     this._comboInputWorkData, 0, 0);
-            this._panelWorkInputData.Location = new System.Drawing.Point( 0, 0);
+            this._panelWorkInputData.Location = new System.Drawing.Point(0, this._labelWorkTitle.Location.Y + 
+                this._labelWorkTitle.Size.Height + CONTROL_VDISTANCE_B);
             // 
             // _inputWorkDataLabel
             // 
@@ -553,14 +577,15 @@ namespace MDS.GUI
 
             this._panelResult = new Panel();
             this._panelResult.Location = new System.Drawing.Point(this._layeresPanel.Location.X,
-                this._layeresPanel.Location.Y + this._layeresPanel.Size.Height + PANEL_DISTANCE);
+                this._panelWork.Location.Y + this._panelWork.Size.Height + CONTROL_VDISTANCE_B);
             this._panelResult.Size = new System.Drawing.Size(this._layeresPanel.Size.Width, 300);
             //
             //_prelableResult 
             //
 
             this._prelabelResult = new Label();
-            this._prelabelResult.Text = "WYNIKI";
+            this._prelabelResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this._prelabelResult.Text = "Wyniki";
             this._prelabelResult.Location = new System.Drawing.Point(0, 0);
             this._panelResult.Controls.Add(this._prelabelResult);
 
@@ -576,7 +601,7 @@ namespace MDS.GUI
                 this._prelabelResult.Location.Y + this._prelabelResult.Size.Height + CONTROL_VDISTANCE_S);
 
             _tboxResult.Name = "_tboxResult";
-            _tboxResult.Size = new System.Drawing.Size(this._panelResult.Size.Width, 250);
+            _tboxResult.Size = new System.Drawing.Size(this._panelResult.Size.Width, 200);
             _tboxResult.Multiline = true;
             _tboxResult.WordWrap = false;
             _tboxResult.ScrollBars = ScrollBars.Both;
@@ -698,6 +723,13 @@ namespace MDS.GUI
             this._tboxEpsilon.Text = "0,0001";
             this._tboxTeta.Text = "0,9";
         }
+
+       /* private void setControls()
+        {
+            int width = this.Size.Width - this._tboxError.Location.X;
+            this._tboxError.Size = new System.Drawing.Size(width, 200);
+        }
+        * */
         public void AddNewData( String name )
         {
 
