@@ -12,7 +12,7 @@ namespace MDS.GUI
     {
         private List<double[]> data;
         private String dataName;
-        //private String dialogName;
+
         public DataDetails()
         {
             InitializeComponent();

@@ -215,11 +215,35 @@ namespace MDS.GUI
         private void _mProcessData_Click(object sender, EventArgs e)
         {
             DataProcess dataDialog = new DataProcess();
-            dataDialog.Data = this.mainANN.InputData;
+            String oldDataName, newDataName, fileDataName;
+            List<double[]> newData = new List<double[]>();
+            
+            
+            dataDialog.InputData = this.mainANN.InputData;
+            
+            
             if (dataDialog.ShowDialog() == DialogResult.OK)
             {
+                oldDataName = dataDialog.SelectedDataName;
+                newDataName = dataDialog.NewDataName;
+                fileDataName = dataDialog.DataFileName;
+
+                if (dataDialog.Option == Data.DataPreprocessor.STANDARIZE)
+                {
+                    newData = mainANN.Standarize(oldDataName);
+                }
+                else if (dataDialog.Option == Data.DataPreprocessor.SCALING)
+                {}
+                else
+                {
+                    newData = mainANN.SelectVectorsFromData( oldDataName, dataDialog.StartVectorNr, 
+                        dataDialog.EndVectorNr );
+                }
+                mainANN.AddNewData(newDataName, newData);
+                setPagesNewInputData(mainANN.InputData);
 
             }
+            /*
             this.mainANN.InputData.Remove("Arrythmia");
             IDictionaryEnumerator en = this.mainANN.InputData.GetEnumerator();
             while (en.MoveNext())
@@ -234,6 +258,7 @@ namespace MDS.GUI
                 }
             }
             pretest.printProcessedHashtable(this.mainANN.InputData);
+             */
         }
 
 

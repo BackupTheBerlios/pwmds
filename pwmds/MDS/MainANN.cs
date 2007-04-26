@@ -15,22 +15,37 @@ namespace MDS
     {
         private Hashtable inputData; // Hastablica zawierajaca Listy wczytanych danych, jako key otrzymuje nazwe pliku z ktorego dane byly wczytywane
         private List<Network.Perceptron> netList;
+        private Data.DataPreprocessor dataProcessor;
 
         private String file1 = "arrhythmia.data", 
                 file2 = "in.txt", 
                 file3 = "out.txt",
-                file4 = "dane1.txt";
-        private String name1 = "Arrythmia",
+                file4 = "in2.txt",
+                file5 = "classIn2D.txt",
+                file6 = "classOut2D.txt",
+                file7 = "class2D.txt",
+                file8 = "classIn3D.txt",
+                file9 = "classOut3D.txt",
+                file10 = "class3D.txt";
+        private String name1 = "Arrhythmia",
                         name2 = "In",
                         name3 = "Out",
-                        name4 = "In2";
+                        name4 = "In2",
+                        name5 = "ClassIn_2D",
+                        name6 = "ClassOut_2D",
+                        name7 = "Class_2D",
+                        name8 = "ClassIn_3D",
+                        name9 = "ClassOut_3D",
+                        name10 = "Class_3D";
 
         
         public MainANN()
         {
             inputData = new Hashtable();
             netList = new List<MDS.Network.Perceptron>();
+            dataProcessor = new MDS.Data.DataPreprocessor();
             readDefaultFiles();
+            
             
         }
 
@@ -59,7 +74,7 @@ namespace MDS
                   list.Clear();
                   splitedLine = line.Split(',');
 
-                  for (j = 0; j < splitedLine.Length && j < 10; j++)
+                  for (j = 0; j < splitedLine.Length ; j++)
                   {
                       // zamienia kropke na przecinek(np 3.5 na 3,5) aby parser dobrze zamienil
                       splitedLine[j] = splitedLine[j].Replace('.', ',');
@@ -74,14 +89,17 @@ namespace MDS
                   row = new double[list.Count];
                   for (int i = 0; i < list.Count; ++i)
                       row[i] = list[i];
+
+                  dataProcessor.ReplaceMissingValuesByMean(row);
                   loadedData.Add(row);
-                  row = new double[10];
+                  //row = new double[10];
                   line = reader.ReadLine();
                  /// i++;
 //                  if (i >= 10)
   //                    break;
               }
               //this.inputData.Add(filePath, loadedData);
+              
               this.inputData.Add(name, loadedData);
               reader.Close();
             }
@@ -98,13 +116,37 @@ namespace MDS
             return netList.Count - 1;
         }
 
+        public void AddNewData(String dataName, List<double[]> newData)
+        {
+            inputData.Add(dataName, newData);
+        }
+
         private void readDefaultFiles()
         {
             loadInputData(name1, file1);
             loadInputData(name2, file2);
             loadInputData(name3, file3);
             loadInputData(name4, file4);
+            loadInputData(name5, file5);
+            loadInputData(name6, file6);
+            loadInputData(name7, file7);
+            loadInputData(name8, file8);
+            loadInputData(name9, file9);
+            loadInputData(name10, file10);
         }
+
+        public List<double[]> SelectVectorsFromData( String oldDataName, int startNr, int endNr )
+        {
+            return dataProcessor.SelectVectors((List<double[]>)inputData[oldDataName], startNr, endNr);
+        }
+
+        public List<double[]> Standarize(String oldDataName)
+        {
+            List<double[]> newData = (List<double[]>)inputData[oldDataName];
+            dataProcessor.StandarizeData( newData, Data.DataPreprocessor.STANDARIZE, 0, 1);
+            return newData;
+        }
+
 
         public Hashtable InputData
         {

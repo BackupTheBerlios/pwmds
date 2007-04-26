@@ -7,8 +7,10 @@ namespace MDS.Data
 {
     class DataPreprocessor
     {
-
-        public bool replaceMissingValuesByMean (double []tab)
+        public static int STANDARIZE = 1,
+                        SCALING = 2,
+                        CUTTING = 3;
+        public bool ReplaceMissingValuesByMean (double []tab)
         {
             if (tab == null) return false;
             int n = tab.Length, k = 0;
@@ -31,7 +33,7 @@ namespace MDS.Data
             return true;
 
         }
-        public void standarizeData(List<double[]> l, int opt, int a, int b) //o - rodzaj standaryzacji a,b-konce przedzialu
+        public void StandarizeData(List<double[]> l, int opt, int a, int b) //o - rodzaj standaryzacji a,b-konce przedzialu
         {
             if ( opt!=1 && opt!=2) throw new Exception("Bad standarizeData parameter"); 
             
@@ -48,11 +50,11 @@ namespace MDS.Data
                         t[j] = f.Current[i]; //do tymczasowej tablicy wpisujemy i-ty element kazdej tablicy
                         j++;
                     }
-                    if (opt == 1)
+                    if (opt == STANDARIZE)
                     {
                         this.standarizeVariable(t);
                     }
-                    else if (opt == 2)
+                    else if (opt == SCALING)
                     {
                         this.scaleVariable(a, b, t);
                     }
@@ -74,7 +76,7 @@ namespace MDS.Data
             int n = tab.Length;
             double sum = 0, mean, variance=0,stdev;
 
-            this.replaceMissingValuesByMean(tab);
+            this.ReplaceMissingValuesByMean(tab);
             for (int i = 0; i < n; i++)
             {
                 sum += tab[i];
@@ -98,7 +100,7 @@ namespace MDS.Data
             if (tab == null) return;
             double max, min,x,y;
 
-            this.replaceMissingValuesByMean(tab);
+            this.ReplaceMissingValuesByMean(tab);
             max = min = tab[0];
             for (int i = 1; i < tab.Length; i++)   //znajdujemy wartosc min i max
             {
@@ -112,6 +114,20 @@ namespace MDS.Data
             {
                 tab[i] = (tab[i] - x) / y;
             }
+        }
+
+        public List<double[]> SelectVectors(List<double[]> data, int startVector, int endVector)
+        {
+            List<double[]> newData = new List<double[]>();
+            double[] vector;
+            for(int i = startVector-1; i <= endVector; ++i )   
+            {
+                vector = new double[data[i].Length];
+                data[i].CopyTo(vector, 0 );
+                newData.Add( vector );
+            }
+
+            return newData;
         }
     }
 }

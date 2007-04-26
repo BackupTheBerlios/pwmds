@@ -101,6 +101,7 @@ namespace MDS.GUI
             // _radioStandarization
             // 
             this._radioStandarization.AutoSize = true;
+            this._radioStandarization.Checked = true;
             this._radioStandarization.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this._radioStandarization.Location = new System.Drawing.Point(41, 97);
             this._radioStandarization.Name = "_radioStandarization";
@@ -118,7 +119,6 @@ namespace MDS.GUI
             this._radioScaling.Name = "_radioScaling";
             this._radioScaling.Size = new System.Drawing.Size(182, 20);
             this._radioScaling.TabIndex = 6;
-            this._radioScaling.TabStop = true;
             this._radioScaling.Text = "Skalowanie do przedzia³u";
             this._radioScaling.UseVisualStyleBackColor = true;
             // 
@@ -176,7 +176,6 @@ namespace MDS.GUI
             this._radioSelect.Name = "_radioSelect";
             this._radioSelect.Size = new System.Drawing.Size(143, 20);
             this._radioSelect.TabIndex = 12;
-            this._radioSelect.TabStop = true;
             this._radioSelect.Text = "Wybierz wektory od";
             this._radioSelect.UseVisualStyleBackColor = true;
             // 
@@ -234,6 +233,7 @@ namespace MDS.GUI
             this._buttonOk.TabIndex = 18;
             this._buttonOk.Text = "OK";
             this._buttonOk.UseVisualStyleBackColor = true;
+            this._buttonOk.Click += new System.EventHandler(this._buttonOk_Click);
             // 
             // _buttonCancel
             // 
