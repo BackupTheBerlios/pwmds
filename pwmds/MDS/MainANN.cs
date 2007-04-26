@@ -148,6 +148,14 @@ namespace MDS
         }
 
 
+        public List<double[]> Scaling(String oldDataName, int startVal, int endVal)
+        {
+            List<double[]> newData = (List<double[]>)inputData[oldDataName];
+            dataProcessor.StandarizeData(newData, Data.DataPreprocessor.SCALING, startVal, endVal);
+            return newData;
+        }
+
+
         public Hashtable InputData
         {
             get { return inputData; }

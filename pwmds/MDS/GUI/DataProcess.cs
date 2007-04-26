@@ -24,6 +24,8 @@ namespace MDS.GUI
         private int startVectorNr,
                     endVectorNr;
 
+        private int startVal, endVal;
+
 
         public DataProcess()
         {
@@ -83,6 +85,16 @@ namespace MDS.GUI
         {
             get { return endVectorNr; }
         }
+
+        public int StartValue
+        {
+            get { return startVal; }
+        }
+
+        public int EndValue
+        {
+            get { return endVal; }
+        }
         #endregion
 
         private void _buttonOk_Click(object sender, EventArgs e)
@@ -97,6 +109,8 @@ namespace MDS.GUI
                 else if (_radioScaling.Checked == true)
                 {
                     option = Data.DataPreprocessor.SCALING;
+                    startVal = int.Parse(this._tboxStartVal.Text);
+                    endVal = int.Parse(this._tboxEndVal.Text);
                 }
                 else
                 {

@@ -233,7 +233,9 @@ namespace MDS.GUI
                     newData = mainANN.Standarize(oldDataName);
                 }
                 else if (dataDialog.Option == Data.DataPreprocessor.SCALING)
-                {}
+                {
+                    newData = mainANN.Scaling(oldDataName, dataDialog.StartValue, dataDialog.EndValue);
+                }
                 else
                 {
                     newData = mainANN.SelectVectorsFromData( oldDataName, dataDialog.StartVectorNr, 
