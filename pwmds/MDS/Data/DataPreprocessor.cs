@@ -24,8 +24,8 @@ namespace MDS.Data
                 } 
                 sum += tab[i];
             }
-            if (2 * k > n) return false;  //do przemyslenia kiedy usuwac zmienna
-            mean = sum / n;
+            if (k > n) return false;  //do przemyslenia kiedy usuwac zmienna
+            mean = sum / (n-k);
             for (int i = 0; i < n; i++)
             {
                 if (double.IsNaN(tab[i])) tab[i] = mean;
@@ -81,6 +81,8 @@ namespace MDS.Data
             {
                 sum += tab[i];
             }
+            if (sum == 0)
+                return;
             mean = sum / n;
             
             for (int i = 0; i < n; i++)  
@@ -91,7 +93,11 @@ namespace MDS.Data
             stdev = Math.Sqrt(variance);
             for (int i = 0; i < n; i++)    //standaryzacja
             {
+                
                 tab[i] = (tab[i] - mean) / stdev;
+                if (tab[i].Equals(double.NaN))
+                    System.Console.WriteLine(tab[i]);
+
                 
             }
         }
@@ -109,6 +115,8 @@ namespace MDS.Data
             }
             //skalowanie przedzialu
             y = (max - min) / (b - a);
+            if (y == 0)
+                return;
             x = max - b * y;
             for (int i = 0; i < tab.Length; i++)  
             {

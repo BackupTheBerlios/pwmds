@@ -126,7 +126,7 @@ namespace MDS.Network
                     this.param.Alpha = 0 ;
                 prevError = globalError;
 
-                if (iter % 10000 == 0)
+                if (iter % 1000 == 0)
                 {
                     text = "iter::::: " + (startIter - iter) + " GLOBAL ERROR: " + globalError;
                     Console.Out.WriteLine(text);

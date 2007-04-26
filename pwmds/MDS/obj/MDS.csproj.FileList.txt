@@ -15,3 +15,5 @@ obj\Debug\MDS.Properties.Resources.resources
 obj\Debug\MDS.csproj.GenerateResource.Cache
 obj\Debug\MDS.exe
 obj\Debug\MDS.pdb
+obj\Debug\MDS.GUI.DataDetails.resources
+obj\Debug\MDS.GUI.DataProcess.resources

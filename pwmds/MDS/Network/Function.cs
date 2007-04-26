@@ -103,7 +103,7 @@ namespace MDS.Network
             for (int i = 0; i < size; ++i)
                 res += Math.Pow(x[i] - y[i], 2);
 
-            return res;   //podzielic przez size?
+            return res /size;   //podzielic przez size?
         }
 
 

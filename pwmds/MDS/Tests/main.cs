@@ -14,7 +14,8 @@ namespace MDS.Tests
 /////////////////////////// GUI TESTY ///////////////////////////////////////////////////
             engine = new MainANN();
             
-            Application.Run(new GUI.frmMain());
+            //Application.Run(new GUI.frmMain());
+            new DataGenerator().Generate(100);
 
             //TestBackpropagation tb = new TestBackpropagation();
             //tb.Demo2();

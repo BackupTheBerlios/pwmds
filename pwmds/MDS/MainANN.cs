@@ -90,7 +90,7 @@ namespace MDS
                   for (int i = 0; i < list.Count; ++i)
                       row[i] = list[i];
 
-                  dataProcessor.ReplaceMissingValuesByMean(row);
+                  
                   loadedData.Add(row);
                   //row = new double[10];
                   line = reader.ReadLine();

@@ -86,8 +86,10 @@ namespace MDS.Data
             String number = "";
             if (d < 0)
                 number = "-";
-            number += GetMainVal(d) + "," + GetFraction(d);
-            
+            number += GetMainVal(d) + ",";
+            if(GetFraction(d)<10)
+                number += "0";
+            number += GetFraction(d);            
             return number;
         }
 
