@@ -215,7 +215,7 @@ namespace MDS.GUI
             {
                 solutionLayerNr = int.Parse( text );
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("You've given wrong argument");
             }
@@ -239,7 +239,7 @@ namespace MDS.GUI
             {
                 nnr = int.Parse(box.Text);
             }
-            catch (Exception err)
+            catch (Exception)
             {
                 MessageBox.Show("You've given wrong argument");
                 return;

@@ -9,11 +9,11 @@ bin\Debug\MDS.exe
 bin\Debug\MDS.pdb
 obj\Debug\ResolveAssemblyReference.cache
 obj\Debug\MDS.GUI.CreateNetwork.resources
+obj\Debug\MDS.GUI.DataDetails.resources
+obj\Debug\MDS.GUI.DataProcess.resources
 obj\Debug\MDS.GUI.frmMain.resources
 obj\Debug\MDS.GUI.ReadData.resources
 obj\Debug\MDS.Properties.Resources.resources
 obj\Debug\MDS.csproj.GenerateResource.Cache
 obj\Debug\MDS.exe
 obj\Debug\MDS.pdb
-obj\Debug\MDS.GUI.DataDetails.resources
-obj\Debug\MDS.GUI.DataProcess.resources

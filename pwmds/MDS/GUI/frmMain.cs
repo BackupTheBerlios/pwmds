@@ -122,8 +122,9 @@ namespace MDS.GUI
                     this._tabControl.SelectedTab = page;
 
                 }
-                catch (ArgumentNullException ex)
+                catch (ArgumentNullException)
                 {
+                    
                     MessageBox.Show("Creating new network failed.");
                 }
                 createDialog.Dispose();
