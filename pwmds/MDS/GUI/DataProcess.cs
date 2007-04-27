@@ -11,18 +11,20 @@ namespace MDS.GUI
 {
     public partial class DataProcess : Form
     {
-        //public static int STANDARIZATION = 280,
-        //                SCALING = 281,
-         //               CUTTING = 282;
-
+        public static int MODIFY = 0,
+                        SELECT_VECTORS = 1,
+                        SELECT_COLUMNS = 2;
         private Hashtable inputData;
         private String selectedDataName;
         private String newDataName;
         private String dataFileName;
         private int option;
+        private bool[] options;
 
         private int startVectorNr,
                     endVectorNr;
+        private int startColumnNr,
+                    endColumnNr;
 
         private int startVal, endVal;
 
@@ -30,6 +32,7 @@ namespace MDS.GUI
         public DataProcess()
         {
             InitializeComponent();
+            options = new bool[3];
             
         }
 
@@ -76,6 +79,11 @@ namespace MDS.GUI
             get { return option; }
         }
 
+        public bool[] Options
+        {
+            get { return options; }
+        }
+
         public int StartVectorNr
         {
             get { return startVectorNr; }
@@ -84,6 +92,16 @@ namespace MDS.GUI
         public int EndVectorNr
         {
             get { return endVectorNr; }
+        }
+
+        public int StartColumnNr
+        {
+            get { return startColumnNr; }
+        }
+
+        public int EndColumnNr
+        {
+            get { return endColumnNr; }
         }
 
         public int StartValue
@@ -104,19 +122,29 @@ namespace MDS.GUI
             this.newDataName = this._tboxDataName.Text;
             try
             {
-                if (_radioStandarization.Checked == true)
-                    option = Data.DataPreprocessor.STANDARIZE;
-                else if (_radioScaling.Checked == true)
+                if (this._cboxModify.Checked == true)
                 {
-                    option = Data.DataPreprocessor.SCALING;
-                    startVal = int.Parse(this._tboxStartVal.Text);
-                    endVal = int.Parse(this._tboxEndVal.Text);
+                    options[MODIFY] = true;
+                    if (_radioStandarization.Checked == true)
+                        option = Data.DataPreprocessor.STANDARIZE;
+                    else
+                    {
+                        option = Data.DataPreprocessor.SCALING;
+                        startVal = int.Parse(this._tboxStartVal.Text);
+                        endVal = int.Parse(this._tboxEndVal.Text);
+                    }
                 }
-                else
+                if( this._cboxSelectColumns.Checked == true )
                 {
-                    option = Data.DataPreprocessor.CUTTING;
-                    startVectorNr = int.Parse(this._tboxStartNr.Text);
-                    endVectorNr = int.Parse(this._tboxEndNr.Text);
+                    options[SELECT_COLUMNS] = true;
+                    startColumnNr = int.Parse(this._tboxStartColumn.Text);
+                    endColumnNr = int.Parse(this._tboxEndColumn.Text);
+                }
+                if (this._cboxSelectVectors.Checked == true)
+                {
+                    options[SELECT_VECTORS] = true;
+                    startVectorNr = int.Parse(this._tboxStartVector.Text);
+                    endVectorNr = int.Parse(this._tboxEndVector.Text);
                 }
             }
             catch (Exception ex)

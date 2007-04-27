@@ -691,9 +691,13 @@ namespace MDS.GUI
         private void initializeDataPanels()
         {
             IEnumerator e;
-            ComboBox combo;
+            
+            String[] selectedText = new String[comboBoxes.Count];
             for (int i = 0; i < comboBoxes.Count; ++i)
+            {
+                selectedText[i] = comboBoxes[i].Text;
                 comboBoxes[i].Items.Clear();
+            }
 
             e = data.Keys.GetEnumerator();
             while (e.MoveNext())
@@ -708,7 +712,9 @@ namespace MDS.GUI
             {
                 for (int i = 0; i < comboBoxes.Count; ++i)
                 {
-                    comboBoxes[i].SelectedIndex = comboBoxes.Count - 1;
+                    comboBoxes[i].Text = selectedText[i];
+                    if (comboBoxes[i].Text.CompareTo("") == 0)
+                        comboBoxes[i].SelectedIndex = 0;
                     actualizeFields(comboBoxes[i]);
                 }
             }
@@ -735,7 +741,7 @@ namespace MDS.GUI
 
         }
 
-        //setters and getters
+        #region setters and getters
         public String NetworkName
         {
             get { return networkName; }
@@ -754,6 +760,9 @@ namespace MDS.GUI
                 initializeDataPanels();
             }
         }
+
+
+        #endregion
 
 
 

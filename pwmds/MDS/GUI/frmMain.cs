@@ -229,19 +229,20 @@ namespace MDS.GUI
                 newDataName = dataDialog.NewDataName;
                 fileDataName = dataDialog.DataFileName;
 
-                if (dataDialog.Option == Data.DataPreprocessor.STANDARIZE)
+                if (dataDialog.Options[DataProcess.MODIFY])
                 {
-                    newData = mainANN.Standarize(oldDataName);
+                    if (dataDialog.Option == Data.DataPreprocessor.STANDARIZE)
+                        newData = mainANN.Standarize(oldDataName);
+                    else
+                        newData = mainANN.Scaling(oldDataName, dataDialog.StartValue, dataDialog.EndValue);
                 }
-                else if (dataDialog.Option == Data.DataPreprocessor.SCALING)
-                {
-                    newData = mainANN.Scaling(oldDataName, dataDialog.StartValue, dataDialog.EndValue);
-                }
+                else if (dataDialog.Options[DataProcess.SELECT_VECTORS])
+                    newData = mainANN.SelectVectorsFromData(oldDataName, dataDialog.StartVectorNr,
+                        dataDialog.EndVectorNr);
                 else
-                {
-                    newData = mainANN.SelectVectorsFromData( oldDataName, dataDialog.StartVectorNr, 
-                        dataDialog.EndVectorNr );
-                }
+                    newData = mainANN.SelectColumnsFromData(oldDataName, dataDialog.StartColumnNr,
+                        dataDialog.EndColumnNr);
+
                 mainANN.AddNewData(newDataName, newData);
                 setPagesNewInputData(mainANN.InputData);
 

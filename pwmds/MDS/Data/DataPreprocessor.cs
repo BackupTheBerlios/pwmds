@@ -8,8 +8,7 @@ namespace MDS.Data
     class DataPreprocessor
     {
         public static int STANDARIZE = 1,
-                        SCALING = 2,
-                        CUTTING = 3;
+                        SCALING = 2;
         //TODO
         public List<double[]> DeleteMissingValues(List<double[]> l, double tolerance)
         {
@@ -220,5 +219,23 @@ namespace MDS.Data
 
             return newData;
         }
+
+        public List<double[]> SelectColumns(List<double[]> data, int startColumn, int endColumn)
+        {
+            List<double[]> newData = new List<double[]>();
+            int size = endColumn - startColumn + 1;
+            double[] vector, oldVector;
+            for (int i = 0; i < data.Count; ++i)
+            {
+                oldVector = data[i];
+                vector = new double[size];
+                for (int j = startColumn - 1; j < endColumn; ++j)
+                    vector[j] = data[i][j];
+                newData.Add(vector);
+            }
+
+            return newData;
+        }
+
     }
 }

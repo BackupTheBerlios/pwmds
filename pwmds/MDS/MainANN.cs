@@ -139,20 +139,22 @@ namespace MDS
         {
             return dataProcessor.SelectVectors((List<double[]>)inputData[oldDataName], startNr, endNr);
         }
+        public List<double[]> SelectColumnsFromData(String oldDataName, int startColumn, int endColumn)
+        {
+            return dataProcessor.SelectColumns((List<double[]>)inputData[oldDataName], startColumn, endColumn);
+        }
 
         public List<double[]> Standarize(String oldDataName)
         {
-            List<double[]> newData = (List<double[]>)inputData[oldDataName];
-            dataProcessor.StandarizeData( newData, Data.DataPreprocessor.STANDARIZE, 0, 1);
-            return newData;
+            return dataProcessor.StandarizeData( (List<double[]>)inputData[oldDataName], 
+                Data.DataPreprocessor.STANDARIZE, 0, 1);
         }
 
 
         public List<double[]> Scaling(String oldDataName, int startVal, int endVal)
         {
-            List<double[]> newData = (List<double[]>)inputData[oldDataName];
-            dataProcessor.StandarizeData(newData, Data.DataPreprocessor.SCALING, startVal, endVal);
-            return newData;
+            return dataProcessor.StandarizeData((List<double[]>)inputData[oldDataName], 
+                Data.DataPreprocessor.SCALING, startVal, endVal);
         }
 
 

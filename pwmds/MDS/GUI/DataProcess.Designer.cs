@@ -40,21 +40,26 @@ namespace MDS.GUI
             this.l2 = new System.Windows.Forms.Label();
             this._tboxEndVal = new System.Windows.Forms.TextBox();
             this.l3 = new System.Windows.Forms.Label();
-            this._radioSelect = new System.Windows.Forms.RadioButton();
-            this._tboxStartNr = new System.Windows.Forms.TextBox();
+            this._tboxStartVector = new System.Windows.Forms.TextBox();
             this.l4 = new System.Windows.Forms.Label();
-            this._tboxEndNr = new System.Windows.Forms.TextBox();
+            this._tboxEndVector = new System.Windows.Forms.TextBox();
             this._labelFileName = new System.Windows.Forms.Label();
             this._tboxFileName = new System.Windows.Forms.TextBox();
             this._buttonOk = new System.Windows.Forms.Button();
             this._buttonCancel = new System.Windows.Forms.Button();
+            this._cboxModify = new System.Windows.Forms.CheckBox();
+            this._cboxSelectVectors = new System.Windows.Forms.CheckBox();
+            this._cboxSelectColumns = new System.Windows.Forms.CheckBox();
+            this._tboxStartColumn = new System.Windows.Forms.TextBox();
+            this._tboxEndColumn = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // _labelDataName
             // 
             this._labelDataName.AutoSize = true;
             this._labelDataName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._labelDataName.Location = new System.Drawing.Point(12, 223);
+            this._labelDataName.Location = new System.Drawing.Point(12, 305);
             this._labelDataName.Name = "_labelDataName";
             this._labelDataName.Size = new System.Drawing.Size(86, 16);
             this._labelDataName.TabIndex = 0;
@@ -63,9 +68,9 @@ namespace MDS.GUI
             // _tboxDataName
             // 
             this._tboxDataName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._tboxDataName.Location = new System.Drawing.Point(139, 223);
+            this._tboxDataName.Location = new System.Drawing.Point(139, 305);
             this._tboxDataName.Name = "_tboxDataName";
-            this._tboxDataName.Size = new System.Drawing.Size(203, 21);
+            this._tboxDataName.Size = new System.Drawing.Size(159, 21);
             this._tboxDataName.TabIndex = 1;
             // 
             // _labelSelectData
@@ -84,7 +89,7 @@ namespace MDS.GUI
             this._comboSelectData.FormattingEnabled = true;
             this._comboSelectData.Location = new System.Drawing.Point(139, 21);
             this._comboSelectData.Name = "_comboSelectData";
-            this._comboSelectData.Size = new System.Drawing.Size(203, 23);
+            this._comboSelectData.Size = new System.Drawing.Size(159, 23);
             this._comboSelectData.Sorted = true;
             this._comboSelectData.TabIndex = 3;
             // 
@@ -103,7 +108,7 @@ namespace MDS.GUI
             this._radioStandarization.AutoSize = true;
             this._radioStandarization.Checked = true;
             this._radioStandarization.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._radioStandarization.Location = new System.Drawing.Point(41, 97);
+            this._radioStandarization.Location = new System.Drawing.Point(67, 124);
             this._radioStandarization.Name = "_radioStandarization";
             this._radioStandarization.Size = new System.Drawing.Size(112, 20);
             this._radioStandarization.TabIndex = 5;
@@ -115,7 +120,7 @@ namespace MDS.GUI
             // 
             this._radioScaling.AutoSize = true;
             this._radioScaling.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._radioScaling.Location = new System.Drawing.Point(41, 132);
+            this._radioScaling.Location = new System.Drawing.Point(67, 150);
             this._radioScaling.Name = "_radioScaling";
             this._radioScaling.Size = new System.Drawing.Size(182, 20);
             this._radioScaling.TabIndex = 6;
@@ -125,7 +130,7 @@ namespace MDS.GUI
             // _tboxStartVal
             // 
             this._tboxStartVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._tboxStartVal.Location = new System.Drawing.Point(247, 134);
+            this._tboxStartVal.Location = new System.Drawing.Point(267, 150);
             this._tboxStartVal.Name = "_tboxStartVal";
             this._tboxStartVal.Size = new System.Drawing.Size(30, 21);
             this._tboxStartVal.TabIndex = 7;
@@ -134,7 +139,7 @@ namespace MDS.GUI
             // 
             this.l1.AutoSize = true;
             this.l1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.l1.Location = new System.Drawing.Point(229, 132);
+            this.l1.Location = new System.Drawing.Point(250, 150);
             this.l1.Name = "l1";
             this.l1.Size = new System.Drawing.Size(12, 17);
             this.l1.TabIndex = 8;
@@ -144,7 +149,7 @@ namespace MDS.GUI
             // 
             this.l2.AutoSize = true;
             this.l2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.l2.Location = new System.Drawing.Point(283, 135);
+            this.l2.Location = new System.Drawing.Point(304, 154);
             this.l2.Name = "l2";
             this.l2.Size = new System.Drawing.Size(12, 17);
             this.l2.TabIndex = 9;
@@ -153,7 +158,7 @@ namespace MDS.GUI
             // _tboxEndVal
             // 
             this._tboxEndVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._tboxEndVal.Location = new System.Drawing.Point(294, 134);
+            this._tboxEndVal.Location = new System.Drawing.Point(322, 149);
             this._tboxEndVal.Name = "_tboxEndVal";
             this._tboxEndVal.Size = new System.Drawing.Size(30, 21);
             this._tboxEndVal.TabIndex = 10;
@@ -162,54 +167,43 @@ namespace MDS.GUI
             // 
             this.l3.AutoSize = true;
             this.l3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.l3.Location = new System.Drawing.Point(330, 132);
+            this.l3.Location = new System.Drawing.Point(358, 150);
             this.l3.Name = "l3";
             this.l3.Size = new System.Drawing.Size(12, 17);
             this.l3.TabIndex = 11;
             this.l3.Text = "]";
             // 
-            // _radioSelect
+            // _tboxStartVector
             // 
-            this._radioSelect.AutoSize = true;
-            this._radioSelect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._radioSelect.Location = new System.Drawing.Point(41, 169);
-            this._radioSelect.Name = "_radioSelect";
-            this._radioSelect.Size = new System.Drawing.Size(143, 20);
-            this._radioSelect.TabIndex = 12;
-            this._radioSelect.Text = "Wybierz wektory od";
-            this._radioSelect.UseVisualStyleBackColor = true;
-            // 
-            // _tboxStartNr
-            // 
-            this._tboxStartNr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._tboxStartNr.Location = new System.Drawing.Point(193, 171);
-            this._tboxStartNr.Name = "_tboxStartNr";
-            this._tboxStartNr.Size = new System.Drawing.Size(30, 21);
-            this._tboxStartNr.TabIndex = 13;
+            this._tboxStartVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this._tboxStartVector.Location = new System.Drawing.Point(187, 197);
+            this._tboxStartVector.Name = "_tboxStartVector";
+            this._tboxStartVector.Size = new System.Drawing.Size(30, 21);
+            this._tboxStartVector.TabIndex = 13;
             // 
             // l4
             // 
             this.l4.AutoSize = true;
             this.l4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.l4.Location = new System.Drawing.Point(229, 171);
+            this.l4.Location = new System.Drawing.Point(223, 197);
             this.l4.Name = "l4";
             this.l4.Size = new System.Drawing.Size(24, 16);
             this.l4.TabIndex = 14;
             this.l4.Text = "do";
             // 
-            // _tboxEndNr
+            // _tboxEndVector
             // 
-            this._tboxEndNr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._tboxEndNr.Location = new System.Drawing.Point(259, 171);
-            this._tboxEndNr.Name = "_tboxEndNr";
-            this._tboxEndNr.Size = new System.Drawing.Size(30, 21);
-            this._tboxEndNr.TabIndex = 15;
+            this._tboxEndVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this._tboxEndVector.Location = new System.Drawing.Point(253, 197);
+            this._tboxEndVector.Name = "_tboxEndVector";
+            this._tboxEndVector.Size = new System.Drawing.Size(30, 21);
+            this._tboxEndVector.TabIndex = 15;
             // 
             // _labelFileName
             // 
             this._labelFileName.AutoSize = true;
             this._labelFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._labelFileName.Location = new System.Drawing.Point(12, 258);
+            this._labelFileName.Location = new System.Drawing.Point(12, 337);
             this._labelFileName.Name = "_labelFileName";
             this._labelFileName.Size = new System.Drawing.Size(98, 16);
             this._labelFileName.TabIndex = 16;
@@ -218,16 +212,16 @@ namespace MDS.GUI
             // _tboxFileName
             // 
             this._tboxFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._tboxFileName.Location = new System.Drawing.Point(139, 258);
+            this._tboxFileName.Location = new System.Drawing.Point(139, 332);
             this._tboxFileName.Name = "_tboxFileName";
-            this._tboxFileName.Size = new System.Drawing.Size(203, 21);
+            this._tboxFileName.Size = new System.Drawing.Size(159, 21);
             this._tboxFileName.TabIndex = 17;
             // 
             // _buttonOk
             // 
             this._buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this._buttonOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._buttonOk.Location = new System.Drawing.Point(166, 299);
+            this._buttonOk.Location = new System.Drawing.Point(166, 371);
             this._buttonOk.Name = "_buttonOk";
             this._buttonOk.Size = new System.Drawing.Size(75, 23);
             this._buttonOk.TabIndex = 18;
@@ -239,26 +233,90 @@ namespace MDS.GUI
             // 
             this._buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this._buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._buttonCancel.Location = new System.Drawing.Point(267, 299);
+            this._buttonCancel.Location = new System.Drawing.Point(267, 371);
             this._buttonCancel.Name = "_buttonCancel";
             this._buttonCancel.Size = new System.Drawing.Size(75, 23);
             this._buttonCancel.TabIndex = 19;
             this._buttonCancel.Text = "Anuluj";
             this._buttonCancel.UseVisualStyleBackColor = true;
             // 
+            // _cboxModify
+            // 
+            this._cboxModify.AutoSize = true;
+            this._cboxModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this._cboxModify.Location = new System.Drawing.Point(30, 98);
+            this._cboxModify.Name = "_cboxModify";
+            this._cboxModify.Size = new System.Drawing.Size(100, 20);
+            this._cboxModify.TabIndex = 20;
+            this._cboxModify.Text = "Modyfikacja";
+            this._cboxModify.UseVisualStyleBackColor = true;
+            // 
+            // _cboxSelectVectors
+            // 
+            this._cboxSelectVectors.AutoSize = true;
+            this._cboxSelectVectors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this._cboxSelectVectors.Location = new System.Drawing.Point(30, 197);
+            this._cboxSelectVectors.Name = "_cboxSelectVectors";
+            this._cboxSelectVectors.Size = new System.Drawing.Size(144, 20);
+            this._cboxSelectVectors.TabIndex = 21;
+            this._cboxSelectVectors.Text = "Wybierz wektory od";
+            this._cboxSelectVectors.UseVisualStyleBackColor = true;
+            // 
+            // _cboxSelectColumns
+            // 
+            this._cboxSelectColumns.AutoSize = true;
+            this._cboxSelectColumns.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this._cboxSelectColumns.Location = new System.Drawing.Point(30, 241);
+            this._cboxSelectColumns.Name = "_cboxSelectColumns";
+            this._cboxSelectColumns.Size = new System.Drawing.Size(148, 20);
+            this._cboxSelectColumns.TabIndex = 22;
+            this._cboxSelectColumns.Text = "Wybierz kolumny od";
+            this._cboxSelectColumns.UseVisualStyleBackColor = true;
+            // 
+            // _tboxStartColumn
+            // 
+            this._tboxStartColumn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this._tboxStartColumn.Location = new System.Drawing.Point(187, 240);
+            this._tboxStartColumn.Name = "_tboxStartColumn";
+            this._tboxStartColumn.Size = new System.Drawing.Size(30, 21);
+            this._tboxStartColumn.TabIndex = 23;
+            // 
+            // _tboxEndColumn
+            // 
+            this._tboxEndColumn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this._tboxEndColumn.Location = new System.Drawing.Point(253, 242);
+            this._tboxEndColumn.Name = "_tboxEndColumn";
+            this._tboxEndColumn.Size = new System.Drawing.Size(30, 21);
+            this._tboxEndColumn.TabIndex = 24;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.label2.Location = new System.Drawing.Point(223, 243);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(24, 16);
+            this.label2.TabIndex = 25;
+            this.label2.Text = "do";
+            // 
             // DataProcess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(362, 344);
+            this.ClientSize = new System.Drawing.Size(388, 406);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this._tboxEndColumn);
+            this.Controls.Add(this._tboxStartColumn);
+            this.Controls.Add(this._cboxSelectColumns);
+            this.Controls.Add(this._cboxSelectVectors);
+            this.Controls.Add(this._cboxModify);
             this.Controls.Add(this._buttonCancel);
             this.Controls.Add(this._buttonOk);
             this.Controls.Add(this._tboxFileName);
             this.Controls.Add(this._labelFileName);
-            this.Controls.Add(this._tboxEndNr);
+            this.Controls.Add(this._tboxEndVector);
             this.Controls.Add(this.l4);
-            this.Controls.Add(this._tboxStartNr);
-            this.Controls.Add(this._radioSelect);
+            this.Controls.Add(this._tboxStartVector);
             this.Controls.Add(this.l3);
             this.Controls.Add(this._tboxEndVal);
             this.Controls.Add(this.l2);
@@ -292,13 +350,18 @@ namespace MDS.GUI
         private System.Windows.Forms.Label l2;
         private System.Windows.Forms.TextBox _tboxEndVal;
         private System.Windows.Forms.Label l3;
-        private System.Windows.Forms.RadioButton _radioSelect;
-        private System.Windows.Forms.TextBox _tboxStartNr;
+        private System.Windows.Forms.TextBox _tboxStartVector;
         private System.Windows.Forms.Label l4;
-        private System.Windows.Forms.TextBox _tboxEndNr;
+        private System.Windows.Forms.TextBox _tboxEndVector;
         private System.Windows.Forms.Label _labelFileName;
         private System.Windows.Forms.TextBox _tboxFileName;
         private System.Windows.Forms.Button _buttonOk;
         private System.Windows.Forms.Button _buttonCancel;
+        private System.Windows.Forms.CheckBox _cboxModify;
+        private System.Windows.Forms.CheckBox _cboxSelectVectors;
+        private System.Windows.Forms.CheckBox _cboxSelectColumns;
+        private System.Windows.Forms.TextBox _tboxStartColumn;
+        private System.Windows.Forms.TextBox _tboxEndColumn;
+        private System.Windows.Forms.Label label2;
     }
 }
