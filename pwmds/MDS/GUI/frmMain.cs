@@ -219,16 +219,14 @@ namespace MDS.GUI
             String oldDataName, newDataName, fileDataName;
             List<double[]> newData = new List<double[]>();
             
-            
             dataDialog.InputData = this.mainANN.InputData;
-            
             
             if (dataDialog.ShowDialog() == DialogResult.OK)
             {
                 oldDataName = dataDialog.SelectedDataName;
                 newDataName = dataDialog.NewDataName;
                 fileDataName = dataDialog.DataFileName;
-
+                
                 if (dataDialog.Options[DataProcess.MODIFY])
                 {
                     if (dataDialog.Option == Data.DataPreprocessor.STANDARIZE)

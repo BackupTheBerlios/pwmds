@@ -9,7 +9,13 @@ namespace MDS.Data
     {
         public static int STANDARIZE = 1,
                         SCALING = 2;
-        //TODO
+        private Tests.TestPreprocessor test;
+
+        public DataPreprocessor()
+        {
+            this.test = new MDS.Tests.TestPreprocessor();
+        }
+
         public List<double[]> DeleteMissingValues(List<double[]> l, double tolerance)
         {
             
@@ -40,9 +46,8 @@ namespace MDS.Data
                 }
                 
                 else todelete.Add(i);
-
             }
-                List<double> tmplist = new List<double>();
+                List<double> tmplist = new List<double>(); 
                 double[] ar = new double[l[0].Length - todelete.Count];
                 f.Reset();
                 while (f.MoveNext())
@@ -53,6 +58,7 @@ namespace MDS.Data
                     }
                     ar=tmplist.ToArray();
                     x.Add(ar);
+                    tmplist.Clear();
                 }
                 return x;
         }
@@ -93,22 +99,33 @@ namespace MDS.Data
             return true;
 
         }
+
         public List<double[]> StandarizeData(List<double[]> l, int opt, int a, int b) //o - rodzaj standaryzacji a,b-konce przedzialu
         {
+            
             if ( opt!=1 && opt!=2) throw new Exception("Bad StandarizeData parameter");
             if (a == b) throw new Exception("Bad interval values");
             if (this.FindMissingValues(l) == true)
             {
                 throw new Exception("Missing values present");
             }
-            List<double[]> x = new List<double[]>(l);
+            
+            List<double[]> x = new List<double[]>();
+            IEnumerator<double[]> g = l.GetEnumerator();
+            while (g.MoveNext())
+            {
+                double[] tmp = new double[g.Current.Length];
+                tmp=(double[])g.Current.Clone();
+                x.Add(tmp);
+            }
+            
+            
             double[] t = new double[x.Count]; //tymczasowa tablica na skalowane zmienne
             IEnumerator<double[]> f = x.GetEnumerator();
             
                 for (int i = 0; i < x[0].Length; i++) //wybieramy i-ty element z kazdej tablicy na liscie
                 {
-                    f.Reset();
-                    //if (double.IsNaN(l[0][i])) break;
+                    f.Reset();  
                     int j = 0;
                     while (f.MoveNext() && j < t.Length) //petla po liscie tablic
                     {
@@ -127,13 +144,15 @@ namespace MDS.Data
                                
                     f.Reset();
                     j = 0;
+                    
                     while (f.MoveNext() && j < t.Length)
                     {
                         f.Current[i] = t[j];  //wpisanie nowych wartosci po standaryzacji z powrotem do i-tego elementu kazdej tablicy na liscie
                         j++;
                     }
+                    
                 }
-
+                
                 return x;
         }
         private void standarizeVariable(double[] tab)

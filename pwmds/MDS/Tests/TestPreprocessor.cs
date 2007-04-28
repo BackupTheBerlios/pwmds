@@ -28,5 +28,18 @@ namespace MDS.Tests
                 }
             }
         }
+        public void PrintList(List<double[]> l)
+        {
+            IEnumerator <double[]>en = l.GetEnumerator();
+            while (en.MoveNext())
+            {
+
+                for (int i = 0; i < en.Current.Length; i++)
+                {
+                    Console.Out.Write(en.Current[i] + "\t");
+                }
+                Console.Out.WriteLine();
+            }
+        }
     }
 }
