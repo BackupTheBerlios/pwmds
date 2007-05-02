@@ -41,8 +41,10 @@ namespace MDS.GUI
             //layers = new List<Network.Layer>();
             functions = new List<Network.Function>();
             neuronsInLayer = new List<int>();
-            initializeLayersTable();            
+            initializeLayersTable();
         }
+
+        #region controls methods
 
         private void initializeLayersTable()
         {
@@ -86,19 +88,66 @@ namespace MDS.GUI
 
         }
 
- 
-
-        public int NetworkType
+        private ComboBox createFunctionsComboBox()
         {
-            get
-            {
-                if (this._radioClassifier.Checked == true)
-                    return Data.NetworkParam.CLASSIFIER;
-                else
-                    return Data.NetworkParam.MDS;
-            }
+            ComboBox combo = new ComboBox();
+            combo.Items.AddRange(Network.Function.FUNCTIONS);
+            combo.SelectedIndex = 0;
+            combo.Dock = DockStyle.Fill;
+            return combo;
         }
 
+        private TextBox createTextBox()
+        {
+            TextBox textBox = new TextBox();
+            textBox.Text = "1";
+            textBox.Dock = DockStyle.Fill;
+            return textBox;
+        }
+
+        private int getControlNumber(Control control)
+        {
+            int nr = 0;
+            //System.Collection enumer = _tableLayers.Controls;
+
+            while (_tableLayers.Controls[nr] != control)
+            {
+
+                ++nr;
+            }
+            return nr;
+        }
+
+        #endregion
+
+        private void addNewLayer()
+        {
+            //   Network.Layer newLayer;
+            //int neurons ;
+            /*    try
+                {
+                    neurons = int.Parse(this._tableLayers.Controls[(lastLayerNr - 1) * (FUNCTION_COL + 1) + NEURON_COL].Text);
+                }
+                catch (Exception err)
+                {
+                    return;
+                }*/
+            //newLayer = new Network.Layer(lastLayerNr, 1);
+            String funName = this._tableLayers.Controls[(lastLayerNr) * (FUNCTION_COL + 1) + FUNCTION_COL].Text;
+            Network.Function fun = new Network.Function();
+            fun.setId(funName);
+            functions.Add(fun);
+
+            neuronsInLayer.Add(1);
+        }
+        private void removeLastLayer()
+        {
+            functions.RemoveAt(functions.Count - 1);
+            neuronsInLayer.RemoveAt(neuronsInLayer.Count - 1);
+        }
+
+
+        #region controls handlers
         private void _buttonAddLayer_Click(object sender, EventArgs e)
         {
 //            this._tableLayers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -147,50 +196,10 @@ namespace MDS.GUI
 
             this._tboxSolutionLayerNr.Enabled = true;
             this._tboxSolutionLayerNr.Text = "1";
+            this._buttonDeleteLayer.Enabled = true;
             this._tableLayers.Visible = true;
            
 
-        }
-
-        private ComboBox createFunctionsComboBox()
-        {
-            ComboBox combo = new ComboBox();
-            combo.Items.AddRange(Network.Function.FUNCTIONS);
-            combo.SelectedIndex = 0;
-            combo.Dock = DockStyle.Fill;
-            return combo;
-        }
-
-        private TextBox createTextBox()
-        {
-            TextBox textBox = new TextBox();
-            textBox.Text = "1";
-            textBox.Dock = DockStyle.Fill;
-            return textBox;
-        }
-
-        private void addNewLayer()
-        {
-         //   Network.Layer newLayer;
-            //int neurons ;
-        /*    try
-            {
-                neurons = int.Parse(this._tableLayers.Controls[(lastLayerNr - 1) * (FUNCTION_COL + 1) + NEURON_COL].Text);
-            }
-            catch (Exception err)
-            {
-                return;
-            }*/
-            //newLayer = new Network.Layer(lastLayerNr, 1);
-            String funName = this._tableLayers.Controls[(lastLayerNr) * (FUNCTION_COL + 1) + FUNCTION_COL].Text;
-            Network.Function fun = new Network.Function();
-            fun.setId(funName);
-            functions.Add( fun );
-
-            neuronsInLayer.Add(1);
-            
-            //newLayer.SetFunction(funName);
-            //layers.Add(newLayer);
         }
 
         private void _buttonCreateNetwork_Click(object sender, EventArgs e)
@@ -261,18 +270,7 @@ namespace MDS.GUI
             String funName = (String)combo.Items[id]; 
             functions[y - 1].setId( funName );
         }
-        private int getControlNumber(Control control)
-        {
-            int nr = 0;
-            //System.Collection enumer = _tableLayers.Controls;
-
-            while (_tableLayers.Controls[nr] != control)
-            {
-             
-                ++nr;
-            }
-            return nr;
-        }
+        
 
         private void _radioMDS_CheckedChanged(object sender, EventArgs e)
         {
@@ -289,7 +287,35 @@ namespace MDS.GUI
                 this._tboxSolutionLayerNr.Enabled = false;
             }
         }
-        
+
+        private void _buttonDeleteLayer_Click(object sender, EventArgs e)
+        {
+            this._tableLayers.Visible = false;
+            int controlNo = this._tableLayers.Controls.Count;
+
+            for (int i = 0; i < 3; ++i) 
+                this._tableLayers.Controls.RemoveAt(--controlNo);
+            --lastLayerNr;
+            if (lastLayerNr == 0)
+                this._buttonDeleteLayer.Enabled = false;
+            this._tableLayers.Visible = true;
+            removeLastLayer();
+        }
+
+        #endregion
+
+        #region getters nad setters
+        public int NetworkType
+        {
+            get
+            {
+                if (this._radioClassifier.Checked == true)
+                    return Data.NetworkParam.CLASSIFIER;
+                else
+                    return Data.NetworkParam.MDS;
+            }
+        }
+
         public List<int> NeuronsInLayer
         {
             get { return neuronsInLayer; }
@@ -314,6 +340,9 @@ namespace MDS.GUI
         {
             get { return solutionLayerNr; }
         }
+        #endregion
+
+        
 
         
     }

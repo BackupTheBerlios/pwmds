@@ -42,7 +42,15 @@ namespace MDS.Network
         public void StartLearn()
         {
             learnThread = new Thread( new ThreadStart(learn));
+            perceptron.SetRandomWeights();
+            iter = 0;
             learnThread.Start(); 
+        }
+
+        public void ContinueLearn()
+        {
+            learnThread = new Thread(new ThreadStart(learn));
+            learnThread.Start();
         }
 
         public void StopLearn()
@@ -50,7 +58,7 @@ namespace MDS.Network
             endthread = true;
         }
 
-        public void Start()
+ /*       public void Start()
         {
             iter = 100000;
             prevError = 0;
@@ -83,10 +91,10 @@ namespace MDS.Network
             iter--;
             return true;
         }
+  */ 
 
         private void learn()
         {
-            perceptron.SetRandomWeights();
             if (param.KFoldSamples == 0)
                 learnFunction(-1, -1);
             else
@@ -96,8 +104,8 @@ namespace MDS.Network
 
         private void learnFunction( int startTestId, int endTestId )
         {
-            int startIter = 100000;
-            int iter = startIter;
+            //int startIter = 100000;
+            //iter = startIter;
             double prevError = 0;
             String text;
             globalError = 0;
@@ -127,14 +135,14 @@ namespace MDS.Network
 
                 if (iter % 1000 == 0)
                 {
-                    text = "iter::::: " + (startIter - iter) + " GLOBAL ERROR: " + globalError;
+                    text = "iter::::: " + (iter) + " GLOBAL ERROR: " + globalError;
                     Console.Out.WriteLine(text);
                     setErrorText(text + "\n");
                 }
-                iter--;
+                iter++;
             }
             
-            text = "Liczba iteracji " + (startIter - iter) + " GLOBAL ERROR: " + globalError;
+            text = "Liczba iteracji " + (iter) + " GLOBAL ERROR: " + globalError;
             Console.Out.WriteLine( text );
             text += "\nKONIEC OBLICZEÑ";
             setErrorText(text);
@@ -248,7 +256,7 @@ namespace MDS.Network
             {
                 return 0.0;
             }
-            double deltaT;
+            double deltaT, teta;
             Layer layer = perceptron.getLayer(layerNr);
             Layer layerPrev = perceptron.getLayer(layerNr - 1);
             Neuron neuroni, neuronj;        
@@ -256,8 +264,12 @@ namespace MDS.Network
             int j = neuronNr;
             neuronj = layer.getNeuronIndex(neuronNr);
             int i = prevNeuronNr;   
-            neuroni = layerPrev.getNeuronIndex(i);            
-            deltaT = 2 * param.Teta * neuronj.D * neuroni.Output
+            neuroni = layerPrev.getNeuronIndex(i);
+            if (param.OneTeta)
+                teta = param.Teta;
+            else
+                teta = 1 / layer.getNeuronList().Count;
+            deltaT = 2 * teta * neuronj.D * neuroni.Output
                 + param.Alpha * (w[layerNr, i, j] - w1[layerNr, i, j]);               
                       
             return deltaT;

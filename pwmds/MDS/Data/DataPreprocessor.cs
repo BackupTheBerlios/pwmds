@@ -9,6 +9,9 @@ namespace MDS.Data
     {
         public static int STANDARIZE = 1,
                         SCALING = 2;
+        public static int MODIFY = 0,
+                        SELECT_VECTORS = 1,
+                        SELECT_COLUMNS = 2;
         private Tests.TestPreprocessor test;
 
         public DataPreprocessor()
@@ -243,13 +246,13 @@ namespace MDS.Data
         {
             List<double[]> newData = new List<double[]>();
             int size = endColumn - startColumn + 1;
-            double[] vector;
+            double[] vector, oldVector;
             for (int i = 0; i < data.Count; ++i)
             {
-                //oldVector = data[i];
+                oldVector = data[i];
                 vector = new double[size];
-                for (int j = startColumn - 1, k=0; j < endColumn && k<size; ++j,++k)
-                    vector[k] = data[i][j];   
+                for (int j = 0; j < size; ++j)
+                    vector[j] = data[i][j + startColumn - 1];
                 newData.Add(vector);
             }
 

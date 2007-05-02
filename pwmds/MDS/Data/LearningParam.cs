@@ -8,8 +8,10 @@ namespace MDS.Data
     {
         private double alpha;
         private double teta;
+        private bool oneTeta;
 
         private double tau;/////////
+        
         private double epsilon;
         
         private int kFoldSamples;
@@ -32,6 +34,12 @@ namespace MDS.Data
         {
             get { return tau; }
             set { tau =  value; }
+        }
+
+        public bool OneTeta
+        {
+            get { return oneTeta; }
+            set { oneTeta = value; }
         }
 
         public double Epsilon
