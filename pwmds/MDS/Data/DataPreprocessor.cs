@@ -243,13 +243,13 @@ namespace MDS.Data
         {
             List<double[]> newData = new List<double[]>();
             int size = endColumn - startColumn + 1;
-            double[] vector, oldVector;
+            double[] vector;
             for (int i = 0; i < data.Count; ++i)
             {
-                oldVector = data[i];
+                //oldVector = data[i];
                 vector = new double[size];
-                for (int j = startColumn - 1; j < endColumn; ++j)
-                    vector[j] = data[i][j];
+                for (int j = startColumn - 1, k=0; j < endColumn && k<size; ++j,++k)
+                    vector[k] = data[i][j];   
                 newData.Add(vector);
             }
 
