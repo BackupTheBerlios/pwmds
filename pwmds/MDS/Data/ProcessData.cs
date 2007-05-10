@@ -55,14 +55,23 @@ namespace MDS.Data
             set { solution = value; }
         }
 
-        public static String GetStringList(double[] tab)
+        public static String GetStringList(double[] tab, bool dot )
         {
             String ret = "";
             for (int i = 0; i < tab.Length; ++i)
+            {
                 if (tab[i].Equals(double.NaN))
-                    ret += "NaN   ";
+                    ret += "NaN";
                 else
-                    ret += GetStringNumber( tab[i]) + "   ";
+                    ret += GetStringNumber(tab[i], dot);
+                if (i != tab.Length - 1)
+                {
+                    if (dot)
+                        ret += ", ";
+                    else
+                        ret += "    ";
+                }
+            }
             return ret;
         }
 
@@ -81,18 +90,22 @@ namespace MDS.Data
             return (int)Math.Floor(dd);
         }
 
-        public static String GetStringNumber(double d)
+        public static String GetStringNumber(double d, bool dot)
         {
             String number = "";
             if (d < 0)
                 number = "-";
-            number += GetMainVal(d) + ",";
+            number += GetMainVal(d);
+            if (dot)
+                number += ".";
+            else
+                number += ",";
+
             if(GetFraction(d)<10)
                 number += "0";
             number += GetFraction(d);            
             return number;
         }
-
 
     }
 }

@@ -36,7 +36,7 @@ namespace MDS.GUI
             String []lines = new String[data.Count*2];
             for (int i = 0; i < data.Count; ++i)
             {
-                lines[2 * i] = Data.ProcessData.GetStringList(data[i]);
+                lines[2 * i] = Data.ProcessData.GetStringList(data[i], false);
                 lines[2 * i + 1] = "------------------------------------";
             }
             this._tboxData.Lines = lines;

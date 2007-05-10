@@ -220,31 +220,44 @@ namespace MDS.GUI
             List<double[]> newData = new List<double[]>();
             
             dataDialog.InputData = this.mainANN.InputData;
-            
-            if (dataDialog.ShowDialog() == DialogResult.OK)
+            try
             {
-                oldDataName = dataDialog.SelectedDataName;
-                newDataName = dataDialog.NewDataName;
-                fileDataName = dataDialog.DataFileName;
-                
-                if (dataDialog.Options[DataProcess.MODIFY])
+
+                if (dataDialog.ShowDialog() == DialogResult.OK)
                 {
-                    if (dataDialog.Option == Data.DataPreprocessor.STANDARIZE)
-                        newData = mainANN.Standarize(oldDataName);
+                    oldDataName = dataDialog.SelectedDataName;
+                    newDataName = dataDialog.NewDataName;
+                    fileDataName = dataDialog.DataFileName;
+
+                    if (dataDialog.Options[DataProcess.MODIFY])
+                    {
+                        if (dataDialog.Option == Data.DataPreprocessor.STANDARIZE)
+                            newData = mainANN.Standarize(oldDataName);
+                        else
+                            newData = mainANN.Scaling(oldDataName, dataDialog.StartValue, dataDialog.EndValue);
+                    }
+                    else if (dataDialog.Options[DataProcess.SELECT_VECTORS])
+                        newData = mainANN.SelectVectorsFromData(oldDataName, dataDialog.StartVectorNr,
+                            dataDialog.EndVectorNr);
+                    else if (dataDialog.Options[DataProcess.SELECT_COLUMNS])
+                        newData = mainANN.SelectColumnsFromData(oldDataName, dataDialog.StartColumnNr,
+                            dataDialog.EndColumnNr);
                     else
-                        newData = mainANN.Scaling(oldDataName, dataDialog.StartValue, dataDialog.EndValue);
+                        return;
+
+                    mainANN.AddNewData(newDataName, newData);
+                    setPagesNewInputData(mainANN.InputData);
+                    if (dataDialog.DataFileName != null && dataDialog.DataFileName.Length > 0)
+                        mainANN.WriteData(dataDialog.DataFileName, newData);
                 }
-                else if (dataDialog.Options[DataProcess.SELECT_VECTORS])
-                    newData = mainANN.SelectVectorsFromData(oldDataName, dataDialog.StartVectorNr,
-                        dataDialog.EndVectorNr);
-                else
-                    newData = mainANN.SelectColumnsFromData(oldDataName, dataDialog.StartColumnNr,
-                        dataDialog.EndColumnNr);
-
-                mainANN.AddNewData(newDataName, newData);
-                setPagesNewInputData(mainANN.InputData);
-
             }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Cannot process data");
+            }
+
+            
             /*
             this.mainANN.InputData.Remove("Arrythmia");
             IDictionaryEnumerator en = this.mainANN.InputData.GetEnumerator();

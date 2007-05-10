@@ -232,7 +232,7 @@ namespace MDS.Data
         {
             List<double[]> newData = new List<double[]>();
             double[] vector;
-            for(int i = startVector-1; i <= endVector; ++i )   
+            for(int i = startVector-1; i < endVector; ++i )   
             {
                 vector = new double[data[i].Length];
                 data[i].CopyTo(vector, 0 );
