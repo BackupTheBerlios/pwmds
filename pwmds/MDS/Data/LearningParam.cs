@@ -16,6 +16,11 @@ namespace MDS.Data
         
         private int kFoldSamples;
 
+        private bool earlyStop;
+        private double learnSet;
+        private double validateSet;
+        private double testSet;
+
         private List<double[]> input;
         private List<double[]> output;
 
@@ -52,6 +57,30 @@ namespace MDS.Data
         {
             get { return kFoldSamples; }
             set { kFoldSamples = value; }
+        }
+
+        public bool EarlyStop
+        {
+            get { return earlyStop; }
+            set { earlyStop = value; }
+        }
+
+        public double LearnSet
+        {
+            get { return learnSet; }
+            set { learnSet = value; }
+        }
+
+        public double ValidateSet
+        {
+            get { return validateSet; }
+            set { validateSet = value; }
+        }
+
+        public double TestSet
+        {
+            get { return testSet; }
+            set { testSet = value; }
         }
 
         public List<double[]> Input
