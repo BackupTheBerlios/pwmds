@@ -107,6 +107,30 @@ namespace MDS
         }// end loadInput Data
 
 
+        public void WriteData(String filename, List<double[]> data )
+        {
+            StreamWriter writer;
+            String text;
+            writer = new StreamWriter(File.Open(filename, FileMode.Append));
+            for (int i = 0; i < data.Count; ++i)
+            {
+                //for (int j = 0; j < data[i].Length; ++j)
+                //{
+                    /*int c = getMainVal(data[i]);
+                    int fr = getFraction(data[i]);
+                    writer.Write(c);
+                    writer.Write(".");
+                    if (fr < 10)
+                        writer.Write("0");
+                     */
+                text = Data.ProcessData.GetStringList(data[i], true);
+                writer.Write( text );
+                writer.WriteLine();
+            }
+            writer.Close();
+        }
+
+
         /** Adds new network to network list.*/
 
         public int AddNetwork( Data.NetworkParam param )
