@@ -17,7 +17,8 @@ namespace MDS.Network
         //1 - warstwa neuronu koñcowego, 2 - pocz¹tkowy neuron, 3 - koñcowy neuron       
         private double[, ,] w, w1;   //w(t) i w(t-1)
         //mo¿e by te tavlice zainicjowac wagami pocz¹tkowymi
-        private double globalError, prevError;
+        private double learnError, prevError, 
+                validateError, testError;
         private Thread learnThread;
         
         private bool endthread;
@@ -95,57 +96,124 @@ namespace MDS.Network
 
         private void learn()
         {
-            if (param.KFoldSamples == 0)
-                learnFunction(-1, -1);
+            int startTestSet, endTestSet, testNo,
+                startValidateSet, endValidateSet, validateNo,
+                rest;
+
+            testNo = (int)Math.Floor( param.TestSet * param.Input.Count );
+            validateNo = (int)Math.Floor(param.ValidateSet * param.Input.Count);
+            rest = param.Input.Count - testNo - validateNo;
+
+            startValidateSet = rest;
+            endValidateSet = rest + validateNo - 1;
+            startTestSet = endValidateSet + 1;
+            endTestSet = param.Input.Count - 1;
+
+
+            if (startTestSet > endTestSet)
+            {
+                startTestSet = -1;
+                endTestSet = -1;
+            }
+            if (startValidateSet > endValidateSet)
+            {
+                startValidateSet = -1;
+                endValidateSet = -1;
+            }
+
+            if (param.EarlyStop)
+                learnFunction( startTestSet, endTestSet, startValidateSet, endValidateSet);
             else
                 kFoldCrossValidation();
         }
 
 
-        private void learnFunction( int startTestId, int endTestId )
+        private void earlyStoppingLearn( int learnVectors, int validateVectors, int testVectors)
+        {
+
+        }
+
+
+        private void learnFunction( int startTestSet, int endTestSet, 
+                    int startValidateSet, int endValidateTest )
         {
             //int startIter = 100000;
             //iter = startIter;
-            double prevError = 0;
+            double prevLearnError = 0;
+            double prevValidateError = 0;
             String text;
-            globalError = 0;
+            learnError = 0;
             Console.Out.WriteLine("Start backpropagation...   ");
             
             endthread = false;
             while (!endthread) //(iter>0)
             {
-                globalError =0;
+                learnError = 0;
+                //uczenie ze zbioru treningowego
                 for (int j = 0; j < param.Input.Count; ++j)
                 {
-                    if (j >= startTestId && j <= endTestId)
+                    if (j >= startTestSet && j <= endTestSet 
+                        || j >= startValidateSet && j <= endValidateTest )
                         continue;
                     learnOneSample(j);           
                     perceptron.calculateOutput(param.Input[j]);
-                    globalError += calculateGlobalError(j);
+                    learnError += calculateGlobalError(j);
                 }
-                globalError = globalError / param.Input.Count;
-                //tboxError.Text = tboxError.Text + "\n" + globalError;
-                if (globalError == Double.NaN)
+                learnError = learnError / param.Input.Count;
+
+                if (learnError == Double.NaN)
                     break;
-                if (globalError < param.Epsilon) 
+                if (learnError < param.Epsilon)
                     break;
-                if (prevError != 0 && globalError > 1.04 * prevError)
-                    this.param.Alpha = 0 ;
-                prevError = globalError;
+                if (prevLearnError != 0 && learnError > 1.04 * prevLearnError)
+                    this.param.Alpha = 0;
+                prevLearnError = learnError;
+
+                //oblicz b³ad danych waliduj¹cych
+                validateError = 0;
+                for (int i = startValidateSet; i <= endValidateTest; ++i)
+                {
+                    if (i < 0)
+                        break;
+                    perceptron.calculateOutput(param.Input[i]);
+                    validateError += calculateGlobalError(i);
+                }
+                validateError /= (endValidateTest - startValidateSet + 1);
+                if (prevValidateError != 0 && validateError > prevValidateError)
+                    break;
+                    //tboxError.Text = tboxError.Text + "\n" + globalError;
+                
 
                 if (iter % 1000 == 0)
                 {
-                    text = "iter::::: " + (iter) + " GLOBAL ERROR: " + globalError;
-                    Console.Out.WriteLine(text);
-                    setErrorText(text + "\n");
+                   // text = "iter::::: " + (iter) + " GLOBAL ERROR: " + globalError;
+                   // Console.Out.WriteLine(text);
+                   // setErrorText(text + "\n");
+                    if( validateError > 0)
+                        printError("ERROR", validateError, iter);
+                    else
+                        printError("ERROR", learnError, iter);
                 }
                 iter++;
             }
+
+            //oblicz b³ad dla danych testuj¹cych
+            testError = 0;
+            for (int i = startTestSet; i <= endTestSet; ++i)
+            {
+                if (i < 0) break;
+                perceptron.calculateOutput(param.Input[i]);
+                testError += calculateGlobalError(i);
+            }
+            testError/= (endTestSet - startTestSet + 1);
+
+            if (validateError > 0)
+                printError("ERROR", validateError, iter);
+            else
+                printError("ERROR", learnError, iter);
+
+            printError( "KONIEC - ERROR", testError, iter);
             
-            text = "Liczba iteracji " + (iter) + " GLOBAL ERROR: " + globalError;
-            Console.Out.WriteLine( text );
-            text += "\nKONIEC OBLICZEÑ";
-            setErrorText(text);
             Console.Out.WriteLine("PO NAUCE WSZYSTKICH WZORCOW:   ");
             for (int k = 0; k < param.Input.Count; ++k)
             {
@@ -167,6 +235,17 @@ namespace MDS.Network
               globalError = globalError / param.Input.Count; 
               Console.Out.WriteLine("GlobalError :!!!!!: "+ globalError ); 
              */ 
+        }
+
+        private void printError(String info, double error, int iter )
+        {
+            String text = ""; // info + "\n";         
+            if (iter >= 0)
+                text += "iter:: " + (iter) + "  ";
+            text += info + "  " + error + "\n";
+            Console.Out.WriteLine(text);
+            //text += "\nKONIEC OBLICZEÑ";
+            setErrorText(text);
         }
 
         private void setErrorText(String text)
@@ -194,7 +273,7 @@ namespace MDS.Network
                 end = start+oneSetSize - 1;
                 if( end > param.Input.Count)
                     end = param.Input.Count;
-                learnFunction(start, end);
+                learnFunction(0, 0, start, end);
             }
         }
 
@@ -329,7 +408,7 @@ namespace MDS.Network
             //return Function.NormSqrt(param.Output[vectNr], output);
             return 1.0 / 2.0 * Function.Square(param.Output[vectNr], output);
         }
-        
+                
         public void PrintResultsOfLearning(int i)
         {
 
@@ -433,7 +512,7 @@ namespace MDS.Network
         }
         public double GlobalError
         {
-            get { return globalError; }
+            get { return learnError; }
         }
 
        

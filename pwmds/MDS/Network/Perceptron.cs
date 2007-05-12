@@ -145,10 +145,12 @@ namespace MDS.Network
             return null;
         }
 
-        public void Process(Data.ProcessData data)
+        public double Process(Data.ProcessData data)
         {
             int solutionSize,
                 lastSize = this.layerList[layerList.Count-1].Size;
+
+            double globalError;
             
                 
             double[] last = new double[lastSize],
@@ -162,7 +164,7 @@ namespace MDS.Network
             solutionSize = this.layerList[this.solutionLayerNr - 1].Size;
             solution = new double[solutionSize];
             solutionLayer = layerList[solutionLayerNr - 1];
-
+            globalError = 0;
             foreach( double[] vector in data.Input )
             {
                 calculateOutput(vector);
@@ -180,7 +182,16 @@ namespace MDS.Network
                 }
                 data.AddOutput(last);
                 data.AddSolution(solution);
+                globalError += calculateError();
             }
+
+            globalError /= data.Input.Count;
+            return globalError;
+        }
+
+        private double calculateError()
+        {
+            return 0.0;
         }
 
 
