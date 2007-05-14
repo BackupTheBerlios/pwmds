@@ -217,7 +217,7 @@ namespace MDS.GUI
         {
             DataProcess dataDialog = new DataProcess();
             String oldDataName, newDataName, fileDataName;
-            List<double[]> newData = new List<double[]>();
+            List<double[]> newData;
             
             dataDialog.InputData = this.mainANN.InputData;
             try
@@ -228,22 +228,25 @@ namespace MDS.GUI
                     oldDataName = dataDialog.SelectedDataName;
                     newDataName = dataDialog.NewDataName;
                     fileDataName = dataDialog.DataFileName;
+                    newData = (List<double[]>)mainANN.InputData[oldDataName];
 
+                    if (!dataDialog.Options[DataProcess.MODIFY] &&
+                        !dataDialog.Options[DataProcess.SELECT_VECTORS] &&
+                        !dataDialog.Options[DataProcess.SELECT_COLUMNS])
+                        return;
                     if (dataDialog.Options[DataProcess.MODIFY])
                     {
                         if (dataDialog.Option == Data.DataPreprocessor.STANDARIZE)
-                            newData = mainANN.Standarize(oldDataName);
+                            newData = mainANN.Standarize(newData);
                         else
-                            newData = mainANN.Scaling(oldDataName, dataDialog.StartValue, dataDialog.EndValue);
+                            newData = mainANN.Scaling(newData, dataDialog.StartValue, dataDialog.EndValue);
                     }
-                    else if (dataDialog.Options[DataProcess.SELECT_VECTORS])
-                        newData = mainANN.SelectVectorsFromData(oldDataName, dataDialog.StartVectorNr,
+                    if (dataDialog.Options[DataProcess.SELECT_VECTORS])
+                        newData = mainANN.SelectVectorsFromData(newData, dataDialog.StartVectorNr,
                             dataDialog.EndVectorNr);
-                    else if (dataDialog.Options[DataProcess.SELECT_COLUMNS])
-                        newData = mainANN.SelectColumnsFromData(oldDataName, dataDialog.StartColumnNr,
+                    if (dataDialog.Options[DataProcess.SELECT_COLUMNS])
+                        newData = mainANN.SelectColumnsFromData(newData, dataDialog.StartColumnNr,
                             dataDialog.EndColumnNr);
-                    else
-                        return;
 
                     mainANN.AddNewData(newDataName, newData);
                     setPagesNewInputData(mainANN.InputData);

@@ -159,25 +159,25 @@ namespace MDS
             loadInputData(name10, file10);
         }
 
-        public List<double[]> SelectVectorsFromData( String oldDataName, int startNr, int endNr )
+        public List<double[]> SelectVectorsFromData( List<double[]> oldData, int startNr, int endNr )
         {
-            return dataProcessor.SelectVectors((List<double[]>)inputData[oldDataName], startNr, endNr);
+            return dataProcessor.SelectVectors(oldData, startNr, endNr);
         }
-        public List<double[]> SelectColumnsFromData(String oldDataName, int startColumn, int endColumn)
+        public List<double[]> SelectColumnsFromData(List<double[]> oldData, int startColumn, int endColumn)
         {
-            return dataProcessor.SelectColumns((List<double[]>)inputData[oldDataName], startColumn, endColumn);
+            return dataProcessor.SelectColumns(oldData, startColumn, endColumn);
         }
 
-        public List<double[]> Standarize(String oldDataName)
+        public List<double[]> Standarize(List<double[]> oldData)
         {
-            return dataProcessor.StandarizeData( (List<double[]>)inputData[oldDataName], 
+            return dataProcessor.StandarizeData( oldData, 
                 Data.DataPreprocessor.STANDARIZE, 0, 1);
         }
 
 
-        public List<double[]> Scaling(String oldDataName, int startVal, int endVal)
+        public List<double[]> Scaling(List<double[]> oldData, int startVal, int endVal)
         {
-            return dataProcessor.StandarizeData((List<double[]>)inputData[oldDataName], 
+            return dataProcessor.StandarizeData(oldData, 
                 Data.DataPreprocessor.SCALING, startVal, endVal);
         }
 
