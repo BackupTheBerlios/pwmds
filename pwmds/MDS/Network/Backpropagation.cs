@@ -123,12 +123,12 @@ namespace MDS.Network
                 endValidateSet = -1;
             }
 
-            if (param.EarlyStop)
+            //if (param.EarlyStop)
                 learnFunction( startTestSet, endTestSet, startValidateSet, endValidateSet);
-            else
-                kFoldCrossValidation();
+            //else
+              //  kFoldCrossValidation();
 
-            setButtonEnabled(true);
+            //setButtonEnabled(true);
 
         }
 
