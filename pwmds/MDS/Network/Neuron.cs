@@ -9,6 +9,8 @@ namespace MDS.Network
     {
         private int neuronNumber;
         private Hashtable neuronInput;
+        private Hashtable prevNeuronInput;
+
         private Layer layer;
         private double output;
         private double inputSum;
@@ -22,6 +24,7 @@ namespace MDS.Network
             this.neuronNumber = neuronNum;            
             this.layer = lay;
             this.neuronInput = new Hashtable();
+            this.prevNeuronInput = new Hashtable();
             //this.neuronOutput = new List<Neuron>();
             
         }
@@ -70,6 +73,7 @@ namespace MDS.Network
                 neuronNr--;
             }
             Neuron neuronI = (Neuron)e.Current;
+            //this.prevNeuronInput[neuronI] = this.neuronInput[neuronI];
             this.neuronInput[neuronI] = ((double)this.neuronInput[neuronI]) + deltaT; 
         }
         public double D
@@ -80,6 +84,7 @@ namespace MDS.Network
         public void addToHashtable (Neuron n, double x)
         {
             this.neuronInput.Add(n, x);
+            this.prevNeuronInput.Add(n, x);
         }
         public void printHashtable()
         {
@@ -97,6 +102,7 @@ namespace MDS.Network
         public void ClearHashtable()
         {
             this.neuronInput.Clear();
+            this.prevNeuronInput.Clear();
         }
 
         public void printOutput()
@@ -120,6 +126,28 @@ namespace MDS.Network
         {
             get { return inputSum; }
         }
+
+        private void rewriteHashtable( Hashtable tableFrom, Hashtable tableTo ) 
+        {
+            IDictionaryEnumerator e = tableFrom.GetEnumerator();
+            Neuron n;
+            while (e.MoveNext())
+            {
+                n = (Neuron)e.Key;
+                tableTo[n] = e.Value;
+            }
+        }
+
+        public void RewriteCurrentInputToPrev()
+        {
+            rewriteHashtable(neuronInput, prevNeuronInput);
+        }
+
+        public void RewritePrevInputToCurrent()
+        {
+            rewriteHashtable(neuronInput, prevNeuronInput);
+        }
+
        
     }
 }

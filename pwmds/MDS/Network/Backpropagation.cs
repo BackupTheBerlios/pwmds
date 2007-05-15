@@ -179,8 +179,13 @@ namespace MDS.Network
                     validateError += calculateGlobalError(i);
                 }
                 validateError /= (endValidateTest - startValidateSet + 1);
-                if (prevValidateError != 0 && validateError > prevValidateError)
+                if (prevValidateError != 0 && validateError > 1.5 * prevValidateError)
+                {
+                    //przepisz wagi
+                    rewritePrevWeight();
                     break;
+                }
+                prevValidateError = validateError;
                     //tboxError.Text = tboxError.Text + "\n" + globalError;
                 
 
@@ -288,12 +293,18 @@ namespace MDS.Network
                 this.calculateHiddenLayerErorrs(vectNr, k);
 
             for (int k = 1; k < perceptron.Size; k++) //warstwy
-                for (int j = 0; j < perceptron.getLayer(k).Size; j++) 
+                for (int j = 0; j < perceptron.getLayer(k).Size; j++)
+                {
+                    //przepisanie bierz¹cych wag przed zmodyfikowanie do tavlicy z poprzednimi wagami
+                    perceptron.getLayer(k).getNeuronIndex(j).RewriteCurrentInputToPrev();
                     for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
                     {
-                        double deltaT = this.calculateDeltaT(k,j,i);
+
+                        double deltaT = this.calculateDeltaT(k, j, i);
+
                         this.modifyT(k, j, i, deltaT);
-                    }                         
+                    }
+                }
             this.updateTableW();
         }
 
@@ -408,7 +419,18 @@ namespace MDS.Network
             //return Function.NormSqrt(param.Output[vectNr], output);
             return 1.0 / 2.0 * Function.Square(param.Output[vectNr], output);
         }
-                
+
+        private void rewritePrevWeight()
+        {
+            Layer layer;
+            for (int i = 1; i < perceptron.Size; ++i)
+            {
+                layer = perceptron.getLayer(i);
+                for (int j = 0; j < layer.Size; ++j)
+                    layer.getNeuronIndex(j).RewritePrevInputToCurrent();
+            }
+        }
+
         public void PrintResultsOfLearning(int i)
         {
 
