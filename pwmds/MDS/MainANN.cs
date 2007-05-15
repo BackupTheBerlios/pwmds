@@ -99,6 +99,7 @@ namespace MDS
   //                    break;
               }
               //this.inputData.Add(filePath, loadedData);
+              loadedData = dataProcessor.DeleteMissingValues(loadedData, 0.6);
               
               this.inputData.Add(name, loadedData);
               reader.Close();
