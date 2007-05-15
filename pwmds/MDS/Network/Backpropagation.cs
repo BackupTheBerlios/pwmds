@@ -25,7 +25,9 @@ namespace MDS.Network
         private int iter;
 
         private TextBox _tboxError;
+        private Button _startButton, _continueButton, _stopButton;
         delegate void SetTextCallback(string text);
+        delegate void SetEnabledCallback(bool en);
         
 
 
@@ -125,11 +127,8 @@ namespace MDS.Network
                 learnFunction( startTestSet, endTestSet, startValidateSet, endValidateSet);
             else
                 kFoldCrossValidation();
-        }
 
-
-        private void earlyStoppingLearn( int learnVectors, int validateVectors, int testVectors)
-        {
+            setButtonEnabled(true);
 
         }
 
@@ -195,9 +194,9 @@ namespace MDS.Network
                    // Console.Out.WriteLine(text);
                    // setErrorText(text + "\n");
                     if( validateError > 0)
-                        printError("ERROR", validateError, iter);
+                        printError("ERROR (V)", validateError, iter);
                     else
-                        printError("ERROR", learnError, iter);
+                        printError("ERROR (L)", learnError, iter);
                 }
                 iter++;
             }
@@ -213,11 +212,11 @@ namespace MDS.Network
             testError/= (endTestSet - startTestSet + 1);
 
             if (validateError > 0)
-                printError("ERROR", validateError, iter);
+                printError("ERROR (V)", validateError, iter);
             else
-                printError("ERROR", learnError, iter);
+                printError("ERROR (L)", learnError, iter);
 
-            printError( "KONIEC - ERROR", testError, iter);
+            printError( "KONIEC - ERROR (T)", testError, iter);
             
             Console.Out.WriteLine("PO NAUCE WSZYSTKICH WZORCOW:   ");
             for (int k = 0; k < param.Input.Count; ++k)
@@ -263,6 +262,24 @@ namespace MDS.Network
             else
             {
                 this._tboxError.AppendText(text);
+            }
+
+        }
+
+        private void setButtonEnabled(bool en)
+        {
+            if (this._tboxError.InvokeRequired)
+            {
+                SetEnabledCallback d = new SetEnabledCallback(setButtonEnabled);
+                this._startButton.Invoke(d, new object[] { en });
+                //this._continueButton.Invoke(d, new object[] { en });
+                //this._stopButton.Invoke(d, new object[] { !en });
+            }
+            else
+            {
+                this._startButton.Enabled = en;
+                this._continueButton.Enabled = en;
+                this._stopButton.Enabled = !en;
             }
 
         }
@@ -532,6 +549,22 @@ namespace MDS.Network
         {
             set { _tboxError = value; }
         }
+
+        public Button StartButton
+        {
+            set { _startButton = value; }
+        }
+
+        public Button StopButton
+        {
+            set { _stopButton = value; }
+        }
+
+        public Button ContinueButton
+        {
+            set { _continueButton= value; }
+        }
+
         public double GlobalError
         {
             get { return learnError; }

@@ -153,6 +153,7 @@ namespace MDS.GUI
             this.Controls.Add(this._prelabelDataSize);
             this.Controls.Add(this._tboxDataName);
             this.Controls.Add(this._prelabelDataName);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "DataDetails";
             this.Text = "Szczegó³y danych";
             this.ResumeLayout(false);

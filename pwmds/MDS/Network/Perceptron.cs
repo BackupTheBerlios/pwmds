@@ -182,16 +182,16 @@ namespace MDS.Network
                 }
                 data.AddOutput(last);
                 data.AddSolution(solution);
-                globalError += calculateError();
+                globalError += calculateError( vector, last);
             }
 
             globalError /= data.Input.Count;
             return globalError;
         }
 
-        private double calculateError()
+        private double calculateError( double[] properOutput, double[] output)
         {
-            return 0.0;
+            return 1.0 / 2.0 * Function.Square(properOutput, output);
         }
 
 

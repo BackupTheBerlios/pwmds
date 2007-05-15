@@ -147,6 +147,7 @@ namespace MDS.GUI
             this.Controls.Add(this._tboxFilePath);
             this.Controls.Add(this._tboxDataName);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ReadData";
             this.Text = "Wczytywanie danych";
             this.ResumeLayout(false);

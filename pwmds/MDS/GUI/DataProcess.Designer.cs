@@ -329,6 +329,7 @@ namespace MDS.GUI
             this.Controls.Add(this._labelSelectData);
             this.Controls.Add(this._tboxDataName);
             this.Controls.Add(this._labelDataName);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "DataProcess";
             this.Text = "Przetwarzanie danych";
             this.ResumeLayout(false);
