@@ -145,7 +145,7 @@ namespace MDS.Network
 
         public void RewritePrevInputToCurrent()
         {
-            rewriteHashtable(neuronInput, prevNeuronInput);
+            rewriteHashtable(prevNeuronInput, neuronInput);
         }
 
        

@@ -17,8 +17,9 @@ namespace MDS.Network
         //1 - warstwa neuronu koñcowego, 2 - pocz¹tkowy neuron, 3 - koñcowy neuron       
         private double[, ,] w, w1;   //w(t) i w(t-1)
         //mo¿e by te tavlice zainicjowac wagami pocz¹tkowymi
-        private double learnError, prevError, 
-                validateError, testError;
+        private double learnError, prevLearnError, lastMinLearnError,
+                validateError, prevValidateError, lastMinValError,
+                testError;
         private Thread learnThread;
         
         private bool endthread;
@@ -40,10 +41,14 @@ namespace MDS.Network
             int n = perceptron.MaxLayerSize;            
             w = new double[layers, n, n];
             w1 = new double[layers, n, n];
+            endthread = true;
         }
 
         public void StartLearn()
         {
+            if (endthread == false)
+                return;
+            zeroErrors();
             learnThread = new Thread( new ThreadStart(learn));
             perceptron.SetRandomWeights();
             iter = 0;
@@ -52,6 +57,8 @@ namespace MDS.Network
 
         public void ContinueLearn()
         {
+            if (endthread == false)
+                return;
             learnThread = new Thread(new ThreadStart(learn));
             learnThread.Start();
         }
@@ -138,8 +145,7 @@ namespace MDS.Network
         {
             //int startIter = 100000;
             //iter = startIter;
-            double prevLearnError = 0;
-            double prevValidateError = 0;
+
             String text;
             learnError = 0;
             Console.Out.WriteLine("Start backpropagation...   ");
@@ -166,7 +172,16 @@ namespace MDS.Network
                     break;
                 if (prevLearnError != 0 && learnError > 1.04 * prevLearnError)
                     this.param.Alpha = 0;
+                
                 prevLearnError = learnError;
+
+                if (lastMinLearnError == 0)
+                    lastMinLearnError = learnError;
+                if (lastMinLearnError != 0 && lastMinLearnError > learnError)
+                {
+                    lastMinLearnError = learnError;
+                    rewriteCurrWeight();
+                }
 
                 //oblicz b³ad danych waliduj¹cych
                 validateError = 0;
@@ -178,13 +193,21 @@ namespace MDS.Network
                     validateError += calculateGlobalError(i);
                 }
                 validateError /= (endValidateTest - startValidateSet + 1);
-                if (prevValidateError != 0 && validateError > 1.5 * prevValidateError)
+                //if (prevValidateError != 0 && validateError > 1.5 * prevValidateError)
+/*                if (prevValidateError != 0 && validateError > 1.5 * prevValidateError)
                 {
                     //przepisz wagi
                     rewritePrevWeight();
                     break;
                 }
-                prevValidateError = validateError;
+ */
+                if (lastMinValError == 0)
+                    lastMinValError = validateError;
+                if (lastMinValError != 0 && lastMinValError > validateError)
+                {
+                    lastMinValError = validateError;
+                    rewriteCurrWeight();
+                }
                     //tboxError.Text = tboxError.Text + "\n" + globalError;
                 
 
@@ -193,13 +216,25 @@ namespace MDS.Network
                    // text = "iter::::: " + (iter) + " GLOBAL ERROR: " + globalError;
                    // Console.Out.WriteLine(text);
                    // setErrorText(text + "\n");
-                    if( validateError > 0)
+                    if (validateError > 0)
+                    {
                         printError("ERROR (V)", validateError, iter);
+                        printError("ERROR (MIN_V)", lastMinValError, iter);
+                    }
                     else
+                    {
                         printError("ERROR (L)", learnError, iter);
+                        printError("ERROR (MIN_L)", lastMinLearnError, iter);
+                    }
                 }
                 iter++;
             }
+
+            if (lastMinValError !=0 && lastMinValError < validateError)
+                rewritePrevWeight();
+            if (lastMinLearnError != 0 && lastMinLearnError < learnError)
+                rewritePrevWeight();
+
 
             //oblicz b³ad dla danych testuj¹cych
             testError = 0;
@@ -313,7 +348,7 @@ namespace MDS.Network
                 for (int j = 0; j < perceptron.getLayer(k).Size; j++)
                 {
                     //przepisanie bierz¹cych wag przed zmodyfikowanie do tavlicy z poprzednimi wagami
-                    perceptron.getLayer(k).getNeuronIndex(j).RewriteCurrentInputToPrev();
+                    //perceptron.getLayer(k).getNeuronIndex(j).RewriteCurrentInputToPrev();
                     for (int i = 0; i < perceptron.getLayer(k - 1).Size; i++) //neurony poprzedzajace
                     {
 
@@ -446,6 +481,31 @@ namespace MDS.Network
                 for (int j = 0; j < layer.Size; ++j)
                     layer.getNeuronIndex(j).RewritePrevInputToCurrent();
             }
+        }
+
+        private void rewriteCurrWeight()
+        {
+            Layer layer;
+            for (int i = 1; i < perceptron.Size; ++i)
+            {
+                layer = perceptron.getLayer(i);
+                for (int j = 0; j < layer.Size; ++j)
+                    layer.getNeuronIndex(j).RewriteCurrentInputToPrev();
+            }
+        }
+
+        private void zeroErrors()
+        {
+            learnError = 0;
+            prevLearnError = 0;
+            lastMinLearnError = 0;
+
+            validateError = 0;
+            prevValidateError = 0;
+            lastMinValError = 0;
+
+            testError = 0;
+
         }
 
         public void PrintResultsOfLearning(int i)
