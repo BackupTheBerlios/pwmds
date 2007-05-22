@@ -233,7 +233,7 @@ namespace MDS
                 }
                 binary.Add(binaryValues);
             }
-            this.WriteData("classification.data", binary);
+            //this.WriteData("classification.data", binary);
         }
     }
 }
