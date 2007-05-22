@@ -8,8 +8,12 @@ namespace MDS.Network
     public class Neuron
     {
         private int neuronNumber;
+        //aktualne wagi po³¹czeñ
         private Hashtable neuronInput;
+        //wagi po³¹czeñ z poprzedniego kroku
         private Hashtable prevNeuronInput;
+        //wagi po³¹czeñ w momncie gdy b³¹d sieci by³ najmniejszy
+        private Hashtable lastMinNeuronInput;
 
         private Layer layer;
         private double output;
@@ -25,6 +29,7 @@ namespace MDS.Network
             this.layer = lay;
             this.neuronInput = new Hashtable();
             this.prevNeuronInput = new Hashtable();
+            this.lastMinNeuronInput = new Hashtable();
             //this.neuronOutput = new List<Neuron>();
             
         }
@@ -85,6 +90,7 @@ namespace MDS.Network
         {
             this.neuronInput.Add(n, x);
             this.prevNeuronInput.Add(n, x);
+            this.lastMinNeuronInput.Add(n, x);
         }
         public void printHashtable()
         {
@@ -103,6 +109,7 @@ namespace MDS.Network
         {
             this.neuronInput.Clear();
             this.prevNeuronInput.Clear();
+            this.lastMinNeuronInput.Clear();
         }
 
         public void printOutput()
@@ -146,6 +153,16 @@ namespace MDS.Network
         public void RewritePrevInputToCurrent()
         {
             rewriteHashtable(prevNeuronInput, neuronInput);
+        }
+
+        public void RewriteLastMinInputToCurrent()
+        {
+            rewriteHashtable(lastMinNeuronInput, neuronInput);
+        }
+
+        public void RewriteCurrentInputToLastMin()
+        {
+            rewriteHashtable(neuronInput, lastMinNeuronInput);
         }
 
        

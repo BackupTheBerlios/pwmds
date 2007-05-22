@@ -20,6 +20,7 @@ namespace MDS.Network
         private double learnError, prevLearnError, lastMinLearnError,
                 validateError, prevValidateError, lastMinValError,
                 testError;
+        //private bool useAlpha;
         private Thread learnThread;
         
         private bool endthread;
@@ -141,12 +142,9 @@ namespace MDS.Network
 
 
         private void learnFunction( int startTestSet, int endTestSet, 
-                    int startValidateSet, int endValidateTest )
+                    int startValidateSet, int endValidateSet )
         {
-            //int startIter = 100000;
-            //iter = startIter;
-
-            String text;
+          String text;
             learnError = 0;
             Console.Out.WriteLine("Start backpropagation...   ");
             
@@ -158,12 +156,21 @@ namespace MDS.Network
                 for (int j = 0; j < param.Input.Count; ++j)
                 {
                     if (j >= startTestSet && j <= endTestSet 
-                        || j >= startValidateSet && j <= endValidateTest )
+                        || j >= startValidateSet && j <= endValidateSet )
                         continue;
                     learnOneSample(j);           
+                }
+                for (int j = 0; j < param.Input.Count; ++j)
+                {
+                    if (j >= startTestSet && j <= endTestSet
+                        || j >= startValidateSet && j <= endValidateSet)
+                        continue;
                     perceptron.calculateOutput(param.Input[j]);
                     learnError += calculateGlobalError(j);
                 }
+                if (param.UseAlpha == false)
+                    param.UseAlpha = true;
+
                 learnError = learnError / param.Input.Count;
 
                 if (learnError == Double.NaN)
@@ -171,28 +178,34 @@ namespace MDS.Network
                 if (learnError < param.Epsilon)
                     break;
                 if (prevLearnError != 0 && learnError > 1.04 * prevLearnError)
-                    this.param.Alpha = 0;
+                {
+                    //nie zmieniaj wag - przepisz poprzednie do bierz¹cych
+                    rewritePrevWeightToCurrent();
+                    //nie u¿waj momentum nastêpnym razem
+                    param.UseAlpha = false;
+                }
+                 
                 
                 prevLearnError = learnError;
-
-                if (lastMinLearnError == 0)
-                    lastMinLearnError = learnError;
+                
                 if (lastMinLearnError != 0 && lastMinLearnError > learnError)
                 {
                     lastMinLearnError = learnError;
-                    rewriteCurrWeight();
+                    rewriteCurrentToLastMinWeight();
                 }
+                if (lastMinLearnError == 0)
+                    lastMinLearnError = learnError;
 
                 //oblicz b³ad danych waliduj¹cych
                 validateError = 0;
-                for (int i = startValidateSet; i <= endValidateTest; ++i)
+                for (int i = startValidateSet; i <= endValidateSet; ++i)
                 {
                     if (i < 0)
                         break;
                     perceptron.calculateOutput(param.Input[i]);
                     validateError += calculateGlobalError(i);
                 }
-                validateError /= (endValidateTest - startValidateSet + 1);
+                validateError /= (endValidateSet - startValidateSet + 1);
                 //if (prevValidateError != 0 && validateError > 1.5 * prevValidateError)
 /*                if (prevValidateError != 0 && validateError > 1.5 * prevValidateError)
                 {
@@ -201,13 +214,14 @@ namespace MDS.Network
                     break;
                 }
  */
-                if (lastMinValError == 0)
-                    lastMinValError = validateError;
+                
                 if (lastMinValError != 0 && lastMinValError > validateError)
                 {
                     lastMinValError = validateError;
-                    rewriteCurrWeight();
+                    rewriteCurrentToLastMinWeight();
                 }
+                if (lastMinValError == 0)
+                    lastMinValError = validateError;
                     //tboxError.Text = tboxError.Text + "\n" + globalError;
                 
 
@@ -219,32 +233,34 @@ namespace MDS.Network
                     if (validateError > 0)
                     {
                         printError("ERROR (V)", validateError, iter);
-                        printError("ERROR (MIN_V)", lastMinValError, iter);
+                        printError("ERROR (MV)", lastMinValError, iter);
                     }
                     else
                     {
                         printError("ERROR (L)", learnError, iter);
-                        printError("ERROR (MIN_L)", lastMinLearnError, iter);
+                        printError("ERROR (ML)", lastMinLearnError, iter);
                     }
                 }
                 iter++;
             }
 
             if (lastMinValError !=0 && lastMinValError < validateError)
-                rewritePrevWeight();
-            if (lastMinLearnError != 0 && lastMinLearnError < learnError)
-                rewritePrevWeight();
+                rewriteLastMinWeightToCurrent();
+            if (lastMinValError == 0 && lastMinLearnError < learnError)
+                rewriteLastMinWeightToCurrent();
 
 
             //oblicz b³ad dla danych testuj¹cych
             testError = 0;
             for (int i = startTestSet; i <= endTestSet; ++i)
+            //for (int i = 0; i < param.Input.Count; ++i)
             {
                 if (i < 0) break;
                 perceptron.calculateOutput(param.Input[i]);
                 testError += calculateGlobalError(i);
             }
             testError/= (endTestSet - startTestSet + 1);
+            //testError /= param.Input.Count;
 
             if (validateError > 0)
                 printError("ERROR (V)", validateError, iter);
@@ -411,8 +427,11 @@ namespace MDS.Network
                 teta = param.Teta;
             else
                 teta = 1 / layer.getNeuronList().Count;
-            deltaT = 2 * teta * neuronj.D * neuroni.Output
-                + param.Alpha * (w[layerNr, i, j] - w1[layerNr, i, j]);               
+            if (param.UseAlpha == true)
+                deltaT = 2 * teta * neuronj.D * neuroni.Output
+                    + param.Alpha * (w[layerNr, i, j] - w1[layerNr, i, j]);
+            else
+                deltaT = 2 * teta * neuronj.D * neuroni.Output;
                       
             return deltaT;
         }
@@ -472,7 +491,8 @@ namespace MDS.Network
             return 1.0 / 2.0 * Function.Square(param.Output[vectNr], output);
         }
 
-        private void rewritePrevWeight()
+        private void rewritePrevWeightToCurrent()
+        //przepisz poprzednie do aktualnych
         {
             Layer layer;
             for (int i = 1; i < perceptron.Size; ++i)
@@ -483,7 +503,8 @@ namespace MDS.Network
             }
         }
 
-        private void rewriteCurrWeight()
+        private void rewriteCurrWeightToPrev()
+        //przepisz aktualne do poprzednich - s¹ zaakceptowane
         {
             Layer layer;
             for (int i = 1; i < perceptron.Size; ++i)
@@ -491,6 +512,30 @@ namespace MDS.Network
                 layer = perceptron.getLayer(i);
                 for (int j = 0; j < layer.Size; ++j)
                     layer.getNeuronIndex(j).RewriteCurrentInputToPrev();
+            }
+        }
+
+        private void rewriteLastMinWeightToCurrent()
+        //przepisz ostatnie najlepsze do aktualnych
+        {
+            Layer layer;
+            for (int i = 1; i < perceptron.Size; ++i)
+            {
+                layer = perceptron.getLayer(i);
+                for (int j = 0; j < layer.Size; ++j)
+                    layer.getNeuronIndex(j).RewriteLastMinInputToCurrent();
+            }
+        }
+
+        private void rewriteCurrentToLastMinWeight()
+        //przepisz aktualne jako ostatnie najlepsze
+        {
+            Layer layer;
+            for (int i = 1; i < perceptron.Size; ++i)
+            {
+                layer = perceptron.getLayer(i);
+                for (int j = 0; j < layer.Size; ++j)
+                    layer.getNeuronIndex(j).RewriteCurrentInputToLastMin();
             }
         }
 

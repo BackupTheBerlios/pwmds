@@ -149,6 +149,7 @@ namespace MDS
         private void readDefaultFiles()
         {
             loadInputData(name1, file1);
+            
             loadInputData(name2, file2);
             loadInputData(name3, file3);
             loadInputData(name4, file4);
@@ -158,6 +159,8 @@ namespace MDS
             loadInputData(name8, file8);
             loadInputData(name9, file9);
             loadInputData(name10, file10);
+
+            WriteBinaryLastValue((List<double[]>)inputData[name1]);
         }
 
         public List<double[]> SelectVectorsFromData( List<double[]> oldData, int startNr, int endNr )
@@ -206,6 +209,31 @@ namespace MDS
                     names.Add((String)en.Current);
                 return names;
             }
+        }
+
+        private void WriteBinaryLastValue(List<double[]> arrytmia)
+        {
+            List<double[]> binary = new List<double[]>(arrytmia.Count);
+            int val, rest, i;
+            double[] binaryValues;
+
+            foreach (double[] vector in arrytmia)
+            {
+                binaryValues = new double[4];
+                for(i = 0; i < binaryValues.Length; ++i )
+                    binaryValues[i] = 0;
+                val = (int)vector[vector.Length - 1] - 1; //wartoœci z zakresu <0,15>
+                i = 3;
+                while (i >= 0)
+                {
+                    rest = val % 2;
+                    val /= 2;
+                    binaryValues[i] = rest;
+                    i--;
+                }
+                binary.Add(binaryValues);
+            }
+            this.WriteData("classification.data", binary);
         }
     }
 }
