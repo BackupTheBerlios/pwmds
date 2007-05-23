@@ -7,6 +7,8 @@ namespace MDS.Data
     class LearningParam
     {
         private double alpha;
+        private bool useAlpha;
+
         private double teta;
         private bool oneTeta;
 
@@ -29,6 +31,13 @@ namespace MDS.Data
             get { return alpha; }
             set { alpha = value; }
         }
+
+        public bool UseAlpha
+        {
+            get { return useAlpha; }
+            set { useAlpha = value; }
+        }
+
         public double Teta
         {
             get { return teta; }
