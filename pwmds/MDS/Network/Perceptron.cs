@@ -11,6 +11,9 @@ namespace MDS.Network
         private int solutionLayerNr;
         private int type;
 
+        private double globalError;
+        private double stress;
+
         public Perceptron(int[] neurons)  //liczba warstw i neuronow w kazdej warstwie
         {
             
@@ -145,12 +148,11 @@ namespace MDS.Network
             return null;
         }
 
-        public double Process(Data.ProcessData data)
+        public void Process(Data.ProcessData data)
         {
             int solutionSize,
                 lastSize = this.layerList[layerList.Count-1].Size;
-
-            double globalError;
+            
             
                 
             double[] last = new double[lastSize],
@@ -186,12 +188,27 @@ namespace MDS.Network
             }
 
             globalError /= data.Input.Count;
-            return globalError;
+            stress = 0;
+            calculateStress(data);
         }
 
         private double calculateError( double[] properOutput, double[] output)
         {
             return 1.0 / 2.0 * Function.Square(properOutput, output);
+        }
+
+        public void calculateStress( Data.ProcessData data )
+        {
+            double dist1, dist2;
+            int dataSize = data.Size;
+            for(int i = 0; i < dataSize; ++i )
+                for (int j = 0; j < dataSize; ++j)
+                {
+                    if (i == j) continue;
+                    dist1 = Function.Square(data.Input[i], data.Input[j]);
+                    dist2 = Function.Square(data.Solution[i], data.Solution[j]);
+                    stress += Math.Abs(dist1 - dist2) / dist1;
+                }
         }
 
 
@@ -241,6 +258,16 @@ namespace MDS.Network
         public int Type
         {
             get { return type; }
+        }
+
+        public double Error
+        {
+            get { return globalError; }
+        }
+
+        public double Stress
+        {
+            get { return stress; }
         }
     }
 }

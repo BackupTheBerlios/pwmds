@@ -234,12 +234,14 @@ namespace MDS.Network
                     {
                         printError("ERROR (V)", validateError, iter);
                         printError("ERROR (MV)", lastMinValError, iter);
+
+
                     }
-                    else
-                    {
+//                   e$lse
+  //                  {
                         printError("ERROR (L)", learnError, iter);
                         printError("ERROR (ML)", lastMinLearnError, iter);
-                    }
+    //                }
                 }
                 iter++;
             }
@@ -263,9 +265,13 @@ namespace MDS.Network
             //testError /= param.Input.Count;
 
             if (validateError > 0)
+            {
                 printError("ERROR (V)", validateError, iter);
-            else
+                printError("ERROR (MV)", lastMinValError, iter);
+            }
+            //else
                 printError("ERROR (L)", learnError, iter);
+                printError("ERROR (ML)", lastMinLearnError, iter);
 
             printError( "KONIEC - ERROR (T)", testError, iter);
             
