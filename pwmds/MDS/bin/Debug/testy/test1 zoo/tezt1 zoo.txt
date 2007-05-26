@@ -1,0 +1,40 @@
+SKALOWANIE
+Uczenie:
+
+input: test1 zoo uczenie 50.txt
+siec: 16-8-3-8-16
+Wektory: 1-50	
+Kolumny: 16
+Moment: 0,5
+Wspolczynnik: 0,9
+Start: 10:58 Blad: 0,99
+Stop: 11:08 Blad: 0,04
+------------------------------
+Skalowanie:
+
+Input: test1 zoo skalowanie 51 101.txt
+Ootput: test1 zoo skalowanie 51-101_out
+siec: 16-8-3-8-16
+Wektory: 51-101	
+Kolumny: 16
+Blad: 0,07
+---------------------------------------
+---------------------------------------
+KLASYFIKACJA
+Uczenie:
+
+input: test1 zoo skalowanie 51-101_out
+output: zoo_klasy.txt
+siec: 3-5-7
+Wektory: 51	
+Kolumny: 3
+Moment: 0,5
+Wspolczynnik: 0,9
+Start: 11:35 Blad: 0,59
+Stop: 11:40 Blad: 0,03
+---------------------------------------
+Klasyfikacja:
+
+input: test1 zoo skalowanie 51-101_out
+output: test1 zoo klasyfikacja 51_out
+Blad: 0,14
