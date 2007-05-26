@@ -13,7 +13,7 @@ Stop: 11:08 Blad: 0,04
 Skalowanie:
 
 Input: test1 zoo skalowanie 51 101.txt
-Ootput: test1 zoo skalowanie 51-101_out
+Ootput: test1 zoo skalowanie 51-101 vect 3_out
 siec: 16-8-3-8-16
 Wektory: 51-101	
 Kolumny: 16
@@ -23,7 +23,7 @@ Blad: 0,07
 KLASYFIKACJA
 Uczenie:
 
-input: test1 zoo skalowanie 51-101_out
+input: test1 zoo skalowanie 51-101 vect 3_out
 output: zoo_klasy.txt
 siec: 3-5-7
 Wektory: 51	
@@ -35,6 +35,27 @@ Stop: 11:40 Blad: 0,03
 ---------------------------------------
 Klasyfikacja:
 
-input: test1 zoo skalowanie 51-101_out
-output: test1 zoo klasyfikacja 51_out
+input: test1 zoo skalowanie 51-101 vect 3_out
+output: test1 zoo klasyfikacja 51-101 vect 3_out
 Blad: 0,14
+----------------------------------------
+Uczenie:
+
+input: test1 zoo skalowanie 51-101.txt
+output: zoo_klasy.txt
+siec: 16-10-7
+Wektory: 51-101	
+Kolumny: 16
+Moment: 0,5
+Wspolczynnik: 0,9
+Start: 11:53 Blad: 0,1
+Stop: 12:00 Blad: 0,02
+---------------------------------------
+Klasyfikacja:
+
+input: test1 zoo skalowanie 51-101.txt
+output: test1 zoo klasyfikacja 51-101 vect 16_out
+Blad: 0,2
+////////////////////////////////////////////////
+Do wykresu:
+porownac test1 zoo skalowanie 51-101 vect 3_out z test1 zoo klasyfikacja 51-101 vect 16_out
