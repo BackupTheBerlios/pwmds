@@ -228,7 +228,7 @@ namespace MDS.Data
             }
         }
 
-        public List<double[]> SelectVectors(List<double[]> data, int startVector, int endVector)
+        /*public List<double[]> SelectVectors(List<double[]> data, int startVector, int endVector)
         {
             List<double[]> newData = new List<double[]>();
             double[] vector;
@@ -240,7 +240,22 @@ namespace MDS.Data
             }
 
             return newData;
+        }*/
+        public List<double[]> SelectVectors(List<double[]> data, List<int> vectorsNo )
+        {
+            List<double[]> newData = new List<double[]>();
+            double[] vector;
+            //for (int i = startVector - 1; i < endVector; ++i)
+            foreach( int no in vectorsNo)
+            {
+                vector = new double[data[no-1].Length];
+                data[no-1].CopyTo(vector, 0);
+                newData.Add(vector);
+            }
+
+            return newData;
         }
+
 
         public List<double[]> SelectColumns(List<double[]> data, int startColumn, int endColumn)
         {
