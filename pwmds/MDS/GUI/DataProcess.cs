@@ -28,6 +28,7 @@ namespace MDS.GUI
 
         private int startVal, endVal;
 
+        private List<int> vectorsNo;
 
         public DataProcess()
         {
@@ -113,6 +114,11 @@ namespace MDS.GUI
         {
             get { return endVal; }
         }
+
+        public List<int> VectorsNo
+        {
+            get { return vectorsNo; }
+        }
         #endregion
 
         private void _buttonOk_Click(object sender, EventArgs e)
@@ -143,6 +149,8 @@ namespace MDS.GUI
                 if (this._cboxSelectVectors.Checked == true)
                 {
                     options[SELECT_VECTORS] = true;
+                    //
+                    getVectorsNo(_tboxStartVector.Text);
                     startVectorNr = int.Parse(this._tboxStartVector.Text);
                     endVectorNr = int.Parse(this._tboxEndVector.Text);
                 }
@@ -152,6 +160,32 @@ namespace MDS.GUI
                 System.Console.WriteLine(ex);
             }
 
+        }
+
+        private void getVectorsNo( String text )
+        {
+            String[] parts;
+            String[] numbers;
+            vectorsNo = new List<int>();
+            int val1, val2;
+
+            parts = text.Split( new char[]{','});
+            foreach (String elem in parts)
+            {
+                numbers = elem.Split(new char[] { '-' });
+                
+                if (!int.TryParse(numbers[0], out val1))
+                        continue;
+                if (numbers.Length == 1)
+                {    
+                    vectorsNo.Add(val1);
+                    continue;
+                }
+                if( !int.TryParse( numbers[1], out val2))
+                    continue;
+                for (int i = val1; i <= val2; ++i)
+                    vectorsNo.Add(i);
+            }
         }
     }
 }

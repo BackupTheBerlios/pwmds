@@ -178,26 +178,28 @@ namespace MDS.GUI
             this._tboxStartVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this._tboxStartVector.Location = new System.Drawing.Point(187, 197);
             this._tboxStartVector.Name = "_tboxStartVector";
-            this._tboxStartVector.Size = new System.Drawing.Size(30, 21);
+            this._tboxStartVector.Size = new System.Drawing.Size(111, 21);
             this._tboxStartVector.TabIndex = 13;
             // 
             // l4
             // 
             this.l4.AutoSize = true;
             this.l4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.l4.Location = new System.Drawing.Point(223, 197);
+            this.l4.Location = new System.Drawing.Point(310, 199);
             this.l4.Name = "l4";
             this.l4.Size = new System.Drawing.Size(24, 16);
             this.l4.TabIndex = 14;
             this.l4.Text = "do";
+            this.l4.Visible = false;
             // 
             // _tboxEndVector
             // 
             this._tboxEndVector.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._tboxEndVector.Location = new System.Drawing.Point(253, 197);
+            this._tboxEndVector.Location = new System.Drawing.Point(340, 194);
             this._tboxEndVector.Name = "_tboxEndVector";
             this._tboxEndVector.Size = new System.Drawing.Size(30, 21);
             this._tboxEndVector.TabIndex = 15;
+            this._tboxEndVector.Visible = false;
             // 
             // _labelFileName
             // 

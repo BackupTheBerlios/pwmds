@@ -20,18 +20,21 @@ namespace MDS.GUI
         {
             InitializeComponent();
             mainANN = new MainANN();
-            createFirstTabPage();
-            createSecondTabPage();
+            //createFirstTabPage();
+            //createSecondTabPage();
 
             d = new MDS.Data.DataPreprocessor();
             pretest = new MDS.Tests.TestPreprocessor();
 
-            createThirdTabPage();
-            createFourthTabPage();
+            //createThirdTabPage();
+            //createFourthTabPage();
             createFithTabPage();
             createSixthTabPage();
             createSeventhTabPage();
             createEigthTabPage();
+            create9TabPage();
+            create10TabPage();
+            create11TabPage();
 
         }
       
@@ -243,8 +246,7 @@ namespace MDS.GUI
                             newData = mainANN.Scaling(newData, dataDialog.StartValue, dataDialog.EndValue);
                     }
                     if (dataDialog.Options[DataProcess.SELECT_VECTORS])
-                        newData = mainANN.SelectVectorsFromData(newData, dataDialog.StartVectorNr,
-                            dataDialog.EndVectorNr);
+                        newData = mainANN.SelectVectorsFromData(newData, dataDialog.VectorsNo);
                     if (dataDialog.Options[DataProcess.SELECT_COLUMNS])
                         newData = mainANN.SelectColumnsFromData(newData, dataDialog.StartColumnNr,
                             dataDialog.EndColumnNr);
@@ -501,6 +503,107 @@ namespace MDS.GUI
             { }
         }
 
+        private void create9TabPage()
+        {
+            List<int> neurons = new List<int>();
+            neurons.Add(276);
+            neurons.Add(4);
+            neurons.Add(276);
 
+            List<Network.Function> fun = new List<Network.Function>();
+            fun.Add(new Network.Function(Network.Function.IDENTITY));
+            fun.Add(new Network.Function(Network.Function.SIGM));
+            fun.Add(new Network.Function(Network.Function.SIGM));
+
+            Data.NetworkParam param = new Data.NetworkParam();
+            param.Type = Data.NetworkParam.MDS;
+            param.Neurons = neurons;
+            param.LayerNumber = neurons.Count;
+            param.Functions = fun;
+            param.SolutionLayerNr = 2;
+
+            //    //get netowrikParam
+            //    //createNetowork
+            //    //add Network to list
+            try
+            {
+                int nr = mainANN.AddNetwork(param);
+                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                page.NetworkName = "276-4-276";
+                this._tabControl.TabPages.Add(page);
+                this._tabControl.SelectedTab = page;
+            }
+            catch (Exception)
+            { }
+        }
+
+        private void create10TabPage()
+        {
+            List<int> neurons = new List<int>();
+            neurons.Add(30);
+            neurons.Add(3);
+            neurons.Add(30);
+
+            List<Network.Function> fun = new List<Network.Function>();
+            fun.Add(new Network.Function(Network.Function.IDENTITY));
+            fun.Add(new Network.Function(Network.Function.SIGM));
+            fun.Add(new Network.Function(Network.Function.SIGM));
+
+            Data.NetworkParam param = new Data.NetworkParam();
+            param.Type = Data.NetworkParam.MDS;
+            param.Neurons = neurons;
+            param.LayerNumber = neurons.Count;
+            param.Functions = fun;
+            param.SolutionLayerNr = 2;
+
+            //    //get netowrikParam
+            //    //createNetowork
+            //    //add Network to list
+            try
+            {
+                int nr = mainANN.AddNetwork(param);
+                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                page.NetworkName = "30-3-30";
+                this._tabControl.TabPages.Add(page);
+                this._tabControl.SelectedTab = page;
+            }
+            catch (Exception)
+            { }
+        }
+
+
+        private void create11TabPage()
+        {
+            List<int> neurons = new List<int>();
+            neurons.Add(276);
+            neurons.Add(4);
+            
+
+            List<Network.Function> fun = new List<Network.Function>();
+            fun.Add(new Network.Function(Network.Function.IDENTITY));
+            fun.Add(new Network.Function(Network.Function.SIGM));
+            
+
+            Data.NetworkParam param = new Data.NetworkParam();
+            param.Type = Data.NetworkParam.CLASSIFIER;
+            param.Neurons = neurons;
+            param.LayerNumber = neurons.Count;
+            param.Functions = fun;
+            param.SolutionLayerNr = 2;
+
+            //    //get netowrikParam
+            //    //createNetowork
+            //    //add Network to list
+            try
+            {
+                int nr = mainANN.AddNetwork(param);
+                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                page.NetworkName = "276->4";
+                this._tabControl.TabPages.Add(page);
+                this._tabControl.SelectedTab = page;
+            }
+            catch (Exception)
+            { }
+        }
     }
 }
