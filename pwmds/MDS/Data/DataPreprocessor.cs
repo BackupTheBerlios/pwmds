@@ -19,6 +19,7 @@ namespace MDS.Data
             this.test = new MDS.Tests.TestPreprocessor();
         }
 
+        //usuwa braki danych (NaN) oraz zmienne z zerowa wariancja
         public List<double[]> DeleteMissingValues(List<double[]> l, double tolerance)
         {
             
@@ -37,7 +38,7 @@ namespace MDS.Data
                     j++;
                 }
 
-                if (this.ReplaceMissingValuesByMean(t, tolerance) == true)
+                if (this.ReplaceMissingValuesByMean(t, tolerance) == true && this.isConstVector(t) == false)
                 {
                     f.Reset();
                     j = 0;
@@ -76,6 +77,15 @@ namespace MDS.Data
                 }
             }
             return false;
+        }
+        private bool isConstVector(double[] tab)
+        {
+            //if (tab==null) return true;
+            for (int i = 0; i < tab.Length; i++)
+            {
+                if (tab[0] != tab[i]) return false;
+            }
+            return true;
         }
         public bool ReplaceMissingValuesByMean(double[] tab, double tolerance)
         {
@@ -121,7 +131,6 @@ namespace MDS.Data
                 tmp=(double[])g.Current.Clone();
                 x.Add(tmp);
             }
-            
             
             double[] t = new double[x.Count]; //tymczasowa tablica na skalowane zmienne
             IEnumerator<double[]> f = x.GetEnumerator();
