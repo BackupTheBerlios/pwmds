@@ -20,21 +20,21 @@ namespace MDS
         private String file1 = "arrhythmia.data",
                 file2 = "Arrhythmia_skal", 
                 file3 = "art_data.txt",
-                file4 = "iris.data",
+                file4 = "wine/wine_skal.data",
                 file5 = "wine/wine.data",
-                file6 = "classOut2D.txt",
-                file7 = "class2D.txt",
-                file8 = "classIn3D.txt",
+                file6 = "wine/wine_learn_50_skal.data",
+                file7 = "wine/wine_out_size3_learn_50.data",
+                file8 = "wine/wine_class_learn_50.data",
                 file9 = "classOut3D.txt",
                 file10 = "class3D.txt";
         private String name1 = "Arrhythmia",
                         name2 = "Arrhythmia_skal",
                         name3 = "art_data",
-                        name4 = "iris",
+                        name4 = "wine_skal",
                         name5 = "Wine",
-                        name6 = "ClassOut_2D",
-                        name7 = "Class_2D",
-                        name8 = "ClassIn_3D",
+                        name6 = "wine_learn50",
+                        name7 = "wine_out_size3_learn_50",
+                        name8 = "wine_class_learn_50",
                         name9 = "ClassOut_3D",
                         name10 = "Class_3D";
 
@@ -161,8 +161,8 @@ namespace MDS
             loadInputData(name1, file1);
             
             loadInputData(name2, file2);
-         //   loadInputData(name3, file3);
-            //loadInputData(name4, file4);
+            //loadInputData(name3, file3);
+            loadInputData(name4, file4);
             loadInputData(name5, file5);
             loadInputData(name6, file6);
             loadInputData(name7, file7);
@@ -185,9 +185,15 @@ namespace MDS
         {
             return dataProcessor.SelectVectors(oldData, vectorsNo );
         }
+        /*
         public List<double[]> SelectColumnsFromData(List<double[]> oldData, int startColumn, int endColumn)
         {
             return dataProcessor.SelectColumns(oldData, startColumn, endColumn);
+        }
+        */
+        public List<double[]> SelectColumnsFromData(List<double[]> oldData, List<int> vectorsNo)
+        {
+            return dataProcessor.SelectColumns(oldData, vectorsNo);
         }
 
         public List<double[]> Standarize(List<double[]> oldData)

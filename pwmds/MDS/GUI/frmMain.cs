@@ -248,8 +248,10 @@ namespace MDS.GUI
                     if (dataDialog.Options[DataProcess.SELECT_VECTORS])
                         newData = mainANN.SelectVectorsFromData(newData, dataDialog.VectorsNo);
                     if (dataDialog.Options[DataProcess.SELECT_COLUMNS])
-                        newData = mainANN.SelectColumnsFromData(newData, dataDialog.StartColumnNr,
-                            dataDialog.EndColumnNr);
+                    //    newData = mainANN.SelectColumnsFromData(newData, dataDialog.StartColumnNr,
+                    //        dataDialog.EndColumnNr);
+                        newData = mainANN.SelectColumnsFromData(newData, dataDialog.ColumnsNo);
+
 
                     mainANN.AddNewData(newDataName, newData);
                     setPagesNewInputData(mainANN.InputData);

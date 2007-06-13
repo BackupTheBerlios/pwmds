@@ -30,6 +30,8 @@ namespace MDS.GUI
 
         private List<int> vectorsNo;
 
+        private List<int> columnsNo;
+
         public DataProcess()
         {
             InitializeComponent();
@@ -43,7 +45,8 @@ namespace MDS.GUI
             IEnumerator ie = inputData.Keys.GetEnumerator();
             while (ie.MoveNext())
                 this._comboSelectData.Items.Add(ie.Current);
-            this._comboSelectData.SelectedIndex = 0;
+            if (this._comboSelectData.Items.Count > 0)
+                this._comboSelectData.SelectedIndex = 0;
         }
 
         #endregion
@@ -119,6 +122,11 @@ namespace MDS.GUI
         {
             get { return vectorsNo; }
         }
+
+        public List<int> ColumnsNo
+        {
+            get { return columnsNo; }
+        }
         #endregion
 
         private void _buttonOk_Click(object sender, EventArgs e)
@@ -143,15 +151,16 @@ namespace MDS.GUI
                 if( this._cboxSelectColumns.Checked == true )
                 {
                     options[SELECT_COLUMNS] = true;
-                    startColumnNr = int.Parse(this._tboxStartColumn.Text);
-                    endColumnNr = int.Parse(this._tboxEndColumn.Text);
+                    getColumnsNo(_tboxStartColumn.Text);
+                    //startColumnNr = int.Parse(this._tboxStartColumn.Text);
+                    //endColumnNr = int.Parse(this._tboxEndColumn.Text);
                 }
                 if (this._cboxSelectVectors.Checked == true)
                 {
                     options[SELECT_VECTORS] = true;
                     //
                     getVectorsNo(_tboxStartVector.Text);
-                    startVectorNr = int.Parse(this._tboxStartVector.Text);
+                    //startVectorNr = int.Parse(this._tboxStartVector.Text);
                     //endVectorNr = int.Parse(this._tboxEndVector.Text);
                 }
             }
@@ -185,6 +194,32 @@ namespace MDS.GUI
                     continue;
                 for (int i = val1; i <= val2; ++i)
                     vectorsNo.Add(i);
+            }
+        }
+
+        private void getColumnsNo(String text)
+        {
+            String[] parts;
+            String[] numbers;
+            columnsNo = new List<int>();
+            int val1, val2;
+
+            parts = text.Split(new char[] { ',' });
+            foreach (String elem in parts)
+            {
+                numbers = elem.Split(new char[] { '-' });
+
+                if (!int.TryParse(numbers[0], out val1))
+                    continue;
+                if (numbers.Length == 1)
+                {
+                    columnsNo.Add(val1);
+                    continue;
+                }
+                if (!int.TryParse(numbers[1], out val2))
+                    continue;
+                for (int i = val1; i <= val2; ++i)
+                    columnsNo.Add(i);
             }
         }
     }

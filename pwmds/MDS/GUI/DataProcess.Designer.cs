@@ -49,8 +49,6 @@ namespace MDS.GUI
             this._cboxSelectVectors = new System.Windows.Forms.CheckBox();
             this._cboxSelectColumns = new System.Windows.Forms.CheckBox();
             this._tboxStartColumn = new System.Windows.Forms.TextBox();
-            this._tboxEndColumn = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // _labelDataName
@@ -69,7 +67,7 @@ namespace MDS.GUI
             this._tboxDataName.Location = new System.Drawing.Point(139, 305);
             this._tboxDataName.Name = "_tboxDataName";
             this._tboxDataName.Size = new System.Drawing.Size(159, 21);
-            this._tboxDataName.TabIndex = 1;
+            this._tboxDataName.TabIndex = 10;
             // 
             // _labelSelectData
             // 
@@ -195,7 +193,7 @@ namespace MDS.GUI
             this._tboxFileName.Location = new System.Drawing.Point(139, 332);
             this._tboxFileName.Name = "_tboxFileName";
             this._tboxFileName.Size = new System.Drawing.Size(159, 21);
-            this._tboxFileName.TabIndex = 17;
+            this._tboxFileName.TabIndex = 11;
             // 
             // _buttonOk
             // 
@@ -204,7 +202,7 @@ namespace MDS.GUI
             this._buttonOk.Location = new System.Drawing.Point(166, 371);
             this._buttonOk.Name = "_buttonOk";
             this._buttonOk.Size = new System.Drawing.Size(75, 23);
-            this._buttonOk.TabIndex = 18;
+            this._buttonOk.TabIndex = 12;
             this._buttonOk.Text = "OK";
             this._buttonOk.UseVisualStyleBackColor = true;
             this._buttonOk.Click += new System.EventHandler(this._buttonOk_Click);
@@ -216,7 +214,7 @@ namespace MDS.GUI
             this._buttonCancel.Location = new System.Drawing.Point(267, 371);
             this._buttonCancel.Name = "_buttonCancel";
             this._buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this._buttonCancel.TabIndex = 19;
+            this._buttonCancel.TabIndex = 13;
             this._buttonCancel.Text = "Anuluj";
             this._buttonCancel.UseVisualStyleBackColor = true;
             // 
@@ -258,34 +256,14 @@ namespace MDS.GUI
             this._tboxStartColumn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this._tboxStartColumn.Location = new System.Drawing.Point(187, 240);
             this._tboxStartColumn.Name = "_tboxStartColumn";
-            this._tboxStartColumn.Size = new System.Drawing.Size(30, 21);
-            this._tboxStartColumn.TabIndex = 23;
-            // 
-            // _tboxEndColumn
-            // 
-            this._tboxEndColumn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this._tboxEndColumn.Location = new System.Drawing.Point(253, 242);
-            this._tboxEndColumn.Name = "_tboxEndColumn";
-            this._tboxEndColumn.Size = new System.Drawing.Size(30, 21);
-            this._tboxEndColumn.TabIndex = 24;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.label2.Location = new System.Drawing.Point(223, 243);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(24, 16);
-            this.label2.TabIndex = 25;
-            this.label2.Text = "do";
+            this._tboxStartColumn.Size = new System.Drawing.Size(110, 21);
+            this._tboxStartColumn.TabIndex = 9;
             // 
             // DataProcess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(388, 406);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this._tboxEndColumn);
+            this.ClientSize = new System.Drawing.Size(387, 403);
             this.Controls.Add(this._tboxStartColumn);
             this.Controls.Add(this._cboxSelectColumns);
             this.Controls.Add(this._cboxSelectVectors);
@@ -338,7 +316,5 @@ namespace MDS.GUI
         private System.Windows.Forms.CheckBox _cboxSelectVectors;
         private System.Windows.Forms.CheckBox _cboxSelectColumns;
         private System.Windows.Forms.TextBox _tboxStartColumn;
-        private System.Windows.Forms.TextBox _tboxEndColumn;
-        private System.Windows.Forms.Label label2;
     }
 }

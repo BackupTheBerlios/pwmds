@@ -265,7 +265,30 @@ namespace MDS.Data
             return newData;
         }
 
+        public List<double[]> SelectColumns(List<double[]> data, List<int> columnsNo )
+        {
+            List<double[]> newData = new List<double[]>();
 
+            int size = columnsNo.Count; //liczba wybranych kolumn
+            double[] vector, oldVector;
+            int j;
+            for (int i = 0; i < data.Count; ++i)
+            {
+                oldVector = data[i];
+                vector = new double[size];
+                j = 0;
+                foreach (int no in columnsNo)
+                {
+                    //no - kolejne numery kolumn
+                    vector[j] = data[i][no-1];
+                    ++j;
+                }
+                newData.Add(vector);
+            }
+
+            return newData;
+        }
+        /*
         public List<double[]> SelectColumns(List<double[]> data, int startColumn, int endColumn)
         {
             List<double[]> newData = new List<double[]>();
@@ -282,6 +305,7 @@ namespace MDS.Data
 
             return newData;
         }
+         * */
 
     }
 }
