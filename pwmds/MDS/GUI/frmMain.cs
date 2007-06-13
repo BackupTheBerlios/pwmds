@@ -120,7 +120,7 @@ namespace MDS.GUI
                 try
                 {
                     int nr = mainANN.AddNetwork(param);
-                    NetPage page = new NetPage( nr, mainANN.InputData, mainANN.GetNetwork(nr) );
+                    NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr) );
                     page.NetworkName = createDialog.NetworkName;
                     this._tabControl.TabPages.Add(page);
                     this._tabControl.SelectedTab = page;
@@ -172,7 +172,7 @@ namespace MDS.GUI
                 try
                 {
                     int nr = mainANN.AddNetwork(param);
-                    NetPage page = new NetPage( nr, mainANN.InputData, mainANN.GetNetwork(nr) );
+                    NetPage page = new NetPage( this,nr, mainANN.InputData, mainANN.GetNetwork(nr) );
                     page.NetworkName = "Sieæ pierwsza";
                     this._tabControl.TabPages.Add(page);
                     this._tabControl.SelectedTab = page;
@@ -207,7 +207,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "Test";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
@@ -312,7 +312,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "2-2-2-2";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
@@ -348,7 +348,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "3-2-2-3";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
@@ -384,7 +384,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "2-5-5-2";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
@@ -421,7 +421,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "2-10-1-10-2";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
@@ -458,7 +458,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "3-15-1-15-3";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
@@ -496,7 +496,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "276-4-1-4-276";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
@@ -530,7 +530,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "276-4-276";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
@@ -564,7 +564,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "30-3-30";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
@@ -573,7 +573,10 @@ namespace MDS.GUI
             { }
         }
 
-
+        public void removeTab()
+        {
+            this._tabControl.TabPages.Remove(this._tabControl.SelectedTab);
+        }
         private void create11TabPage()
         {
             List<int> neurons = new List<int>();
@@ -599,7 +602,7 @@ namespace MDS.GUI
             try
             {
                 int nr = mainANN.AddNetwork(param);
-                NetPage page = new NetPage(nr, mainANN.InputData, mainANN.GetNetwork(nr));
+                NetPage page = new NetPage(this, nr, mainANN.InputData, mainANN.GetNetwork(nr));
                 page.NetworkName = "276->4";
                 this._tabControl.TabPages.Add(page);
                 this._tabControl.SelectedTab = page;
