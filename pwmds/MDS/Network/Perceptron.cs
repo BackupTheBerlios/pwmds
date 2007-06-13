@@ -162,8 +162,10 @@ namespace MDS.Network
 
             if (solutionLayerNr <= 0)
                 solutionLayerNr = 1;
-
-            solutionSize = this.layerList[this.solutionLayerNr - 1].Size;
+            if(type == Data.NetworkParam.MDS )
+                solutionSize = this.layerList[this.solutionLayerNr - 1].Size;
+            else
+                solutionSize = this.layerList[this.Size - 1].Size; //rozmiar ostatniej warstwy
             solution = new double[solutionSize];
             solutionLayer = layerList[solutionLayerNr - 1];
             globalError = 0;
@@ -172,16 +174,20 @@ namespace MDS.Network
                 calculateOutput(vector);
                 //data.AddOutput(calculateOutput(vector));
                 //dodaj do last i solution
-                solution = new double[solutionSize];
-                for (int i = 0; i < solutionSize; ++i)
-                {
-                    solution[i] = solutionLayer.getNeuronIndex(i).Output;
-                }
+                
                 last = new double[lastSize];
                 for (int i = 0; i < lastSize; ++i)
-                {
                     last[i] = lastLayer.getNeuronIndex(i).Output;
+
+                solution = new double[solutionSize];
+                if (type == Data.NetworkParam.MDS)
+                {
+                    for (int i = 0; i < solutionSize; ++i)
+                        solution[i] = solutionLayer.getNeuronIndex(i).Output;
                 }
+                else
+                    solution = Classify(last);
+
                 data.AddOutput(last);
                 data.AddSolution(solution);
                 globalError += calculateError( vector, last);
@@ -222,6 +228,37 @@ namespace MDS.Network
             {
                 this.layerList[i].printWeights();
             }
+        }
+
+        public double[] Classify( double[] vector)
+        {
+            double max = 0;
+            int max_id = -1;
+            for (int i = 0; i < vector.Length; ++i)
+            {
+                if (vector[i] > max)
+                {
+                    max = vector[i];
+                    max_id = i;
+                }
+            }
+            double[] classVector = new double[vector.Length];
+            for (int i = 0; i < classVector.Length; ++i)
+            {
+                if (i == max_id)
+                    classVector[i] = 1;
+                else
+                    classVector[i] = 0;
+            }
+            return classVector;
+        }
+
+        public static int GetClassNumber(double[] vector)
+        {
+            int i = 0;
+            while (vector[i] != 1)
+                ++i;
+            return i + 1;
         }
 
         public int Size

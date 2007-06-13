@@ -28,13 +28,13 @@ namespace MDS.GUI
 
             //createThirdTabPage();
             //createFourthTabPage();
-            createFithTabPage();
-            createSixthTabPage();
-            createSeventhTabPage();
-            createEigthTabPage();
-            create9TabPage();
-            create10TabPage();
-            create11TabPage();
+            //createFithTabPage();
+            //createSixthTabPage();
+            //createSeventhTabPage();
+            //createEigthTabPage();
+            //create9TabPage();
+            //create10TabPage();
+            //create11TabPage();
 
         }
       

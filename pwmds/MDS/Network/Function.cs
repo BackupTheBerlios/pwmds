@@ -8,12 +8,10 @@ namespace MDS.Network
     {
         public static String[] FUNCTIONS = {"IDENTYCZNOŒCIOWA",
                             "TANGENSOWA",                            
-                            "Jakaœ",
                             "SIGMOIDALNA"};
         public static int IDENTITY = 0,
                         TANH = 1,
-                        CONST = 2,
-                        SIGM = 3;
+                        SIGM = 2;
 
                             
         private int id;
@@ -44,8 +42,6 @@ namespace MDS.Network
                 this.id = 1;
             else if (name.CompareTo(FUNCTIONS[2]) == 0)
                 this.id = 2;
-            else if (name.CompareTo(FUNCTIONS[3]) == 0)
-                this.id = 3;
             this.name = name;
         }
 
@@ -58,8 +54,6 @@ namespace MDS.Network
                 case 1:
                     return Math.Tanh(x);
                 case 2:
-                    return 1;
-                case 3:
                     return 1 / (1 + Math.Exp(-x));
             }
             return 0;
@@ -74,8 +68,6 @@ namespace MDS.Network
                 case 1:
                     return 1/(Math.Cosh(x)*Math.Cosh(x));
                 case 2:
-                    return 0;
-                case 3:
                     //return Math.Exp(-x) / Math.Pow((1 + Math.Exp(-x)), 2);
                     return calculate(x) * (1 - calculate(x));
             }

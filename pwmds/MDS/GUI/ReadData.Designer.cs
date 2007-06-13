@@ -35,8 +35,6 @@ namespace MDS.GUI
             this._openFileDialog = new System.Windows.Forms.Button();
             this._okButton = new System.Windows.Forms.Button();
             this._cancelButton = new System.Windows.Forms.Button();
-            this._radioFromFile = new System.Windows.Forms.RadioButton();
-            this._radioCurrentOutput = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // label1
@@ -69,7 +67,7 @@ namespace MDS.GUI
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.Location = new System.Drawing.Point(43, 78);
+            this.label2.Location = new System.Drawing.Point(12, 78);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 16);
             this.label2.TabIndex = 3;
@@ -109,37 +107,11 @@ namespace MDS.GUI
             this._cancelButton.Text = "Anuluj";
             this._cancelButton.UseVisualStyleBackColor = true;
             // 
-            // _radioFromFile
-            // 
-            this._radioFromFile.AutoSize = true;
-            this._radioFromFile.Checked = true;
-            this._radioFromFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._radioFromFile.Location = new System.Drawing.Point(12, 55);
-            this._radioFromFile.Name = "_radioFromFile";
-            this._radioFromFile.Size = new System.Drawing.Size(65, 20);
-            this._radioFromFile.TabIndex = 7;
-            this._radioFromFile.TabStop = true;
-            this._radioFromFile.Text = "Z pliku";
-            this._radioFromFile.UseVisualStyleBackColor = true;
-            // 
-            // _radioCurrentOutput
-            // 
-            this._radioCurrentOutput.AutoSize = true;
-            this._radioCurrentOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this._radioCurrentOutput.Location = new System.Drawing.Point(12, 126);
-            this._radioCurrentOutput.Name = "_radioCurrentOutput";
-            this._radioCurrentOutput.Size = new System.Drawing.Size(125, 20);
-            this._radioCurrentOutput.TabIndex = 8;
-            this._radioCurrentOutput.Text = "Aktualne wyjœcie";
-            this._radioCurrentOutput.UseVisualStyleBackColor = true;
-            // 
             // ReadData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(307, 202);
-            this.Controls.Add(this._radioCurrentOutput);
-            this.Controls.Add(this._radioFromFile);
             this.Controls.Add(this._cancelButton);
             this.Controls.Add(this._okButton);
             this.Controls.Add(this._openFileDialog);
@@ -164,7 +136,5 @@ namespace MDS.GUI
         private System.Windows.Forms.Button _openFileDialog;
         private System.Windows.Forms.Button _okButton;
         private System.Windows.Forms.Button _cancelButton;
-        private System.Windows.Forms.RadioButton _radioFromFile;
-        private System.Windows.Forms.RadioButton _radioCurrentOutput;
     }
 }

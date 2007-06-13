@@ -194,7 +194,7 @@ namespace MDS.GUI
             //dodaj now¹ warstwê
             addNewLayer();
 
-            this._tboxSolutionLayerNr.Enabled = true;
+            //this._tboxSolutionLayerNr.Enabled = true;
             this._tboxSolutionLayerNr.Text = "1";
             this._buttonDeleteLayer.Enabled = true;
             this._tableLayers.Visible = true;
@@ -292,6 +292,7 @@ namespace MDS.GUI
         {
             this._tableLayers.Visible = false;
             int controlNo = this._tableLayers.Controls.Count;
+            int width, height;
 
             for (int i = 0; i < 3; ++i) 
                 this._tableLayers.Controls.RemoveAt(--controlNo);
@@ -300,6 +301,30 @@ namespace MDS.GUI
                 this._buttonDeleteLayer.Enabled = false;
             this._tableLayers.Visible = true;
             removeLastLayer();
+
+            if (lastLayerNr < 4)
+            {
+                width = this._tableLayers.Size.Width;
+                height = this._tableLayers.Size.Height;
+                height -= ROW_HEIGHT;
+
+                this._tableLayers.Size = new System.Drawing.Size(width, height);
+
+                //przesuñ wszystkie kontrolki poni¿ej o rowHeight
+                //this._buttonAddLayer.Location = new Point(this._buttonAddLayer.Location.X,
+                //                                  this._buttonAddLayer.Location.Y + ROW_HEIGHT);
+                this._buttonCreateNetwork.Location = new Point(this._buttonCreateNetwork.Location.X,
+                                                    this._buttonCreateNetwork.Location.Y - ROW_HEIGHT);
+                this._labelOutLayer.Location = new Point(this._labelOutLayer.Location.X,
+                                                    this._labelOutLayer.Location.Y - ROW_HEIGHT);
+                this._cancelButton.Location = new Point(this._cancelButton.Location.X,
+                                                    this._cancelButton.Location.Y - ROW_HEIGHT);
+                this._tboxSolutionLayerNr.Location = new Point(this._tboxSolutionLayerNr.Location.X,
+                                                    this._tboxSolutionLayerNr.Location.Y - ROW_HEIGHT);
+                this.Size = new Size(this.Size.Width,
+                                        this.Size.Height - ROW_HEIGHT);
+
+            }
         }
 
         #endregion

@@ -152,7 +152,7 @@ namespace MDS.GUI
                     //
                     getVectorsNo(_tboxStartVector.Text);
                     startVectorNr = int.Parse(this._tboxStartVector.Text);
-                    endVectorNr = int.Parse(this._tboxEndVector.Text);
+                    //endVectorNr = int.Parse(this._tboxEndVector.Text);
                 }
             }
             catch (Exception ex)
